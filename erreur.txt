@@ -1,8 +1,8 @@
-Create puppy error: StorageApiError: Bucket not found
+2026-06-21 02:22:52.392 [error] Create puppy error: StorageApiError: new row violates row-level security policy
     at /var/task/node_modules/@supabase/storage-js/dist/index.cjs:315:11
     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
   __isStorageError: true,
   namespace: 'storage',
   status: 400,
-  statusCode: '404'
+  statusCode: '403'
 }

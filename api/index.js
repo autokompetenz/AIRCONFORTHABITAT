@@ -47,12 +47,21 @@ async function uploadFiles(files, folder = 'puppies') {
     sorted.map(async (file, index) => {
       const safeName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
       const fileName = `${Date.now()}-${index}-${safeName}`;
-      const { error } = await supabase.storage
-        .from(folder)
-        .upload(fileName, file.buffer, { contentType: file.mimetype });
-      if (error) throw error;
-      const { data: publicUrlData } = supabase.storage.from(folder).getPublicUrl(fileName);
-      return { index, url: publicUrlData.publicUrl };
+      const url = `${process.env.SUPABASE_URL}/storage/v1/object/${folder}/${fileName}`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+          'Content-Type': file.mimetype,
+        },
+        body: file.buffer,
+      });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Upload ${response.status}: ${text}`);
+      }
+      const publicUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/${folder}/${fileName}`;
+      return { index, url: publicUrl };
     })
   );
   const urls = {};

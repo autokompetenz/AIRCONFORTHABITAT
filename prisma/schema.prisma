@@ -89,6 +89,8 @@ model Reservation {
   guestName        String
   guestEmail       String
   guestPhone       String
+  guestProfession  String?
+  guestHomeAddress String?
   paymentMethod    String             @default("deposit")
   paymentLabel     String?
   hasPet           Boolean?

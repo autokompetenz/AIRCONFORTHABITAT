@@ -363,7 +363,7 @@ app.post('/api/waitlist', async (req, res) => {
 // ─── Reservations ─────────────────────────────────────────────────────────
 app.post('/api/reservations', async (req, res) => {
   try {
-    const { puppyId, guestName, guestEmail, guestPhone, deliveryMethod, deliveryAddress, notes, paymentMethod, hasPet, hasLostPet } = req.body;
+    const { puppyId, guestName, guestEmail, guestPhone, guestProfession, guestHomeAddress, deliveryMethod, deliveryAddress, notes, paymentMethod, hasPet, hasLostPet } = req.body;
     if (!puppyId || !guestName || !guestEmail || !guestPhone) {
       return res.status(400).json({ error: 'Champs obligatoires manquants' });
     }
@@ -409,6 +409,8 @@ app.post('/api/reservations', async (req, res) => {
           puppyId: puppy.id,
           guestId: guest.id,
           guestName, guestEmail, guestPhone,
+          guestProfession: guestProfession || null,
+          guestHomeAddress: guestHomeAddress || null,
           paymentMethod: isFullPayment ? 'full' : 'deposit',
           paymentLabel,
           hasPet: hasPet === 'true' || hasPet === true || null,

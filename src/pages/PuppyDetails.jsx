@@ -197,6 +197,8 @@ export default function PuppyDetails() {
                       guestName: data.name,
                       guestEmail: data.email,
                       guestPhone: data.phone,
+                      guestProfession: data.guestProfession,
+                      guestHomeAddress: data.guestHomeAddress,
                       paymentMethod: data.paymentMethod,
                       hasPet: data.hasPet,
                       hasLostPet: data.hasLostPet,
@@ -211,6 +213,8 @@ export default function PuppyDetails() {
                   <input name="name" required placeholder={t('name_label', l)} className="input-luxury" />
                   <input name="email" type="email" required placeholder={t('email_label', l)} className="input-luxury" />
                   <input name="phone" type="tel" required placeholder={t('phone_label', l)} className="input-luxury" />
+                  <input name="guestProfession" placeholder={t('profession_label', l)} className="input-luxury" />
+                  <input name="guestHomeAddress" placeholder={t('home_address_label', l)} className="input-luxury" />
 
                   <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
                     <p style={{ fontSize:12, fontWeight:700, color:C.text2, margin:0 }}>{t('payment_full', l)}</p>

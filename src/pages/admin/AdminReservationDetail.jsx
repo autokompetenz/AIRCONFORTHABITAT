@@ -79,6 +79,8 @@ export default function AdminReservationDetail() {
               <InfoRow label="Nom" value={reservation.guestName} />
               <InfoRow label="Email" value={reservation.guestEmail} />
               <InfoRow label="Téléphone" value={reservation.guestPhone} />
+              <InfoRow label="Profession" value={reservation.guestProfession} />
+              <InfoRow label="Adresse domicile" value={reservation.guestHomeAddress} />
               <InfoRow label="Réservé le" value={formatDate(reservation.createdAt)} />
               <InfoRow label="Paiement" value={reservation.paymentLabel || (reservation.paymentMethod === 'full' ? 'Intégral' : 'Acompte 50%')} />
               <InfoRow label="A un animal ?" value={reservation.hasPet === true ? 'Oui' : reservation.hasPet === false ? 'Non' : '—'} />

@@ -71,6 +71,8 @@ export const translations = {
   name_label:       { fr:'Votre nom',         nl:'Uw naam',           en:'Your name' },
   email_label:      { fr:'Votre email',       nl:'Uw e-mail',         en:'Your email' },
   phone_label:      { fr:'Votre téléphone',   nl:'Uw telefoon',       en:'Your phone' },
+  profession_label: { fr:'Votre profession',  nl:'Uw beroep',         en:'Your profession' },
+  home_address_label:{ fr:'Adresse domicile',  nl:'Thuisadres',        en:'Home address' },
   delivery_pickup:  { fr:'Retrait sur place', nl:'Afhalen op locatie',en:'Pickup on site' },
   delivery_delivery:{ fr:'Livraison',         nl:'Bezorging',         en:'Delivery' },
   address_label:    { fr:'Adresse de livraison', nl:'Bezorgadres',    en:'Delivery address' },

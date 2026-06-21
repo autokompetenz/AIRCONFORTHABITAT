@@ -74,6 +74,8 @@ model Guest {
   email     String
   phone     String
   address   String?
+  hasPet    Boolean?
+  hasLostPet Boolean?
   createdAt DateTime @default(now())
 
   reservations Reservation[]
@@ -87,6 +89,13 @@ model Reservation {
   guestName        String
   guestEmail       String
   guestPhone       String
+  paymentMethod    String             @default("deposit")
+  paymentLabel     String?
+  hasPet           Boolean?
+  hasLostPet       Boolean?
+  discountPercent  Float?
+  discountAmount   Float?
+  totalPrice       Float?
   depositAmount    Float?
   depositPaidAt    DateTime?
   balanceAmount    Float?

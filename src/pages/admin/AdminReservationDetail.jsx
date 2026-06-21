@@ -62,7 +62,7 @@ export default function AdminReservationDetail() {
         <div>
           <div className="section-eyebrow">Réservation</div>
           <h1 style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:'clamp(26px,3.5vw,40px)', color:'var(--primary)', letterSpacing:'-0.02em' }}>
-            {reservation.number}
+            {reservation.reservationNumber}
           </h1>
         </div>
         <span className={'badge badge-' + reservation.status}>
@@ -80,6 +80,9 @@ export default function AdminReservationDetail() {
               <InfoRow label="Email" value={reservation.guestEmail} />
               <InfoRow label="Téléphone" value={reservation.guestPhone} />
               <InfoRow label="Réservé le" value={formatDate(reservation.createdAt)} />
+              <InfoRow label="Paiement" value={reservation.paymentLabel || (reservation.paymentMethod === 'full' ? 'Intégral' : 'Acompte 50%')} />
+              <InfoRow label="A un animal ?" value={reservation.hasPet === true ? 'Oui' : reservation.hasPet === false ? 'Non' : '—'} />
+              <InfoRow label="Déjà perdu un animal ?" value={reservation.hasLostPet === true ? 'Oui' : reservation.hasLostPet === false ? 'Non' : '—'} />
             </div>
             {reservation.notes && (
               <div style={{ marginTop:16, padding:'12px 16px', background:'var(--primary-bg)', border:'1px solid var(--primary-border)', borderRadius:8 }}>
@@ -102,9 +105,10 @@ export default function AdminReservationDetail() {
                 <p style={{ fontFamily:"'Outfit',sans-serif", fontWeight:800, fontSize:20, color:'var(--primary)', flexShrink:0 }}>{formatEuro(reservation.puppy.price)}</p>
               </div>
               <div style={{ display:'flex', gap:24, marginTop:16, paddingTop:16, borderTop:'1px solid var(--border)' }}>
-                <div><p style={{ fontSize:11, color:'var(--text-3)' }}>{'Acompte (30%)'}</p><p style={{ fontWeight:700, color:'var(--text)', fontSize:16 }}>{formatEuro(Math.round((reservation.puppy.price || 0) * 0.3))}</p></div>
-                <div><p style={{ fontSize:11, color:'var(--text-3)' }}>{'Solde'}</p><p style={{ fontWeight:700, color:'var(--text)', fontSize:16 }}>{formatEuro(Math.round((reservation.puppy.price || 0) * 0.7))}</p></div>
-                <div><p style={{ fontSize:11, color:'var(--text-3)' }}>{'Total'}</p><p style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:22, color:'var(--primary)' }}>{formatEuro(reservation.puppy.price)}</p></div>
+                {reservation.discountAmount > 0 && <div><p style={{ fontSize:11, color:'var(--text-3)' }}>{'Réduction'}</p><p style={{ fontWeight:700, color:'#22C55E', fontSize:16 }}>-{formatEuro(reservation.discountAmount)}</p></div>}
+                <div><p style={{ fontSize:11, color:'var(--text-3)' }}>{'Acompte'}</p><p style={{ fontWeight:700, color:'var(--text)', fontSize:16 }}>{formatEuro(reservation.depositAmount || 0)}</p></div>
+                {reservation.balanceAmount > 0 && <div><p style={{ fontSize:11, color:'var(--text-3)' }}>{'Solde'}</p><p style={{ fontWeight:700, color:'var(--text)', fontSize:16 }}>{formatEuro(reservation.balanceAmount)}</p></div>}
+                <div><p style={{ fontSize:11, color:'var(--text-3)' }}>{'Total'}</p><p style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:22, color:'var(--primary)' }}>{formatEuro(reservation.totalPrice || reservation.puppy?.price)}</p></div>
               </div>
             </div>
           )}

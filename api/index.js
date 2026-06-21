@@ -363,7 +363,7 @@ app.post('/api/waitlist', async (req, res) => {
 // ─── Reservations ─────────────────────────────────────────────────────────
 app.post('/api/reservations', async (req, res) => {
   try {
-    const { puppyId, guestName, guestEmail, guestPhone, deliveryMethod, deliveryAddress, notes } = req.body;
+    const { puppyId, guestName, guestEmail, guestPhone, deliveryMethod, deliveryAddress, notes, paymentMethod, hasPet, hasLostPet } = req.body;
     if (!puppyId || !guestName || !guestEmail || !guestPhone) {
       return res.status(400).json({ error: 'Champs obligatoires manquants' });
     }
@@ -376,8 +376,16 @@ app.post('/api/reservations', async (req, res) => {
       return res.status(400).json({ error: 'Ce chiot n\'est plus disponible' });
     }
 
-    const depositAmount = puppy.deposit || Math.round(puppy.price * 0.25);
-    const balanceAmount = puppy.price - depositAmount;
+    // Payment logic
+    const isFullPayment = paymentMethod === 'full';
+    const discountPercent = isFullPayment ? 15 : 0;
+    const discountAmount = isFullPayment ? Math.round(puppy.price * 0.15) : 0;
+    const totalPrice = puppy.price - discountAmount;
+    const depositAmount = isFullPayment ? totalPrice : Math.round(puppy.price * 0.5);
+    const balanceAmount = isFullPayment ? 0 : puppy.price - depositAmount;
+    const paymentLabel = isFullPayment
+      ? `Paiement intégral (-${discountPercent}%)`
+      : `Acompte 50% (solde à la livraison)`;
 
     let reservationNumber;
     let exists = true;
@@ -390,7 +398,7 @@ app.post('/api/reservations', async (req, res) => {
     let guest = await prisma.guest.findFirst({ where: { email: guestEmail } });
     if (!guest) {
       guest = await prisma.guest.create({
-        data: { name: guestName, email: guestEmail, phone: guestPhone, address: deliveryAddress || null }
+        data: { name: guestName, email: guestEmail, phone: guestPhone, address: deliveryAddress || null, hasPet: hasPet === 'true' || hasPet === true || null, hasLostPet: hasLostPet === 'true' || hasLostPet === true || null }
       });
     }
 
@@ -401,6 +409,11 @@ app.post('/api/reservations', async (req, res) => {
           puppyId: puppy.id,
           guestId: guest.id,
           guestName, guestEmail, guestPhone,
+          paymentMethod: isFullPayment ? 'full' : 'deposit',
+          paymentLabel,
+          hasPet: hasPet === 'true' || hasPet === true || null,
+          hasLostPet: hasLostPet === 'true' || hasLostPet === true || null,
+          discountPercent, discountAmount, totalPrice,
           depositAmount, balanceAmount,
           deliveryMethod: deliveryMethod || 'pickup',
           deliveryAddress: deliveryAddress || null,

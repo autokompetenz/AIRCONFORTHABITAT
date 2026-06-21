@@ -183,7 +183,7 @@ export default function PuppyDetails() {
                   {t('reservation_title', l)}
                 </h3>
                 <p style={{ fontSize: 13, color: C.text3, marginBottom: 20 }}>
-                  {t('reservation_sub', l)} • {t('deposit_info', l)} {formatEuro(puppy.price * 0.3)} (30%)
+                  {t('reservation_sub', l)}
                 </p>
                 <form onSubmit={async (e) => {
                   e.preventDefault();
@@ -191,7 +191,16 @@ export default function PuppyDetails() {
                   try {
                     setReserving(true);
                     const data = Object.fromEntries(fd);
-                    const res = await reservationAPI.create({ puppyId: puppy.id, guestName: data.name, guestEmail: data.email, guestPhone: data.phone, notes: data.notes });
+                    const res = await reservationAPI.create({
+                      puppyId: puppy.id,
+                      guestName: data.name,
+                      guestEmail: data.email,
+                      guestPhone: data.phone,
+                      paymentMethod: data.paymentMethod,
+                      hasPet: data.hasPet,
+                      hasLostPet: data.hasLostPet,
+                      notes: data.notes,
+                    });
                     addToast(t('reservation_confirm', l), 'success');
                     navigate(`/track/${res.data.reservationNumber}`);
                   } catch (err) {
@@ -201,6 +210,60 @@ export default function PuppyDetails() {
                   <input name="name" required placeholder={t('name_label', l)} className="input-luxury" />
                   <input name="email" type="email" required placeholder={t('email_label', l)} className="input-luxury" />
                   <input name="phone" type="tel" required placeholder={t('phone_label', l)} className="input-luxury" />
+
+                  <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                    <p style={{ fontSize:12, fontWeight:700, color:C.text2, margin:0 }}>{t('payment_full', l)}</p>
+                    <p style={{ fontSize:11, color:C.text3, margin:0 }}>{t('payment_full_sub', l)}</p>
+                    <div style={{ fontSize:15, fontWeight:900, color:C.primary }}>
+                      {formatEuro(puppy.price)} → <span style={{ color:'#22C55E' }}>{formatEuro(Math.round(puppy.price * 0.85))}</span>
+                      <span style={{ fontSize:11, fontWeight:700, color:'#22C55E', marginLeft:6 }}>(-15%)</span>
+                    </div>
+                  </div>
+
+                  <label style={{ display:'flex', alignItems:'center', gap:10, cursor:'pointer', padding:'12px 14px', borderRadius:10, background:C.card2, border:'1px solid var(--border)' }}>
+                    <input type="radio" name="paymentMethod" value="deposit" defaultChecked style={{ accentColor:'#C9762E', width:18, height:18 }} />
+                    <div>
+                      <span style={{ fontSize:14, fontWeight:700, color:C.text }}>{t('payment_deposit', l)}</span>
+                      <p style={{ fontSize:11, color:C.text3, margin:'2px 0 0' }}>{t('payment_deposit_sub', l)}</p>
+                      <div style={{ fontSize:14, fontWeight:800, color:C.primary, marginTop:4 }}>
+                        {formatEuro(Math.round(puppy.price * 0.5))} · {formatEuro(puppy.price - Math.round(puppy.price * 0.5))} {t('balance', l)}
+                      </div>
+                    </div>
+                  </label>
+
+                  <label style={{ display:'flex', alignItems:'center', gap:10, cursor:'pointer', padding:'12px 14px', borderRadius:10, background:C.card2, border:'1px solid var(--border)' }}>
+                    <input type="radio" name="paymentMethod" value="full" style={{ accentColor:'#C9762E', width:18, height:18 }} />
+                    <div>
+                      <span style={{ fontSize:14, fontWeight:700, color:C.text }}>{t('payment_full', l)}</span>
+                      <p style={{ fontSize:11, color:C.text3, margin:'2px 0 0' }}>{t('payment_full_sub', l)}</p>
+                      <div style={{ fontSize:14, fontWeight:800, color:'#22C55E', marginTop:4 }}>
+                        {formatEuro(Math.round(puppy.price * 0.85))}
+                      </div>
+                    </div>
+                  </label>
+
+                  <div style={{ height:1, background:'var(--border)', margin:'4px 0' }} />
+
+                  <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.12em', textTransform:'uppercase', color:C.text3, margin:0 }}>{t('has_pet', l)}</p>
+                  <div style={{ display:'flex', gap:12 }}>
+                    <label style={{ flex:1, display:'flex', alignItems:'center', gap:8, padding:'10px 14px', borderRadius:8, background:C.card2, border:'1px solid var(--border)', cursor:'pointer' }}>
+                      <input type="radio" name="hasPet" value="true" style={{ accentColor:'#C9762E' }} /> <span style={{ fontSize:14, color:C.text }}>{t('has_pet_yes', l)}</span>
+                    </label>
+                    <label style={{ flex:1, display:'flex', alignItems:'center', gap:8, padding:'10px 14px', borderRadius:8, background:C.card2, border:'1px solid var(--border)', cursor:'pointer' }}>
+                      <input type="radio" name="hasPet" value="false" style={{ accentColor:'#C9762E' }} /> <span style={{ fontSize:14, color:C.text }}>{t('has_pet_no', l)}</span>
+                    </label>
+                  </div>
+
+                  <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.12em', textTransform:'uppercase', color:C.text3, margin:0 }}>{t('lost_pet', l)}</p>
+                  <div style={{ display:'flex', gap:12 }}>
+                    <label style={{ flex:1, display:'flex', alignItems:'center', gap:8, padding:'10px 14px', borderRadius:8, background:C.card2, border:'1px solid var(--border)', cursor:'pointer' }}>
+                      <input type="radio" name="hasLostPet" value="true" style={{ accentColor:'#C9762E' }} /> <span style={{ fontSize:14, color:C.text }}>{t('lost_pet_yes', l)}</span>
+                    </label>
+                    <label style={{ flex:1, display:'flex', alignItems:'center', gap:8, padding:'10px 14px', borderRadius:8, background:C.card2, border:'1px solid var(--border)', cursor:'pointer' }}>
+                      <input type="radio" name="hasLostPet" value="false" style={{ accentColor:'#C9762E' }} /> <span style={{ fontSize:14, color:C.text }}>{t('lost_pet_no', l)}</span>
+                    </label>
+                  </div>
+
                   <textarea name="notes" rows={3} placeholder={t('notes_ph', l)} className="input-luxury" />
                   <button type="submit" disabled={reserving} className="btn-primary" style={{ justifyContent: 'center', padding: '14px' }}>
                     {reserving ? '⏳...' : `🐶 ${t('confirm_reservation', l)}`}

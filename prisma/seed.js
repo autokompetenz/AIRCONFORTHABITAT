@@ -60,11 +60,67 @@ async function main() {
     { name:'Oscar',  birthDate:d(6,6),  sex:'Male',   father:'Jack',   mother:'Lola', pedigree:'LOSH-JR-2026-0358', microchip:'985 1410 0234 593', desc:'Petit aventurier, le premier à explorer un nouvel objet dans son enclos.' },
   ];
 
+  const berger = [
+    { name:'Apollo',   birthDate:d(5,6),  sex:'Male',   father:'Rex',   mother:'Luna', pedigree:'LOSH-BA-2026-0701', microchip:'985 1410 0270 401', desc:'Déjà très éveillé, il observe attentivement tout ce qui se passe autour de lui.' },
+    { name:'Athena',   birthDate:d(9,6),  sex:'Female', father:'Rex',   mother:'Luna', pedigree:'LOSH-BA-2026-0702', microchip:'985 1410 0270 402', desc:'Vive et déterminée, elle montre déjà un caractère affirmé.' },
+    { name:'Zeus',     birthDate:d(3,6),  sex:'Male',   father:'Thor',  mother:'Maya', pedigree:'LOSH-BA-2026-0703', microchip:'985 1410 0270 403', desc:'Robuste et curieux, il aime déjà explorer chaque recoin de son enclos.' },
+    { name:'Freya',    birthDate:d(18,4), sex:'Female', father:'Thor',  mother:'Maya', pedigree:'LOSH-BA-2026-0680', microchip:'985 1410 0270 380', desc:'Intelligente et attentive, elle apprend déjà très vite les règles de base.' },
+    { name:'Titan',    birthDate:d(21,4), sex:'Male',   father:'Rex',   mother:'Maya', pedigree:'LOSH-BA-2026-0681', microchip:'985 1410 0270 381', desc:'Costaud et protecteur, il se montre déjà très attentif envers ses frères et sœurs.' },
+    { name:'Nina',     birthDate:d(11,6), sex:'Female', father:'Thor',  mother:'Luna', pedigree:'LOSH-BA-2026-0704', microchip:'985 1410 0270 404', desc:'Douce et sociable, elle s\'approche facilement des nouvelles têtes.' },
+    { name:'Maximus',  birthDate:d(26,4), sex:'Male',   father:'Rex',   mother:'Luna', pedigree:'LOSH-BA-2026-0682', microchip:'985 1410 0270 382', desc:'Énergique et joueur, toujours prêt à courir dans son enclos.' },
+    { name:'Sasha',    birthDate:d(8,6),  sex:'Female', father:'Thor',  mother:'Maya', pedigree:'LOSH-BA-2026-0705', microchip:'985 1410 0270 405', desc:'Calme et attentive, elle observe son environnement avec beaucoup de sérieux.' },
+    { name:'Hugo',     birthDate:d(15,4), sex:'Male',   father:'Rex',   mother:'Maya', pedigree:'LOSH-BA-2026-0683', microchip:'985 1410 0270 383', desc:'Confiant et affectueux, il s\'attache vite aux personnes qui s\'occupent de lui.' },
+    { name:'Stella',   birthDate:d(6,6),  sex:'Female', father:'Thor',  mother:'Luna', pedigree:'LOSH-BA-2026-0706', microchip:'985 1410 0270 406', desc:'Éveillée et vive, elle est déjà la première à explorer les nouveaux objets.' },
+  ];
+
+  const bichon = [
+    { name:'Neige',       birthDate:d(5,6),  sex:'Female', father:'Câlin',  mother:'Praline',  pedigree:'LOSH-BIC-2026-0801', microchip:'985 1410 0280 501', desc:'Toute blanche et toute douce, elle adore se blottir contre ses frères et sœurs.' },
+    { name:'Nuage',       birthDate:d(9,6),  sex:'Male',   father:'Câlin',  mother:'Praline',  pedigree:'LOSH-BIC-2026-0802', microchip:'985 1410 0280 502', desc:'Joueur et léger comme une plume, il adore bondir partout dans son enclos.' },
+    { name:'Pompon',      birthDate:d(3,6),  sex:'Male',   father:'Câlin',  mother:'Choupette',pedigree:'LOSH-BIC-2026-0803', microchip:'985 1410 0280 503', desc:'Petit boule de poils espiègle, toujours prêt à faire des câlins.' },
+    { name:'Cookie',      birthDate:d(18,4), sex:'Female', father:'Câlin',  mother:'Choupette',pedigree:'LOSH-BIC-2026-0780', microchip:'985 1410 0280 480', desc:'Douce et affectueuse, elle réclame des caresses dès qu\'on s\'approche.' },
+    { name:'Marshmallow', birthDate:d(21,4), sex:'Male',   father:'Bonbon', mother:'Praline',  pedigree:'LOSH-BIC-2026-0781', microchip:'985 1410 0280 481', desc:'Calme et sociable, il s\'adapte très facilement à toutes les situations.' },
+    { name:'Câline',      birthDate:d(11,6), sex:'Female', father:'Bonbon', mother:'Choupette',pedigree:'LOSH-BIC-2026-0804', microchip:'985 1410 0280 504', desc:'Très tendre, elle adore se lover dans les bras de ses proches.' },
+    { name:'Biscuit',     birthDate:d(26,4), sex:'Male',   father:'Bonbon', mother:'Praline',  pedigree:'LOSH-BIC-2026-0782', microchip:'985 1410 0280 482', desc:'Vif et curieux, il explore déjà chaque coin de son enclos avec entrain.' },
+    { name:'Praline',     birthDate:d(8,6),  sex:'Female', father:'Câlin',  mother:'Choupette',pedigree:'LOSH-BIC-2026-0805', microchip:'985 1410 0280 505', desc:'Espiègle et pétillante, elle aime déjà jouer avec ses frères et sœurs.' },
+    { name:'Coton',       birthDate:d(15,4), sex:'Male',   father:'Bonbon', mother:'Choupette',pedigree:'LOSH-BIC-2026-0783', microchip:'985 1410 0280 483', desc:'Doux comme son nom l\'indique, il adore les longues siestes au calme.' },
+    { name:'Perle',       birthDate:d(6,6),  sex:'Female', father:'Bonbon', mother:'Praline',  pedigree:'LOSH-BIC-2026-0806', microchip:'985 1410 0280 506', desc:'Délicate et attachante, elle réclame déjà beaucoup d\'attention.' },
+  ];
+
+  const golden = [
+    { name:'Sunny',   birthDate:d(5,6),  sex:'Male',   father:'Goldy',  mother:'Honey', pedigree:'LOSH-GR-2026-1001', microchip:'985 1410 0300 701', desc:'Joyeux et plein d\'énergie, déjà très proche de sa mère et de ses frères de portée.' },
+    { name:'Honey',   birthDate:d(9,6),  sex:'Female', father:'Goldy',  mother:'Honey', pedigree:'LOSH-GR-2026-1002', microchip:'985 1410 0300 702', desc:'Douce et câline, elle adore se blottir contre ses proches.' },
+    { name:'Bear',    birthDate:d(3,6),  sex:'Male',   father:'Cooper', mother:'Amber', pedigree:'LOSH-GR-2026-1003', microchip:'985 1410 0300 703', desc:'Costaud et joueur, déjà très curieux de tout ce qui l\'entoure.' },
+    { name:'Amber',   birthDate:d(18,4), sex:'Female', father:'Cooper', mother:'Amber', pedigree:'LOSH-GR-2026-0980', microchip:'985 1410 0300 680', desc:'Sociable et affectueuse, elle réclame des câlins dès qu\'on s\'approche.' },
+    { name:'Cooper',  birthDate:d(21,4), sex:'Male',   father:'Goldy',  mother:'Amber', pedigree:'LOSH-GR-2026-0981', microchip:'985 1410 0300 681', desc:'Vif et intelligent, il apprend déjà très vite les bases de l\'obéissance.' },
+    { name:'Maple',   birthDate:d(11,6), sex:'Female', father:'Cooper', mother:'Honey', pedigree:'LOSH-GR-2026-1004', microchip:'985 1410 0300 704', desc:'Calme et patiente, elle observe beaucoup avant de se lancer dans le jeu.' },
+    { name:'Duke',    birthDate:d(26,4), sex:'Male',   father:'Goldy',  mother:'Honey', pedigree:'LOSH-GR-2026-0982', microchip:'985 1410 0300 682', desc:'Robuste et confiant, il s\'approche facilement des nouvelles têtes.' },
+    { name:'Daisy',   birthDate:d(8,6),  sex:'Female', father:'Cooper', mother:'Amber', pedigree:'LOSH-GR-2026-1005', microchip:'985 1410 0300 705', desc:'Très affectueuse, elle adore les longues siestes au soleil avec ses frères et sœurs.' },
+    { name:'Rocky',   birthDate:d(15,4), sex:'Male',   father:'Goldy',  mother:'Amber', pedigree:'LOSH-GR-2026-0983', microchip:'985 1410 0300 683', desc:'Plein d\'énergie, déjà très joueur avec tout ce qu\'il trouve dans son enclos.' },
+    { name:'Bella',   birthDate:d(6,6),  sex:'Female', father:'Cooper', mother:'Honey', pedigree:'LOSH-GR-2026-1006', microchip:'985 1410 0300 706', desc:'Douce et sociable, elle aime particulièrement la compagnie des enfants.' },
+  ];
+
+  const canis = [
+    { name:'Fripon',     birthDate:d(5,6),  sex:'Male',   father:'Rocky',  mother:'Bella',  microchip:'985 1410 0310 801', desc:'Petit débrouillard plein de vie, déjà très curieux de tout ce qui bouge.' },
+    { name:'Pitchoune',  birthDate:d(9,6),  sex:'Female', father:'Rocky',  mother:'Bella',  microchip:'985 1410 0310 802', desc:'Douce et joueuse, elle adore se blottir contre ses frères et sœurs.' },
+    { name:'Bandit',     birthDate:d(3,6),  sex:'Male',   father:'Max',    mother:'Lola',   microchip:'985 1410 0310 803', desc:'Espiègle et débordant d\'énergie, toujours prêt à faire une bêtise.' },
+    { name:'Câline',     birthDate:d(18,4), sex:'Female', father:'Max',    mother:'Lola',   microchip:'985 1410 0310 780', desc:'Très affectueuse, elle réclame des câlins dès qu\'on s\'approche d\'elle.' },
+    { name:'Titou',      birthDate:d(21,4), sex:'Male',   father:'Diesel', mother:'Nala',   microchip:'985 1410 0310 781', desc:'Vif et sociable, il s\'approche facilement des nouvelles têtes.' },
+    { name:'Noisette',   birthDate:d(11,6), sex:'Female', father:'Diesel', mother:'Nala',   microchip:'985 1410 0310 804', desc:'Calme et observatrice, elle aime déjà beaucoup les caresses.' },
+    { name:'Pataud',     birthDate:d(26,4), sex:'Male',   father:'Rocky',  mother:'Nala',   microchip:'985 1410 0310 782', desc:'Maladroit et attendrissant, il trébuche encore un peu en courant.' },
+    { name:'Praline',    birthDate:d(8,6),  sex:'Female', father:'Max',    mother:'Bella',  microchip:'985 1410 0310 805', desc:'Joyeuse et pétillante, elle adore jouer avec ses frères et sœurs.' },
+    { name:'Gribouille', birthDate:d(15,4), sex:'Male',   father:'Diesel', mother:'Lola',   microchip:'985 1410 0310 783', desc:'Petit aventurier, toujours le premier à explorer les nouveautés.' },
+    { name:'Câlinette',  birthDate:d(6,6),  sex:'Female', father:'Rocky',  mother:'Lola',   microchip:'985 1410 0310 806', desc:'Douce et attachante, elle aime particulièrement la compagnie des enfants.' },
+  ];
+
   const seeds = [
-    ...labrador.map(p => ({ ...p, breed:'Labrador Retriever',   price:800,  color:'Sable',        vaccinationStatus:'1ère injection', dewormingStatus:'À jour', location:'Bastogne', isActive:true })),
-    ...chihuahua.map(p => ({ ...p, breed:'Chihuahua',           price:900,  color:'Fauve',        vaccinationStatus:'1ère injection', dewormingStatus:'À jour', location:'Bastogne', isActive:true })),
-    ...yorkshire.map(p => ({ ...p, breed:'Yorkshire Terrier',   price:1100, color:'Gris acier et feu', vaccinationStatus:'1ère injection', dewormingStatus:'À jour', location:'Bastogne', isActive:true })),
-    ...jackrussell.map(p => ({ ...p, breed:'Jack Russell Terrier', price:750, color:'Blanc et feu', vaccinationStatus:'1ère injection', dewormingStatus:'À jour', location:'Bastogne', isActive:true })),
+    ...labrador.map(p => ({ ...p, breed:'Labrador Retriever',   price:800,  color:'Sable',             vaccinationStatus:'1ère injection', dewormingStatus:'À jour', location:'Bastogne', isActive:true })),
+    ...chihuahua.map(p => ({ ...p, breed:'Chihuahua',           price:900,  color:'Fauve',             vaccinationStatus:'1ère injection', dewormingStatus:'À jour', location:'Bastogne', isActive:true })),
+    ...yorkshire.map(p => ({ ...p, breed:'Yorkshire Terrier',   price:1100, color:'Gris acier et feu',  vaccinationStatus:'1ère injection', dewormingStatus:'À jour', location:'Bastogne', isActive:true })),
+    ...jackrussell.map(p => ({ ...p, breed:'Jack Russell Terrier', price:750, color:'Blanc et feu',     vaccinationStatus:'1ère injection', dewormingStatus:'À jour', location:'Bastogne', isActive:true })),
+    ...berger.map(p =>     ({ ...p, breed:'Berger Allemand',       price:1180, color:'Noir et feu',     vaccinationStatus:'1ère injection', dewormingStatus:'À jour', location:'Bastogne', isActive:true })),
+    ...bichon.map(p =>     ({ ...p, breed:'Bichon Maltais',        price:1000, color:'Blanc pur',       vaccinationStatus:'1ère injection', dewormingStatus:'À jour', location:'Bastogne', isActive:true })),
+    ...golden.map(p =>     ({ ...p, breed:'Golden Retriever',      price:1150, color:'Blond doré',      vaccinationStatus:'1ère injection', dewormingStatus:'À jour', location:'Bastogne', isActive:true })),
+    ...canis.map(p =>      ({ ...p, breed:'Canis Vulgaris',        price:800,  color:'Doré tacheté',    vaccinationStatus:'1ère injection', dewormingStatus:'À jour', location:'Bastogne', isActive:true, noPedigree:true })),
   ];
 
   // Supprime les anciens chiots avant de réinsérer
@@ -86,7 +142,7 @@ async function main() {
         description: puppy.desc,
         parentMotherName: puppy.mother,
         parentFatherName: puppy.father,
-        pedigreeDocUrl: `https://sweetpuppies.be/pedigree/${puppy.pedigree}`,
+        pedigreeDocUrl: puppy.noPedigree ? null : `https://sweetpuppies.be/pedigree/${puppy.pedigree}`,
         location: puppy.location,
         isActive: puppy.isActive,
       },

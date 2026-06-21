@@ -1,0 +1,106 @@
+===========================================
+LISTE DES CHIOTS - BEBECHIOTS.COM
+RACE : GOLDEN RETRIEVER - Prix : 1 150 €
+===========================================
+
+1. Nom : Sunny
+   Date de naissance : 05/06/2026 (2 semaines)
+   Sexe : Mâle
+   Père : Goldy
+   Mère : Honey
+   Pedigree : LOSH-GR-2026-1001
+   N° de puce électronique : 985 1410 0300 701
+   Description : Joyeux et plein d'énergie, déjà très proche de sa mère et de ses frères de portée.
+
+2. Nom : Honey
+   Date de naissance : 09/06/2026 (2 semaines)
+   Sexe : Femelle
+   Père : Goldy
+   Mère : Honey
+   Pedigree : LOSH-GR-2026-1002
+   N° de puce électronique : 985 1410 0300 702
+   Description : Douce et câline, elle adore se blottir contre ses proches.
+
+3. Nom : Bear
+   Date de naissance : 03/06/2026 (2 semaines)
+   Sexe : Mâle
+   Père : Cooper
+   Mère : Amber
+   Pedigree : LOSH-GR-2026-1003
+   N° de puce électronique : 985 1410 0300 703
+   Description : Costaud et joueur, déjà très curieux de tout ce qui l'entoure.
+
+4. Nom : Amber
+   Date de naissance : 18/04/2026 (2 mois)
+   Sexe : Femelle
+   Père : Cooper
+   Mère : Amber
+   Pedigree : LOSH-GR-2026-0980
+   N° de puce électronique : 985 1410 0300 680
+   Description : Sociable et affectueuse, elle réclame des câlins dès qu'on s'approche.
+
+5. Nom : Cooper
+   Date de naissance : 21/04/2026 (2 mois)
+   Sexe : Mâle
+   Père : Goldy
+   Mère : Amber
+   Pedigree : LOSH-GR-2026-0981
+   N° de puce électronique : 985 1410 0300 681
+   Description : Vif et intelligent, il apprend déjà très vite les bases de l'obéissance.
+
+6. Nom : Maple
+   Date de naissance : 11/06/2026 (2 semaines)
+   Sexe : Femelle
+   Père : Cooper
+   Mère : Honey
+   Pedigree : LOSH-GR-2026-1004
+   N° de puce électronique : 985 1410 0300 704
+   Description : Calme et patiente, elle observe beaucoup avant de se lancer dans le jeu.
+
+7. Nom : Duke
+   Date de naissance : 26/04/2026 (2 mois)
+   Sexe : Mâle
+   Père : Goldy
+   Mère : Honey
+   Pedigree : LOSH-GR-2026-0982
+   N° de puce électronique : 985 1410 0300 682
+   Description : Robuste et confiant, il s'approche facilement des nouvelles têtes.
+
+8. Nom : Daisy
+   Date de naissance : 08/06/2026 (2 semaines)
+   Sexe : Femelle
+   Père : Cooper
+   Mère : Amber
+   Pedigree : LOSH-GR-2026-1005
+   N° de puce électronique : 985 1410 0300 705
+   Description : Très affectueuse, elle adore les longues siestes au soleil avec ses frères et sœurs.
+
+9. Nom : Rocky
+   Date de naissance : 15/04/2026 (2 mois)
+   Sexe : Mâle
+   Père : Goldy
+   Mère : Amber
+   Pedigree : LOSH-GR-2026-0983
+   N° de puce électronique : 985 1410 0300 683
+   Description : Plein d'énergie, déjà très joueur avec tout ce qu'il trouve dans son enclos.
+
+10. Nom : Bella
+    Date de naissance : 06/06/2026 (2 semaines)
+    Sexe : Femelle
+    Père : Cooper
+    Mère : Honey
+    Pedigree : LOSH-GR-2026-1006
+    N° de puce électronique : 985 1410 0300 706
+    Description : Douce et sociable, elle aime particulièrement la compagnie des enfants.
+
+
+===========================================
+NOTE IMPORTANTE
+===========================================
+Les numéros de puce électronique et les références de pedigree (LOSH)
+ci-dessus sont des EXEMPLES fictifs destinés à la maquette du site.
+Avant la mise en ligne réelle, chaque numéro doit être remplacé par
+le vrai numéro officiel transmis par le vétérinaire identificateur
+(puce) et par l'organisme cynologique compétent (pedigree).
+Le prix indiqué est également un exemple à ajuster selon ta
+politique tarifaire réelle.

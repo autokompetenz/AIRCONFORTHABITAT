@@ -107,7 +107,7 @@ export default function AdminPuppyForm() {
       existingImages.forEach(img => formData.append('existingImages', img.url));
       if (isEdit) { await adminAPI.updatePuppy(id, formData); navigate('/admin/puppies', { replace: true, state: { successMessage: 'Chiot mis à jour' } }); }
       else { await adminAPI.createPuppy(formData); navigate('/admin/puppies', { replace: true, state: { successMessage: 'Chiot créé' } }); }
-    } catch (err) { addToast(err.response?.data?.error || 'Erreur', 'error'); }
+    } catch (err) { addToast(err.response?.data?.error || err.message || 'Erreur', 'error'); }
     finally { setSaving(false); }
   };
 

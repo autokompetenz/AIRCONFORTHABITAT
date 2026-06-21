@@ -59,7 +59,8 @@ export default function AdminPuppyForm() {
     if (isEdit) {
       adminAPI.getPuppyById(id).then(r => {
         const c = r.data.puppy;
-        setForm({ ...EMPTY, ...c, price: String(c.price || '') });
+        const birthDate = c.birthDate ? new Date(c.birthDate).toISOString().split('T')[0] : '';
+        setForm({ ...EMPTY, ...c, price: String(c.price || ''), birthDate });
         const existing = [];
         ['imageUrl', 'imageUrl2', 'imageUrl3', 'imageUrl4', 'imageUrl5'].forEach((field, idx) => {
           if (c[field]) existing.push({ url: c[field], id: `existing-${idx + 1}`, isExisting: true, field });

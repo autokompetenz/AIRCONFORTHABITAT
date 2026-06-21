@@ -23,6 +23,13 @@ export default function AdminPuppies() {
 
   useEffect(load, []);
 
+  useEffect(() => {
+    if (location.state?.successMessage) {
+      addToast(location.state.successMessage, 'success');
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, []);
+
   const handleToggle = async (puppy) => {
     try {
       const { data } = await adminAPI.togglePuppy(puppy.id);

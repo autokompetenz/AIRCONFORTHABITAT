@@ -3,6 +3,7 @@ import { Outlet, Navigate } from 'react-router-dom';
 import { useAdminStore } from '../../store';
 import AdminSidebar from '../../components/AdminSidebar';
 import AdminErrorBoundary from '../../components/AdminErrorBoundary';
+import Toast from '../../components/Toast';
 
 export default function AdminLayout() {
   const { isAuthenticated } = useAdminStore();
@@ -36,6 +37,7 @@ export default function AdminLayout() {
           </AdminErrorBoundary>
         </div>
       </main>
+      <Toast />
     </div>
   );
 }

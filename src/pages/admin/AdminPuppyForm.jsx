@@ -8,7 +8,7 @@ const EMPTY = {
   name:'', breed:'Golden Retriever', sex:'Male', birthDate:'', price:'',
   weightCurrent:'', color:'', description:'', parentMotherName:'',
   parentFatherName:'', pedigreeDocUrl:'', microchipNumber:'',
-  vaccinationStatus:'', dewormingStatus:'', availableFrom:'',
+  vaccinationStatus:'', dewormingStatus:'',
   featured:false, isActive:true,
 };
 
@@ -130,7 +130,6 @@ export default function AdminPuppyForm() {
             <Field label="Prix (€) *" field="price" type="number" placeholder="1500" value={form.price} onChange={set("price")} />
             <Field label="Poids (kg)" field="weightCurrent" type="number" placeholder="5" value={form.weightCurrent} onChange={set("weightCurrent")} />
             <Field label="Couleur" field="color" placeholder="Fauve" value={form.color} onChange={set("color")} />
-            <Field label="Disponible à partir du" field="availableFrom" type="date" value={form.availableFrom} onChange={set("availableFrom")} />
           </div>
           <Field label="Description" field="description" rows={4} placeholder="Description détaillée du chiot..." value={form.description} onChange={set("description")} />
         </Section>

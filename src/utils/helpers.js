@@ -27,9 +27,7 @@ export function getAgeString(birthDate, lang = 'fr') {
   const now = new Date();
   const birth = new Date(birthDate);
   const weeks = Math.floor((now - birth) / (7 * 24 * 60 * 60 * 1000));
-  const months = Math.floor((now - birth) / (30 * 24 * 60 * 60 * 1000));
-  if (weeks < 8) return `${weeks} ${lang === 'fr' ? 'semaines' : lang === 'nl' ? 'weken' : 'weeks'}`;
-  return `${months} ${lang === 'fr' ? 'mois' : lang === 'nl' ? 'maanden' : 'months'}`;
+  return `${weeks} ${lang === 'fr' ? 'semaines' : lang === 'nl' ? 'weken' : 'weeks'}`;
 }
 
 export const STATUS_LABELS = {

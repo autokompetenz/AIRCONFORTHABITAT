@@ -200,6 +200,19 @@ app.get('/api/admin/puppies', authenticateAdmin, async (req, res) => {
   }
 });
 
+app.get('/api/admin/puppies/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const puppyId = Number(id);
+    if (isNaN(puppyId) || puppyId <= 0) return res.status(400).json({ error: 'ID invalide' });
+    const puppy = await prisma.puppy.findUnique({ where: { id: puppyId } });
+    if (!puppy) return res.status(404).json({ error: 'Chiot non trouvé' });
+    res.json({ puppy });
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
 app.post('/api/admin/puppies', authenticateAdmin, upload.any(), async (req, res) => {
   req.files = (req.files || []).filter(f => f.fieldname === 'images');
   try {

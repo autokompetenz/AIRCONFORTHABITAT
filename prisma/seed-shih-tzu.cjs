@@ -28,7 +28,7 @@ async function main() {
     await prisma.puppy.create({
       data: {
         name: p.name,
-        breed: 'Shih Tzu',
+        breed: 'Shi Tzu',
         sex: p.sex,
         birthDate: p.birthDate,
         color: 'Blanc et noir',
@@ -44,7 +44,7 @@ async function main() {
         isActive: true,
       },
     });
-    console.log(`✅ ${p.name} (Shih Tzu) créé`);
+    console.log(`✅ ${p.name} (Shi Tzu) créé`);
   }
 
   const count = await prisma.puppy.count();

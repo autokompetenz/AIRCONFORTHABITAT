@@ -239,14 +239,9 @@ export default function Home() {
                   l==='nl'?'We zijn gevestigd in Bastogne, in het hart van de provincie Luxemburg. Bezoek alleen op afspraak. Neem contact met ons op om een ontmoeting met onze puppy’s te regelen.':
                   'We are located in Bastogne, in the heart of Luxembourg province. Visits by appointment only. Contact us to arrange a meeting with our puppies.'}
               </p>
-              <div style={{ display:'flex', gap:12, marginBottom:24 }}>
-                <a href="https://wa.me/32471234567" target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ fontSize:13, textDecoration:'none', display:'inline-flex', alignItems:'center', gap:8 }}>
-                  🐶 {t('whatsapp_btn', l)}
-                </a>
-                <a href="mailto:contact@sweetpuppies.be" className="btn-ghost" style={{ fontSize:13, textDecoration:'none' }}>
-                  📧 Email
-                </a>
-              </div>
+              <a href="mailto:contact@sweetpuppies.be" className="btn-primary" style={{ fontSize:13, textDecoration:'none', display:'inline-flex', alignItems:'center', gap:8, marginBottom:24 }}>
+                📧 Email
+              </a>
               <button className="btn-ghost" style={{ fontSize:13 }}>{t('contact_appt', l)}</button>
             </div>
 

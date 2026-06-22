@@ -101,7 +101,6 @@ export const translations = {
   deposit:          { fr:'Acompte',           nl:'Aanbetaling',       en:'Deposit' },
   balance:          { fr:'Solde',             nl:'Saldo',             en:'Balance' },
   total:            { fr:'Total',             nl:'Totaal',            en:'Total' },
-  whatsapp_btn:     { fr:'WhatsApp',          nl:'WhatsApp',          en:'WhatsApp' },
   return_home:      { fr:'Retour à l\'accueil', nl:'Terug naar home', en:'Back to home' },
   reservation_success_sub: { fr:'Votre réservation a bien été enregistrée.', nl:'Uw reservering is geregistreerd.', en:'Your reservation has been recorded.' },
   website:          { fr:'Site web',          nl:'Website',           en:'Website' },

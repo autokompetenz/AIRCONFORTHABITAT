@@ -22,7 +22,6 @@ export const translations = {
   reviews_label:    { fr:'Avis de nos familles', nl:'Beoordelingen van onze families', en:'Reviews from our families' },
   contact_label:    { fr:'Contact',           nl:'Contact',           en:'Contact' },
   contact_hours:    { fr:'Horaires',          nl:'Openingstijden',    en:'Opening Hours' },
-  contact_appt:     { fr:'Prendre rendez-vous', nl:'Maak een afspraak', en:'Book Appointment' },
   mon_fri:          { fr:'Lundi – Vendredi',  nl:'Maandag – Vrijdag', en:'Monday – Friday' },
   saturday:         { fr:'Samedi',            nl:'Zaterdag',          en:'Saturday' },
   sunday:           { fr:'Dimanche',          nl:'Zondag',            en:'Sunday' },

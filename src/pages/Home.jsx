@@ -225,44 +225,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Contact section */}
-      <section style={{ background:'var(--bg-card2)', borderTop:'1px solid var(--border)' }} className="section-pad">
-        <div style={{ maxWidth:1200, margin:'0 auto' }}>
-          <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 32 : 60 }}>
-            <div>
-              <div className="section-eyebrow">{t('contact_label', l)}</div>
-              <h2 style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:'clamp(24px,3vw,42px)', color:'var(--text)', letterSpacing:'-0.02em', marginBottom:12 }}>
-                {l==='fr'?'Envie de nous rencontrer ?':l==='nl'?'Wil je ons ontmoeten?':l==='en'?'Want to meet us?':'Envie de nous rencontrer ?'}
-              </h2>
-              <p style={{ fontSize:15, color:'var(--text-3)', lineHeight:1.7, marginBottom:24 }}>
-                {l==='fr'?'Nous sommes situés à Bastogne, au cœur de la province de Luxembourg. Visites sur rendez-vous uniquement. Contactez-nous pour organiser une rencontre avec nos chiots.':
-                  l==='nl'?'We zijn gevestigd in Bastogne, in het hart van de provincie Luxemburg. Bezoek alleen op afspraak. Neem contact met ons op om een ontmoeting met onze puppy’s te regelen.':
-                  'We are located in Bastogne, in the heart of Luxembourg province. Visits by appointment only. Contact us to arrange a meeting with our puppies.'}
-              </p>
-              <a href="mailto:contact@sweetpuppies.be" className="btn-primary" style={{ fontSize:13, textDecoration:'none', display:'inline-flex', alignItems:'center', gap:8, marginBottom:24 }}>
-                📧 Email
-              </a>
-              <button className="btn-ghost" style={{ fontSize:13 }}>{t('contact_appt', l)}</button>
-            </div>
 
-            <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'28px 24px', boxShadow:'var(--shadow-sm)' }}>
-              <h3 style={{ fontFamily:"'Outfit',sans-serif", fontWeight:800, fontSize:18, color:'var(--text)', marginBottom:20 }}>{t('contact_hours', l)}</h3>
-              <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
-                {[
-                  { day: t('mon_fri', l), hours: '09:00 à 18:00' },
-                  { day: t('saturday', l), hours: '10:00 à 16:00' },
-                  { day: t('sunday', l), hours: 'Fermé ' + t('closed', l) },
-                ].map(({day, hours}) => (
-                  <div key={day} style={{ display:'flex', justifyContent:'space-between', paddingBottom:12, borderBottom:'1px solid var(--border)' }}>
-                    <span style={{ fontSize:14, fontWeight:600, color:'var(--text)' }}>{day}</span>
-                    <span style={{ fontSize:14, color:'var(--text-2)' }}>{hours}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <CookieBanner lang={l} />
     </div>

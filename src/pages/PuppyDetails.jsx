@@ -166,15 +166,7 @@ export default function PuppyDetails() {
                 onMouseOut={e => { e.currentTarget.style.background='linear-gradient(135deg,#C9762E,#A8652A)'; e.currentTarget.style.transform='scale(1)'; }}>
                 🐶 {t('reserve_btn', l)}
               </button>
-            ) : (
-              <div style={{
-                width: '100%', padding: isMobile ? '18px' : '20px', borderRadius: 12,
-                textAlign: 'center', fontSize: 15, fontWeight: 700,
-                background: C.card2, color: C.text3, border: `1px solid ${C.border}`,
-              }}>
-                {puppy.status === 'reserved' ? t('status_reserved', l) : t('status_sold', l)}
-              </div>
-            )}
+            ) : null}
 
             {/* Reservation form */}
             {showReserve && isAvailable && (

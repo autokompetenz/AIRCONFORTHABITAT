@@ -10,12 +10,6 @@ export default function PuppyCard({ puppy, index = 0 }) {
   const [hovered, setHovered] = useState(false);
   const l = lang || 'fr';
 
-  const statusColors = {
-    available: { bg: 'rgba(34,197,94,0.12)', text: '#22C55E', border: 'rgba(34,197,94,0.3)' },
-    reserved: { bg: 'rgba(250,204,21,0.12)', text: '#EAB308', border: 'rgba(250,204,21,0.3)' },
-    sold: { bg: 'rgba(239,68,68,0.12)', text: '#EF4444', border: 'rgba(239,68,68,0.3)' },
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -44,14 +38,6 @@ export default function PuppyCard({ puppy, index = 0 }) {
             <span style={{ background: '#C9762E', color: '#fff', fontSize: 9, fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', padding: '4px 10px', borderRadius: 3 }}>★ Nouveau</span>
           )}
         </div>
-        <span style={{
-          position: 'absolute', top: 12, right: 12,
-          ...statusColors[puppy.status] || statusColors.available,
-          fontSize: 9, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase',
-          padding: '4px 10px', borderRadius: 3, border: '1px solid',
-        }}>
-          {t('status_' + puppy.status, l)}
-        </span>
 
         <div style={{ position: 'absolute', bottom: 12, left: 12, right: 12, display: 'flex', gap: 8 }}>
           <Link to={`/puppy/${puppy.slug || puppy.id}`} onClick={e => e.stopPropagation()}
@@ -90,12 +76,12 @@ export default function PuppyCard({ puppy, index = 0 }) {
               padding: '10px 16px', borderRadius: 6, fontSize: 11, fontWeight: 800,
               letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer',
               border: 'none', fontFamily: "'Outfit',sans-serif", transition: 'all 0.2s',
-              background: puppy.status === 'available' ? 'var(--primary)' : 'var(--bg-card2)',
-              color: puppy.status === 'available' ? '#fff' : 'var(--text-3)',
+              background: 'var(--primary)', color: '#fff',
               textDecoration: 'none', flexShrink: 0,
             }}
-            onMouseOver={e => { if (puppy.status === 'available') e.currentTarget.style.background = 'var(--primary-dark)'; }}>
-            {puppy.status === 'available' ? t('reserve_btn', l) : t('not_available', l)}
+            onMouseOver={e => e.currentTarget.style.background = 'var(--primary-dark)'}
+            onMouseOut={e => e.currentTarget.style.background = 'var(--primary)'}>
+            {t('reserve_btn', l)}
           </Link>
         </div>
       </div>

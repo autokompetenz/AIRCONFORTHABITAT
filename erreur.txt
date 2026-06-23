@@ -1,13 +1,17 @@
-2026-06-21 02:42:53.832 [error] Create puppy error: PrismaClientInitializationError: 
-Invalid `prisma.puppy.create()` invocation:
-
-
-The provided database string is invalid. Error parsing connection string: invalid port number in database URL. Please refer to the documentation in https://www.prisma.io/docs/reference/database-reference/connection-urls for constructing a correct connection string. In some cases, certain characters must be escaped. Please check the string for any illegal characters.
-    at $n.handleRequestError (/var/task/node_modules/@prisma/client/runtime/library.js:121:7615)
-    at $n.handleAndLogRequestError (/var/task/node_modules/@prisma/client/runtime/library.js:121:6623)
-    at $n.request (/var/task/node_modules/@prisma/client/runtime/library.js:121:6307)
-    at async l (/var/task/node_modules/@prisma/client/runtime/library.js:130:9633)
-    at async /var/task/api/index.js:245:19 {
-  clientVersion: '5.22.0',
-  errorCode: undefined
-}
+>> cd C:\Users\HEADSHOOT\Downloads\chiots-belgique\api
+PS C:\Users\HEADSHOOT\Downloads\chiots-belgique\api> node test-mail.js
+❌ Échec Error: Invalid login: 535 5.7.8 Error: authentication failed: (reason unavailable)
+    at SMTPConnection._formatError (C:\Users\HEADSHOOT\Downloads\chiots-belgique\node_modules\nodemailer\lib\smtp-connection\index.js:809:19)
+    at SMTPConnection._actionAUTHComplete (C:\Users\HEADSHOOT\Downloads\chiots-belgique\node_modules\nodemailer\lib\smtp-connection\index.js:1588:34)
+    at SMTPConnection.<anonymous> (C:\Users\HEADSHOOT\Downloads\chiots-belgique\node_modules\nodemailer\lib\smtp-connection\index.js:556:26)
+    at SMTPConnection._processResponse (C:\Users\HEADSHOOT\Downloads\chiots-belgique\node_modules\nodemailer\lib\smtp-connection\index.js:993:20)
+    at SMTPConnection._onData (C:\Users\HEADSHOOT\Downloads\chiots-belgique\node_modules\nodemailer\lib\smtp-connection\index.js:774:14)
+    at SMTPConnection._onSocketData (C:\Users\HEADSHOOT\Downloads\chiots-belgique\node_modules\nodemailer\lib\smtp-connection\index.js:195:44)
+    at TLSSocket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Readable.push (node:internal/streams/readable:390:5) {
+  code: 'EAUTH',
+  response: '535 5.7.8 Error: authentication failed: (reason unavailable)',
+  responseCode: 535,
+  command: 'AUTH PLAIN'

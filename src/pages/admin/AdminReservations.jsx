@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { adminAPI } from '../../services/api';
 import { formatEuro, formatDate } from '../../utils/helpers';
 import { Loader } from '../../components/UI';
+import { useToastStore } from '../../store';
 
 const STATUS_LABELS = { pending:'En attente', deposit_confirmed:'Acompte confirmé', preparing:'En préparation', ready:'Prêt(e)', delivered:'Remis(e)', cancelled:'Annulée' };
 
@@ -11,6 +12,7 @@ export default function AdminReservations() {
   const [statusCounts, setStatusCounts] = useState([]);
   const [activeTab, setActiveTab] = useState('');
   const [loading, setLoading] = useState(true);
+  const { addToast } = useToastStore();
 
   const fetch = async (status) => {
     setLoading(true);
@@ -26,6 +28,18 @@ export default function AdminReservations() {
 
   const countFor = (id) => Array.isArray(statusCounts) ? statusCounts.find(s => s.status === id)?._count?.status || 0 : 0;
   const tabs = [{ id:'', label:'Toutes' }, ...Object.entries(STATUS_LABELS).map(([id,label]) => ({ id, label }))];
+
+  const handleDelete = async (e, id) => {
+    e.preventDefault();
+    if (!window.confirm('Supprimer définitivement cette réservation ? Cette action est irréversible.')) return;
+    try {
+      await adminAPI.deleteReservation(id);
+      addToast('Réservation supprimée', 'success');
+      fetch(activeTab);
+    } catch (err) {
+      addToast(err.response?.data?.error || 'Suppression impossible', 'error');
+    }
+  };
 
   return (
     <div style={{ padding:'clamp(24px,5vw,48px) clamp(16px,4vw,44px) 60px', minHeight:'100vh', background:'var(--bg)' }}>
@@ -74,7 +88,12 @@ export default function AdminReservations() {
                       <span className={`badge badge-${res.status}`}><span style={{ width:6, height:6, borderRadius:'50%', background:'currentColor', display:'inline-block' }} /> {STATUS_LABELS[res.status] || res.status}</span>
                     </td>
                     <td style={{ padding:'14px 20px' }}>
-                      <Link to={`/admin/reservations/${res.id}`} className="btn-primary" style={{ fontSize:12, padding:'10px 18px' }}>Gérer →</Link>
+                      <div style={{ display:'flex', gap:8, alignItems:'center' }}>
+                        <Link to={`/admin/reservations/${res.id}`} className="btn-primary" style={{ fontSize:12, padding:'10px 18px' }}>Gérer →</Link>
+                        <button onClick={e => handleDelete(e, res.id)} style={{ background:'none', border:'1px solid rgba(239,68,68,0.3)', borderRadius:6, color:'#DC2626', fontSize:13, fontWeight:700, padding:'10px 12px', cursor:'pointer', fontFamily:"'Outfit',sans-serif", transition:'background 0.2s' }}
+                          onMouseOver={e => e.currentTarget.style.background = 'rgba(239,68,68,0.08)'}
+                          onMouseOut={e => e.currentTarget.style.background = 'none'}>🗑</button>
+                      </div>
                     </td>
                   </tr>
                 ))}

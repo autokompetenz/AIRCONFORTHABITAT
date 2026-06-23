@@ -32,7 +32,7 @@ export default function AdminSidebar({ mobileOpen = false, onClose }) {
       <div style={{ padding: '20px 18px', borderBottom: '1px solid var(--border)' }}>
         <NavLink to="/admin" onClick={closeIfMobile} style={{ textDecoration: 'none' }}>
           <div style={{ fontFamily: "'Outfit',sans-serif", fontSize: 16, fontWeight: 900, color: 'var(--text)', letterSpacing: '0.04em' }}>
-            SWEET <span style={{ color: 'var(--primary)' }}>PUPPIES</span>
+            ANIMAL <span style={{ color: 'var(--primary)' }}>CONCEPT</span>
           </div>
           <div style={{ fontSize: 9, letterSpacing: '0.28em', color: 'var(--text-3)', textTransform: 'uppercase', marginTop: 6, fontWeight: 700 }}>
             Administration

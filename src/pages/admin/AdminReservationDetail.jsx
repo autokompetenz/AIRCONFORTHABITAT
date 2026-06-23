@@ -187,7 +187,7 @@ export default function AdminReservationDetail() {
           <div style={cardStyle}>
             <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--primary)', marginBottom:18 }}>Répondre au client</p>
             <div style={{ display:'flex', gap:10, marginBottom:16 }}>
-              <a href={`mailto:${reservation.guestEmail}?subject=${encodeURIComponent('Sweet Puppies — Suivi réservation ' + reservation.reservationNumber)}`}
+              <a href={`mailto:${reservation.guestEmail}?subject=${encodeURIComponent('ANIMAL CONCEPT SRL — Suivi réservation ' + reservation.reservationNumber)}`}
                 style={{ flex:1, textAlign:'center', padding:'12px 14px', fontSize:13, fontWeight:700, color:'#fff', background:'var(--primary)', borderRadius:8, textDecoration:'none', fontFamily:"'Outfit',sans-serif" }}>
                 📧 Email
               </a>

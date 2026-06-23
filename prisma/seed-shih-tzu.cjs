@@ -39,8 +39,8 @@ async function main() {
         description: p.desc,
         parentMotherName: p.mother,
         parentFatherName: p.father,
-        pedigreeDocUrl: `https://sweetpuppies.be/pedigree/${p.pedigree}`,
-        location: 'Bastogne',
+        pedigreeDocUrl: `https://animalconceptsrl.com/pedigree/${p.pedigree}`,
+        location: 'Oupeye',
         isActive: true,
       },
     });

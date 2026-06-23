@@ -10,7 +10,7 @@ export const translations = {
 
   nav_track:        { fr:'Suivi réservation', nl:'Reservering volgen',en:'Track reservation' },
   nav_login:        { fr:'Espace éleveur',    nl:'Fokker inloggen',   en:'Breeder login' },
-  hero_badge:       { fr:'Élevage familial à Bastogne', nl:'Familiale fokkerij in Bastogne', en:'Family kennel in Bastogne' },
+  hero_badge:       { fr:'Élevage familial à Oupeye', nl:'Familiale fokkerij in Oupeye', en:'Family kennel in Oupeye' },
   hero_subtitle:    { fr:'Des chiots de race, élevés avec amour — santé, pedigree et transparence garantis.', nl:'Rashonden, met liefde gefokt — gezondheid, stamboom en transparantie gegarandeerd.', en:'Purebred puppies, raised with love — health, pedigree and transparency guaranteed.' },
   hero_cta1:        { fr:'Découvrir nos chiots', nl:'Ontdek onze puppy\'s', en:'Meet our puppies' },
   hero_cta2:        { fr:'Notre élevage',     nl:'Onze fokkerij',     en:'Our kennel' },
@@ -108,7 +108,7 @@ export const translations = {
   terms:            { fr:'Conditions générales de vente', nl:'Algemene verkoopvoorwaarden', en:'Terms and conditions' },
   cookies_label:    { fr:'Cookies',           nl:'Cookies',           en:'Cookies' },
   copyright:        { fr:'Tous droits réservés', nl:'Alle rechten voorbehouden', en:'All rights reserved' },
-  made_in:          { fr:'Élevé avec ❤️ à Bastogne', nl:'Met ❤️ gefokt in Bastogne', en:'Raised with ❤️ in Bastogne' },
+  made_in:          { fr:'Élevé avec ❤️ à Oupeye', nl:'Met ❤️ gefokt in Oupeye', en:'Raised with ❤️ in Oupeye' },
 
   waitlist_title:   { fr:'Liste d\'attente',  nl:'Wachtlijst',        en:'Waitlist' },
   waitlist_sub:     { fr:'Cette race n\'est pas disponible actuellement ? Inscrivez-vous pour être notifié(e).', nl:'Dit ras is momenteel niet beschikbaar? Meld u aan om een melding te ontvangen.', en:'This breed is not currently available? Sign up to be notified.' },

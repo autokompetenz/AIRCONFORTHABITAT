@@ -96,7 +96,7 @@ export default function Catalog() {
             {l==='fr'?'Nos chiots':l==='nl'?'Onze puppy’s':l==='en'?'Our puppies':'Nos chiots'}
           </h1>
           <p style={{ fontSize:16, color:'var(--text-3)', maxWidth:560 }}>
-            {l==='fr'?'Découvrez nos chiots disponibles, tous élevés avec amour à Bastogne.':l==='nl'?'Ontdek onze beschikbare puppy’s, allemaal met liefde gefokt in Bastogne.':l==='en'?'Discover our available puppies, all raised with love in Bastogne.':'Découvrez nos chiots disponibles, tous élevés avec amour à Bastogne.'}
+            {l==='fr'?'Découvrez nos chiots disponibles, tous élevés avec amour à Oupeye.':l==='nl'?'Ontdek onze beschikbare puppy’s, allemaal met liefde gefokt in Oupeye.':l==='en'?'Discover our available puppies, all raised with love in Oupeye.':'Découvrez nos chiots disponibles, tous élevés avec amour à Oupeye.'}
           </p>
         </div>
       </div>

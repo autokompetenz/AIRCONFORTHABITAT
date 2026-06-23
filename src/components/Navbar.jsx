@@ -103,10 +103,10 @@ export default function Navbar() {
             color: scrolled ? (isDark ? '#fff' : '#111') : isHero ? '#fff' : (isDark ? '#fff' : '#111'),
             letterSpacing: '0.05em', transition: 'color 0.3s',
           }}>
-            SWEET PUPPIES
+            ANIMAL CONCEPT SRL
           </div>
           <div style={{ fontSize: 9, letterSpacing: '0.4em', color: 'var(--primary)', textTransform: 'uppercase', marginTop: 2 }}>
-            Bastogne · Belgique
+            Oupeye · Belgique
           </div>
         </Link>
 

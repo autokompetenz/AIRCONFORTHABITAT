@@ -53,10 +53,10 @@ export default function Footer() {
         <div>
           <Link to="/" style={{ textDecoration: 'none' }}>
             <div style={{ fontFamily: F, fontSize: 18, fontWeight: 900, color: isDark ? '#fff' : '#111', letterSpacing: '0.05em' }}>
-              SWEET PUPPIES
+              ANIMAL CONCEPT SRL
             </div>
             <div style={{ fontSize: 10, letterSpacing: '0.4em', color: 'var(--primary)', textTransform: 'uppercase', marginTop: 3 }}>
-              Bastogne &middot; Belgique
+              Oupeye &middot; Belgique
             </div>
           </Link>
           <p style={{ fontSize: 13, color: text2, lineHeight: 1.7, marginTop: 16, maxWidth: 300 }}>
@@ -89,8 +89,8 @@ export default function Footer() {
         <div>
           <div style={colTitle}>{t('contact_label', lang)}</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 10 : 8, fontSize: 13, color: text }}>
-            <span>info@sweetpuppies.be</span>
-            <span>Bastogne, Belgique</span>
+            <span>contact@animalconceptsrl.com</span>
+            <span>Oupeye, Belgique</span>
             <Link to="/legal" style={linkStyle}>{t('cookies_label', lang)}</Link>
           </div>
         </div>
@@ -111,7 +111,7 @@ export default function Footer() {
         color: text2,
       }}>
         <span>
-          &copy; {new Date().getFullYear()} Sweet Puppies — {t('copyright', lang)}
+          &copy; {new Date().getFullYear()} ANIMAL CONCEPT SRL — {t('copyright', lang)}
         </span>
         <span>{t('made_in', lang)}</span>
       </div>

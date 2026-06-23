@@ -8,7 +8,7 @@ export default function MailButton() {
 
   return (
     <a
-      href="mailto:contact@sweetpuppies.be"
+      href="mailto:contact@animalconceptsrl.com"
       className="mail-btn"
       aria-label="Email"
       style={{

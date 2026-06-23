@@ -5,7 +5,7 @@ const multer = require('multer');
 const { createClient } = require('@supabase/supabase-js');
 const rateLimit = require('express-rate-limit');
 const { prisma } = require('../lib/prisma.js');
-const { sendReservationConfirmation, sendAdminNotification, sendReplyToCustomer } = require('../lib/mailer.js');
+const { sendReservationConfirmation, sendAdminNotification, sendStatusNotification, sendReplyToCustomer } = require('../lib/mailer.js');
 const { generateReservationNumber } = require('../lib/helpers.js');
 
 const app = express();
@@ -569,6 +569,16 @@ app.patch('/api/admin/reservations/:id', authenticateAdmin, async (req, res) => 
         data: { status: 'sold' },
       });
     }
+
+    // Notify customer of status change
+    const puppy = await prisma.puppy.findUnique({ where: { id: reservation.puppyId }, select: { name: true, breed: true } });
+    sendStatusNotification({
+      email: reservation.guestEmail,
+      name: reservation.guestName,
+      reservationNumber: reservation.reservationNumber,
+      status,
+      puppy: puppy || null,
+    }).catch(err => console.error('Status notification failed:', err));
 
     res.json({ success: true, reservation });
   } catch (e) {

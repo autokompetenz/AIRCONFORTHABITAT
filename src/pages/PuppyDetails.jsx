@@ -59,7 +59,7 @@ export default function PuppyDetails() {
 
   const images = [puppy.imageUrl, puppy.imageUrl2, puppy.imageUrl3, puppy.imageUrl4, puppy.imageUrl5].filter(Boolean);
   const l = lang || 'fr';
-  const isAvailable = puppy.status === 'available';
+  const isAvailable = puppy.status !== 'sold';
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, paddingTop: 76 }}>

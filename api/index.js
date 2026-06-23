@@ -137,7 +137,7 @@ app.get('/api/puppies', async (req, res) => {
     const { breed, sex, status, featured, search, minPrice, maxPrice, limit, page = 1 } = req.query;
     const take = limit ? parseInt(limit) : undefined;
     const skip = page ? (parseInt(page) - 1) * (take || 12) : 0;
-    const where = { isActive: true, status: 'available' };
+    const where = { isActive: true, status: { not: 'sold' } };
 
     if (breed) where.breed = { contains: breed, mode: 'insensitive' };
     if (sex) where.sex = sex;
@@ -167,7 +167,7 @@ app.get('/api/puppies/breeds', async (req, res) => {
   try {
     const breeds = await prisma.puppy.groupBy({
       by: ['breed'],
-      where: { isActive: true, status: 'available' },
+      where: { isActive: true, status: { not: 'sold' } },
       _count: { breed: true }
     });
     res.json({ breeds: breeds.map(b => ({ breed: b.breed, count: b._count.breed })) });
@@ -381,11 +381,8 @@ app.post('/api/reservations', async (req, res) => {
     }
 
     const puppy = await prisma.puppy.findUnique({ where: { id: parseInt(puppyId) } });
-    if (!puppy || !puppy.isActive) {
+    if (!puppy || !puppy.isActive || puppy.status === 'sold') {
       return res.status(404).json({ error: 'Chiot non trouvé' });
-    }
-    if (puppy.status !== 'available') {
-      return res.status(400).json({ error: 'Ce chiot n\'est plus disponible' });
     }
 
     // Payment logic
@@ -442,11 +439,6 @@ app.post('/api/reservations', async (req, res) => {
           status: 'pending',
           comment: 'Demande de réservation reçue',
         },
-      });
-
-      await tx.puppy.update({
-        where: { id: puppy.id },
-        data: { status: 'reserved' },
       });
 
       return newReservation;
@@ -556,13 +548,6 @@ app.patch('/api/admin/reservations/:id', authenticateAdmin, async (req, res) => 
       data: { reservationId: reservation.id, status, comment: comment || null },
     });
 
-    // If cancelled, set puppy back to available
-    if (status === 'cancelled') {
-      await prisma.puppy.update({
-        where: { id: reservation.puppyId },
-        data: { status: 'available' },
-      });
-    }
     // If delivered, set puppy to sold
     if (status === 'delivered') {
       await prisma.puppy.update({
@@ -644,13 +629,6 @@ app.delete('/api/admin/reservations/:id', authenticateAdmin, async (req, res) =>
     await prisma.$transaction(async (tx) => {
       await tx.reservationTracking.deleteMany({ where: { reservationId: id } });
       await tx.reservation.delete({ where: { id } });
-      // If the puppy was reserved, set it back to available
-      if (reservation.status !== 'delivered') {
-        await tx.puppy.update({
-          where: { id: reservation.puppyId },
-          data: { status: 'available' },
-        });
-      }
     });
 
     await prisma.adminLog.create({

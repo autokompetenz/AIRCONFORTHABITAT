@@ -452,18 +452,17 @@ app.post('/api/reservations', async (req, res) => {
       return newReservation;
     });
 
-    // Send confirmation emails (non-blocking)
-    sendReservationConfirmation({
-      email: guestEmail,
-      name: guestName,
-      reservation,
-      puppy,
-    }).catch(err => console.error('Confirmation email error:', err));
-
-    sendAdminNotification({
-      reservation,
-      puppy,
-    }).catch(err => console.error('Admin notification error:', err));
+    // Send confirmation emails (sequential, shares 1 pooled connection)
+    try {
+      await sendReservationConfirmation({ email: guestEmail, name: guestName, reservation, puppy });
+    } catch (err) {
+      console.error('Confirmation email error:', err.message);
+    }
+    try {
+      await sendAdminNotification({ reservation, puppy });
+    } catch (err) {
+      console.error('Admin notification error:', err.message);
+    }
 
     res.status(201).json({ success: true, reservationNumber: reservation.reservationNumber, reservation });
   } catch (e) {
@@ -572,13 +571,17 @@ app.patch('/api/admin/reservations/:id', authenticateAdmin, async (req, res) => 
 
     // Notify customer of status change
     const puppy = await prisma.puppy.findUnique({ where: { id: reservation.puppyId }, select: { name: true, breed: true } });
-    sendStatusNotification({
-      email: reservation.guestEmail,
-      name: reservation.guestName,
-      reservationNumber: reservation.reservationNumber,
-      status,
-      puppy: puppy || null,
-    }).catch(err => console.error('Status notification failed:', err));
+    try {
+      await sendStatusNotification({
+        email: reservation.guestEmail,
+        name: reservation.guestName,
+        reservationNumber: reservation.reservationNumber,
+        status,
+        puppy: puppy || null,
+      });
+    } catch (err) {
+      console.error('Status notification failed:', err.message);
+    }
 
     res.json({ success: true, reservation });
   } catch (e) {

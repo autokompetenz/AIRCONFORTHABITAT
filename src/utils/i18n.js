@@ -113,6 +113,9 @@ export const translations = {
   light_mode:       { fr:'Mode clair',       nl:'Lichte modus',       en:'Light mode' },
   quantity_label:   { fr:'Qté',              nl:'Aantal',            en:'Qty' },
   product_not_found:{ fr:'Produit non trouvé', nl:'Product niet gevonden', en:'Product not found' },
+  added_to_cart:   { fr:'Ajouté au panier ✓', nl:'Toegevoegd aan winkelwagen ✓', en:'Added to cart ✓' },
+  cart_cleared:    { fr:'Panier vidé',         nl:'Winkelwagen leeg',           en:'Cart cleared' },
+  item_removed:    { fr:'Retiré du panier',    nl:'Verwijderd uit winkelwagen', en:'Removed from cart' },
 };
 
 export function t(key, lang = 'fr') {

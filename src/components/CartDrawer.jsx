@@ -93,7 +93,7 @@ export default function CartDrawer() {
                           <p style={{ fontSize: 11, color: '#999', marginBottom: 4 }}>{item.brand}</p>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                             <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border)' }}>
-                              <button onClick={() => { if (item.quantity <= 1) removeItem(item.id); else updateQuantity(item.id, item.quantity - 1); }}
+                              <button onClick={() => { if (item.quantity <= 1) { removeItem(item.id); addToast(t('item_removed', l), 'info'); } else updateQuantity(item.id, item.quantity - 1); }}
                                 style={{ background: 'none', border: 'none', width: 28, height: 28, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666' }}>
                                 <Minus size={12} strokeWidth={2} />
                               </button>
@@ -106,7 +106,7 @@ export default function CartDrawer() {
                             <span style={{ fontWeight: 800, fontSize: 15, color: 'var(--primary)', marginLeft: 'auto' }}>{formatEuro(item.price * item.quantity)}</span>
                           </div>
                         </div>
-                        <button onClick={() => removeItem(item.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#999', padding: 4, flexShrink: 0 }}>
+                        <button onClick={() => { removeItem(item.id); addToast(t('item_removed', l), 'info'); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#999', padding: 4, flexShrink: 0 }}>
                           <X size={16} strokeWidth={1.5} />
                         </button>
                       </div>
@@ -124,7 +124,7 @@ export default function CartDrawer() {
                   <button onClick={() => { closeCart(); setShowModal(true); }} className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '14px', fontSize: 13, gap: 8 }}>
                     <ShoppingCart size={16} strokeWidth={2} /> {l === 'fr' ? 'Commander' : l === 'nl' ? 'Bestellen' : 'Order'}
                   </button>
-                  <button onClick={clearCart} style={{ width: '100%', marginTop: 8, background: 'none', border: 'none', fontSize: 12, color: '#999', cursor: 'pointer', padding: 6 }}>
+                  <button onClick={() => { clearCart(); addToast(t('cart_cleared', l), 'info'); }} style={{ width: '100%', marginTop: 8, background: 'none', border: 'none', fontSize: 12, color: '#999', cursor: 'pointer', padding: 6 }}>
                     {l === 'fr' ? 'Vider le panier' : l === 'nl' ? 'Winkelwagen legen' : 'Clear cart'}
                   </button>
                 </div>

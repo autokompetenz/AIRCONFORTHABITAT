@@ -217,7 +217,7 @@ export default function ProductDetails() {
                     <button onClick={() => setQty(qty + 1)}
                       style={{ width: 40, height: 42, border: 'none', background: 'none', cursor: 'pointer', fontSize: 18, color: '#666', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif' }}>+</button>
                   </div>
-                  <button onClick={() => { addItem(product, qty); setQty(1); openCart(); }}
+                  <button onClick={() => { addItem(product, qty); setQty(1); addToast(t('added_to_cart', l), 'success'); openCart(); }}
                     className="btn-primary"
                     style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontSize: 13, padding: '11px 20px' }}>
                     <ShoppingCart size={16} strokeWidth={2} />

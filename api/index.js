@@ -43,8 +43,10 @@ async function uploadFiles(files, folder = 'products') {
   const sorted = [...files].sort((a, b) =>
     a.originalname.localeCompare(b.originalname, undefined, { numeric: true })
   );
-  const results = await Promise.all(
-    sorted.map(async (file, index) => {
+  const urls = {};
+  for (let index = 0; index < sorted.length; index++) {
+    try {
+      const file = sorted[index];
       const safeName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
       const fileName = `${Date.now()}-${index}-${safeName}`;
       const url = `${process.env.SUPABASE_URL}/storage/v1/object/${folder}/${fileName}`;
@@ -58,16 +60,15 @@ async function uploadFiles(files, folder = 'products') {
       });
       if (!response.ok) {
         const text = await response.text();
-        throw new Error(`Upload ${response.status}: ${text}`);
+        console.error(`Upload error for ${file.originalname}: ${response.status} ${text}`);
+        continue;
       }
       const publicUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/${folder}/${fileName}`;
-      return { index, url: publicUrl };
-    })
-  );
-  const urls = {};
-  results.forEach(({ index, url }) => {
-    urls[index === 0 ? 'imageUrl' : `imageUrl${index + 1}`] = url;
-  });
+      urls[index === 0 ? 'imageUrl' : `imageUrl${index + 1}`] = publicUrl;
+    } catch (err) {
+      console.error(`Upload failed for file ${index}:`, err.message);
+    }
+  }
   return urls;
 }
 

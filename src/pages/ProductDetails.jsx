@@ -82,7 +82,7 @@ export default function ProductDetails() {
             <div>
               <div style={{ border: '1px solid var(--border)', overflow: 'hidden', aspectRatio: '4/3', background: '#F5F5F5', position: 'relative' }}>
                 <img src={images[activeImg] || 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80'}
-                  alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 {isOnSale && (
                   <span style={{ position: 'absolute', top: 8, left: 8, background: '#CC0000', color: '#fff', fontSize: 11, fontWeight: 800, padding: '3px 10px' }}>
                     -{discountPct}%
@@ -97,7 +97,7 @@ export default function ProductDetails() {
                         aspectRatio: '4/3', border: `2px solid ${activeImg === i ? 'var(--primary)' : '#E5E5E5'}`,
                         opacity: activeImg === i ? 1 : 0.6, cursor: 'pointer', padding: 0, background: '#F5F5F5', overflow: 'hidden',
                       }}>
-                      <img src={img} alt={`Vue ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <img src={img} alt={`Vue ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                     </button>
                   ))}
                 </div>

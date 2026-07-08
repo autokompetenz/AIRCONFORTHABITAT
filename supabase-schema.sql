@@ -1,118 +1,181 @@
--- Sweet Puppies — Supabase Schema
--- Execute in Supabase SQL Editor
+-- AIRCONFORTHABITAT — Supabase Schema (généré par Prisma)
+-- Exécute dans l'éditeur SQL Supabase pour initialiser la base
 
-CREATE TYPE "Sex"                AS ENUM ('Male', 'Female');
-CREATE TYPE "PuppyStatus"        AS ENUM ('available', 'reserved', 'sold');
-CREATE TYPE "DeliveryMethod"     AS ENUM ('pickup', 'delivery');
-CREATE TYPE "ReservationStatus"  AS ENUM ('pending', 'deposit_confirmed', 'preparing', 'ready', 'delivered', 'cancelled');
+-- CreateEnum
+CREATE TYPE "ProductStatus" AS ENUM ('available', 'out_of_stock', 'discontinued');
 
-CREATE TABLE "Puppy" (
-  "id"                  SERIAL PRIMARY KEY,
-  "name"                TEXT NOT NULL,
-  "breed"               TEXT NOT NULL,
-  "sex"                 "Sex" NOT NULL,
-  "birthDate"           TIMESTAMP NOT NULL,
-  "color"               TEXT DEFAULT 'Non spécifiée',
-  "microchipNumber"     TEXT UNIQUE,
-  "vaccinationStatus"   TEXT DEFAULT 'À jour',
-  "dewormingStatus"     TEXT DEFAULT 'À jour',
-  "weightCurrent"       FLOAT,
-  "weightEstimatedAdult" FLOAT,
-  "price"               FLOAT NOT NULL,
-  "deposit"             FLOAT,
-  "description"         TEXT,
-  "pedigreeDocUrl"      TEXT,
-  "healthCertificateUrl" TEXT,
-  "parentMotherName"    TEXT,
-  "parentFatherName"    TEXT,
-  "status"              "PuppyStatus" DEFAULT 'available',
-  "availableFrom"       TIMESTAMP,
-  "location"            TEXT,
-  "featured"            BOOLEAN DEFAULT false,
-  "isActive"            BOOLEAN DEFAULT true,
-  "imageUrl"            TEXT,
-  "imageUrl2"           TEXT,
-  "imageUrl3"           TEXT,
-  "imageUrl4"           TEXT,
-  "imageUrl5"           TEXT,
-  "videoUrl"            TEXT,
-  "createdAt"           TIMESTAMP DEFAULT NOW()
+-- CreateEnum
+CREATE TYPE "OrderStatus" AS ENUM ('pending', 'confirmed', 'preparing', 'shipped', 'delivered', 'cancelled');
+
+-- CreateEnum
+CREATE TYPE "DeliveryMethod" AS ENUM ('pickup', 'delivery');
+
+-- CreateTable
+CREATE TABLE "Category" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
+    "icon" TEXT,
+    "sort" INTEGER NOT NULL DEFAULT 0,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "Guest" (
-  "id"        SERIAL PRIMARY KEY,
-  "name"      TEXT NOT NULL,
-  "email"     TEXT NOT NULL,
-  "phone"     TEXT NOT NULL,
-  "address"   TEXT,
-  "hasPet"    BOOLEAN,
-  "hasLostPet" BOOLEAN,
-  "createdAt" TIMESTAMP DEFAULT NOW()
+-- CreateTable
+CREATE TABLE "Product" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "brand" TEXT NOT NULL,
+    "model" TEXT NOT NULL,
+    "description" TEXT,
+    "technicalDescription" TEXT,
+    "price" DOUBLE PRECISION NOT NULL,
+    "salePrice" DOUBLE PRECISION,
+    "btu" TEXT,
+    "surface" TEXT,
+    "noiseLevel" DOUBLE PRECISION,
+    "energyClass" TEXT,
+    "cop" DOUBLE PRECISION,
+    "seer" DOUBLE PRECISION,
+    "scop" DOUBLE PRECISION,
+    "color" TEXT,
+    "weight" DOUBLE PRECISION,
+    "dimensions" TEXT,
+    "warranty" TEXT,
+    "stock" INTEGER NOT NULL DEFAULT 0,
+    "status" "ProductStatus" NOT NULL DEFAULT 'available',
+    "featured" BOOLEAN NOT NULL DEFAULT false,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "imageUrl" TEXT,
+    "imageUrl2" TEXT,
+    "imageUrl3" TEXT,
+    "imageUrl4" TEXT,
+    "imageUrl5" TEXT,
+    "videoUrl" TEXT,
+    "categoryId" INTEGER,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "Reservation" (
-  "id"                SERIAL PRIMARY KEY,
-  "reservationNumber" TEXT UNIQUE NOT NULL,
-  "puppyId"           INT NOT NULL REFERENCES "Puppy"("id"),
-  "guestId"           INT REFERENCES "Guest"("id"),
-  "guestName"         TEXT NOT NULL,
-  "guestEmail"        TEXT NOT NULL,
-  "guestPhone"        TEXT NOT NULL,
-  "guestProfession"   TEXT,
-  "guestHomeAddress"  TEXT,
-  "paymentMethod"     TEXT DEFAULT 'deposit',
-  "paymentLabel"      TEXT,
-  "hasPet"            BOOLEAN,
-  "hasLostPet"        BOOLEAN,
-  "discountPercent"   FLOAT,
-  "discountAmount"    FLOAT,
-  "totalPrice"        FLOAT,
-  "depositAmount"     FLOAT,
-  "depositPaidAt"     TIMESTAMP,
-  "balanceAmount"     FLOAT,
-  "balancePaidAt"     TIMESTAMP,
-  "deliveryMethod"    "DeliveryMethod" DEFAULT 'pickup',
-  "deliveryAddress"   TEXT,
-  "status"            "ReservationStatus" DEFAULT 'pending',
-  "contractUrl"       TEXT,
-  "notes"             TEXT,
-  "createdAt"         TIMESTAMP DEFAULT NOW(),
-  "updatedAt"         TIMESTAMP DEFAULT NOW()
+-- CreateTable
+CREATE TABLE "Customer" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "address" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Customer_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "ReservationTracking" (
-  "id"              SERIAL PRIMARY KEY,
-  "reservationId"   INT NOT NULL REFERENCES "Reservation"("id") ON DELETE CASCADE,
-  "status"          "ReservationStatus" NOT NULL,
-  "comment"         TEXT,
-  "createdAt"       TIMESTAMP DEFAULT NOW()
+-- CreateTable
+CREATE TABLE "Order" (
+    "id" SERIAL NOT NULL,
+    "orderNumber" TEXT NOT NULL,
+    "customerId" INTEGER,
+    "customerName" TEXT NOT NULL,
+    "customerEmail" TEXT NOT NULL,
+    "customerPhone" TEXT NOT NULL,
+    "customerAddress" TEXT,
+    "deliveryMethod" "DeliveryMethod" NOT NULL DEFAULT 'pickup',
+    "deliveryAddress" TEXT,
+    "paymentMethod" TEXT NOT NULL DEFAULT 'transfer',
+    "paymentStatus" TEXT NOT NULL DEFAULT 'pending',
+    "totalAmount" DOUBLE PRECISION,
+    "notes" TEXT,
+    "status" "OrderStatus" NOT NULL DEFAULT 'pending',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "OrderItem" (
+    "id" SERIAL NOT NULL,
+    "orderId" INTEGER NOT NULL,
+    "productId" INTEGER NOT NULL,
+    "quantity" INTEGER NOT NULL DEFAULT 1,
+    "price" DOUBLE PRECISION NOT NULL,
+
+    CONSTRAINT "OrderItem_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "OrderTracking" (
+    "id" SERIAL NOT NULL,
+    "orderId" INTEGER NOT NULL,
+    "status" "OrderStatus" NOT NULL,
+    "comment" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "OrderTracking_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "AdminLog" (
-  "id"        SERIAL PRIMARY KEY,
-  "action"    TEXT NOT NULL,
-  "detail"    TEXT,
-  "createdAt" TIMESTAMP DEFAULT NOW()
+    "id" SERIAL NOT NULL,
+    "action" TEXT NOT NULL,
+    "detail" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "AdminLog_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "WaitlistEntry" (
-  "id"        SERIAL PRIMARY KEY,
-  "breed"     TEXT NOT NULL,
-  "name"      TEXT NOT NULL,
-  "email"     TEXT NOT NULL,
-  "phone"     TEXT,
-  "notified"  BOOLEAN DEFAULT false,
-  "createdAt" TIMESTAMP DEFAULT NOW()
+-- CreateTable
+CREATE TABLE "StockAlert" (
+    "id" SERIAL NOT NULL,
+    "productId" INTEGER,
+    "productName" TEXT,
+    "brand" TEXT,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "phone" TEXT,
+    "notified" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "StockAlert_pkey" PRIMARY KEY ("id")
 );
 
--- Prisma migrations table
+-- CreateIndex
+CREATE UNIQUE INDEX "Category_slug_key" ON "Category"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Product_slug_key" ON "Product"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Order_orderNumber_key" ON "Order"("orderNumber");
+
+-- AddForeignKey
+ALTER TABLE "Product" ADD CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Order" ADD CONSTRAINT "Order_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "Customer"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OrderTracking" ADD CONSTRAINT "OrderTracking_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Prisma migrations table (required by Prisma)
 CREATE TABLE IF NOT EXISTS "_prisma_migrations" (
-  "id"                  VARCHAR(36) PRIMARY KEY,
-  "checksum"            VARCHAR(64) NOT NULL,
-  "finished_at"         TIMESTAMP,
-  "migration_name"      VARCHAR(255) NOT NULL,
-  "logs"                TEXT,
-  "rolled_back_at"      TIMESTAMP,
-  "started_at"          TIMESTAMP DEFAULT NOW(),
-  "applied_steps_count" INT DEFAULT 0
+    "id"                  VARCHAR(36) PRIMARY KEY,
+    "checksum"            VARCHAR(64) NOT NULL,
+    "finished_at"         TIMESTAMP,
+    "migration_name"      VARCHAR(255) NOT NULL,
+    "logs"                TEXT,
+    "rolled_back_at"      TIMESTAMP,
+    "started_at"          TIMESTAMP DEFAULT NOW(),
+    "applied_steps_count" INTEGER DEFAULT 0
 );

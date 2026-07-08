@@ -21,7 +21,10 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true);
   const [activeImg, setActiveImg] = useState(0);
   const [qty, setQty] = useState(1);
+  const [openSections, setOpenSections] = useState({ description: true, technical: true });
   const { addItem, openCart } = useCartStore();
+
+  const toggleSection = (key) => setOpenSections(prev => ({ ...prev, [key]: !prev[key] }));
 
   const { isMobile } = useBreakpoint();
   const l = lang || 'fr';
@@ -151,36 +154,62 @@ export default function ProductDetails() {
               )}
             </div>
 
-            {product.description && (
-              <div style={{ marginBottom: 28 }}>
-                <h3 style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 800, fontSize: isMobile ? 20 : 24, color: C.text, letterSpacing: '-0.02em', marginBottom: 14, lineHeight: 1.2 }}>
-                  {t('about_product', l)}
-                </h3>
-                <p style={{ fontSize: 15, color: C.text2, lineHeight: 1.75, borderLeft: '3px solid rgba(46,134,193,0.4)', paddingLeft: 18 }}>
-                  {product.description}
-                </p>
-              </div>
-            )}
-
-            {product.technicalDescription && (
-              <div style={{ marginBottom: 28 }}>
-                <h3 style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 800, fontSize: isMobile ? 18 : 22, color: C.text, letterSpacing: '-0.02em', marginBottom: 14, lineHeight: 1.2 }}>
-                  {t('technical_desc', l)}
-                </h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                  {product.technicalDescription.split('•').filter(Boolean).map((item, idx) => (
-                    <span key={idx} style={{
-                      fontSize: 13, fontWeight: 600, color: 'var(--primary)',
-                      background: 'rgba(46,134,193,0.08)',
-                      border: '1px solid rgba(46,134,193,0.2)',
-                      padding: '6px 14px', borderRadius: 9999,
-                    }}>
-                      {item.trim()}
-                    </span>
-                  ))}
+            {product.description && (() => {
+              const isOpen = openSections.description;
+              return (
+                <div style={{ marginBottom: 16, border: `1px solid ${C.border}`, borderRadius: 12, overflow: 'hidden', background: C.card2 }}>
+                  <button onClick={() => toggleSection('description')} style={{
+                    width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '16px 20px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+                    fontFamily: "'Outfit', sans-serif", fontSize: isMobile ? 15 : 17, fontWeight: 800,
+                    color: C.text, letterSpacing: '-0.01em',
+                  }}>
+                    <span>{t('about_product', l)}</span>
+                    <motion.span animate={{ rotate: isOpen ? 180 : 0 }} style={{ fontSize: 14, color: C.text3, flexShrink: 0 }}>▾</motion.span>
+                  </button>
+                  <motion.div
+                    initial={false} animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
+                    style={{ overflow: 'hidden' }} transition={{ duration: 0.25, ease: 'easeInOut' }}>
+                    <div style={{ padding: '0 20px 18px' }}>
+                      <p style={{ fontSize: 15, color: C.text2, lineHeight: 1.75, margin: 0 }}>{product.description}</p>
+                    </div>
+                  </motion.div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
+
+            {product.technicalDescription && (() => {
+              const isOpen = openSections.technical;
+              return (
+                <div style={{ marginBottom: 28, border: `1px solid ${C.border}`, borderRadius: 12, overflow: 'hidden', background: C.card2 }}>
+                  <button onClick={() => toggleSection('technical')} style={{
+                    width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '16px 20px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+                    fontFamily: "'Outfit', sans-serif", fontSize: isMobile ? 15 : 17, fontWeight: 800,
+                    color: C.text, letterSpacing: '-0.01em',
+                  }}>
+                    <span>{t('technical_desc', l)}</span>
+                    <motion.span animate={{ rotate: isOpen ? 180 : 0 }} style={{ fontSize: 14, color: C.text3, flexShrink: 0 }}>▾</motion.span>
+                  </button>
+                  <motion.div
+                    initial={false} animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
+                    style={{ overflow: 'hidden' }} transition={{ duration: 0.25, ease: 'easeInOut' }}>
+                    <div style={{ padding: '0 20px 18px', display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                      {product.technicalDescription.split('•').filter(Boolean).map((item, idx) => (
+                        <span key={idx} style={{
+                          fontSize: 13, fontWeight: 600, color: 'var(--primary)',
+                          background: 'rgba(46,134,193,0.08)',
+                          border: '1px solid rgba(46,134,193,0.2)',
+                          padding: '6px 14px', borderRadius: 9999,
+                        }}>
+                          {item.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
+                </div>
+              );
+            })()}
 
             <div style={{ display: 'flex', gap: 16, marginBottom: 28, flexWrap: 'wrap' }}>
               {product.warranty && (

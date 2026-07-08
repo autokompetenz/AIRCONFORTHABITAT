@@ -49,22 +49,20 @@ async function uploadFiles(files, folder = 'products') {
       const file = sorted[index];
       const safeName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
       const fileName = `${Date.now()}-${index}-${safeName}`;
-      const url = `${process.env.SUPABASE_URL}/storage/v1/object/${folder}/${fileName}`;
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
-          'Content-Type': file.mimetype,
-        },
-        body: file.buffer,
-      });
-      if (!response.ok) {
-        const text = await response.text();
-        console.error(`Upload error for ${file.originalname}: ${response.status} ${text}`);
+      const { data, error } = await supabase.storage
+        .from(folder)
+        .upload(fileName, file.buffer, {
+          contentType: file.mimetype,
+          upsert: false,
+        });
+      if (error) {
+        console.error(`Upload error for ${file.originalname}:`, error.message);
         continue;
       }
-      const publicUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/${folder}/${fileName}`;
-      urls[index === 0 ? 'imageUrl' : `imageUrl${index + 1}`] = publicUrl;
+      const { data: urlData } = supabase.storage
+        .from(folder)
+        .getPublicUrl(fileName);
+      urls[index === 0 ? 'imageUrl' : `imageUrl${index + 1}`] = urlData.publicUrl;
     } catch (err) {
       console.error(`Upload failed for file ${index}:`, err.message);
     }

@@ -7,7 +7,7 @@ import { PRODUCT_TYPES, BRANDS, ENERGY_CLASSES } from '../../utils/helpers';
 
 const EMPTY = {
   name:'', type:'climatiseur_fixe', brand:'Daikin', model:'',
-  description:'',
+  description:'', technicalDescription:'',
   price:'', salePrice:'',
   btu:'', surface:'', noiseLevel:'', energyClass:'A++', cop:'', seer:'', scop:'',
   color:'', weight:'', dimensions:'', warranty:'',
@@ -139,6 +139,8 @@ export default function AdminProductForm() {
             <Field label="Modèle" field="model" placeholder="FTXM-R" value={form.model} onChange={set("model")} />
           </div>
           <Field label="Description" field="description" rows={4} placeholder="Description détaillée du produit..." value={form.description} onChange={set("description")} />
+          <div style={{ marginTop: 16 }} />
+          <Field label="Description technique" field="technicalDescription" rows={3} placeholder="Caractéristiques techniques (séparées par •)" value={form.technicalDescription} onChange={set("technicalDescription")} />
         </Section>
 
         <Section title="Prix">

@@ -48,6 +48,7 @@ model Product {
   brand       String
   model       String
   description String?       @db.Text
+  technicalDescription String? @db.Text
   price       Float
   salePrice   Float?
   btu         String?

@@ -61,6 +61,7 @@ export const translations = {
   clim_mobile:      { fr:'Climatiseur mobile', nl:'Mobiele airco',  en:'Portable AC' },
   ventilateur:      { fr:'Ventilateur',      nl:'Ventilator',        en:'Fan' },
   about_product:    { fr:'À propos de ce produit', nl:'Over dit product', en:'About this product' },
+  technical_desc:   { fr:'Caractéristiques techniques', nl:'Technische kenmerken', en:'Technical features' },
   features:         { fr:'Caractéristiques', nl:'Kenmerken',         en:'Features' },
   technical:        { fr:'Données techniques', nl:'Technische gegevens', en:'Technical data' },
   sale_price:       { fr:'Prix promo',       nl:'Aanbiedingsprijs',  en:'Sale price' },

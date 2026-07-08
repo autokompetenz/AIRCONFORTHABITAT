@@ -175,6 +175,26 @@ export default function ProductDetails() {
               </div>
             )}
 
+            {product.technicalDescription && (
+              <div style={{ marginBottom: 28 }}>
+                <h3 style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 800, fontSize: isMobile ? 18 : 22, color: C.text, letterSpacing: '-0.02em', marginBottom: 14, lineHeight: 1.2 }}>
+                  {t('technical_desc', l)}
+                </h3>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {product.technicalDescription.split('•').filter(Boolean).map((item, idx) => (
+                    <span key={idx} style={{
+                      fontSize: 13, fontWeight: 600, color: 'var(--primary)',
+                      background: 'rgba(46,134,193,0.08)',
+                      border: '1px solid rgba(46,134,193,0.2)',
+                      padding: '6px 14px', borderRadius: 9999,
+                    }}>
+                      {item.trim()}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {inStock ? (
               <button onClick={() => setShowOrder(!showOrder)}
                 style={{

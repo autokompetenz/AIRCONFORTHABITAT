@@ -28,6 +28,7 @@ export const translations = {
   sunday:           { fr:'Dimanche',         nl:'Zondag',            en:'Sunday' },
   closed:           { fr:'Fermé',            nl:'Gesloten',          en:'Closed' },
   order_btn:        { fr:'Commander',        nl:'Bestellen',         en:'Order now' },
+  add_to_cart:      { fr:'Ajouter au panier', nl:'In winkelwagen',    en:'Add to cart' },
   not_available:    { fr:'Non disponible',   nl:'Niet beschikbaar',  en:'Not available' },
   view_product:     { fr:'Voir le produit',  nl:'Bekijk product',    en:'View product' },
   search_ph:        { fr:'Rechercher un produit...', nl:'Zoek een product...', en:'Search a product...' },

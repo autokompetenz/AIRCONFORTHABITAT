@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useBreakpoint } from '../hooks';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { productAPI, orderAPI } from '../services/api';
-import { useToastStore, useLangStore, useThemeStore } from '../store';
+import { productAPI } from '../services/api';
+import { useCartStore, useToastStore, useLangStore, useThemeStore } from '../store';
 import { formatEuro, getProductTypeLabel } from '../utils/helpers';
 import { Loader } from '../components/UI';
 import { t } from '../utils/i18n';
@@ -20,8 +20,8 @@ export default function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeImg, setActiveImg] = useState(0);
-  const [showOrder, setShowOrder] = useState(false);
-  const [ordering, setOrdering] = useState(false);
+  const [qty, setQty] = useState(1);
+  const { addItem, openCart } = useCartStore();
 
   const { isMobile } = useBreakpoint();
   const l = lang || 'fr';
@@ -182,77 +182,30 @@ export default function ProductDetails() {
               </div>
             )}
 
-            {inStock ? (
-              <button onClick={() => setShowOrder(!showOrder)}
-                style={{
-                  width: '100%', padding: isMobile ? '18px' : '20px', borderRadius: 12,
-                  fontFamily: "'Outfit',sans-serif", fontSize: isMobile?14:15, fontWeight:800,
-                  letterSpacing: '0.1em', textTransform: 'uppercase', border: 'none',
-                  cursor: 'pointer', transition: 'all 0.3s ease',
-                  background: 'linear-gradient(135deg,var(--primary),var(--primary-dark))',
-                  color: '#fff', boxShadow: '0 4px 16px rgba(46,134,193,0.3)',
-                }}
-                onMouseOver={e => { e.currentTarget.style.background='linear-gradient(135deg,var(--primary-dark),#1A5A82)'; e.currentTarget.style.transform='scale(1.02)'; }}
-                onMouseOut={e => { e.currentTarget.style.background='linear-gradient(135deg,var(--primary),var(--primary-dark))'; e.currentTarget.style.transform='scale(1)'; }}>
-                ❄ {t('order_btn', l)}
-              </button>
-            ) : null}
-
-            {showOrder && inStock && (
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                style={{ marginTop: 20, background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 24 }}>
-                <h3 style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 800, fontSize: 18, color: C.text, marginBottom: 6 }}>
-                  {t('order_form', l)}
-                </h3>
-                <p style={{ fontSize: 13, color: C.text3, marginBottom: 20 }}>
-                  {t('order_form_sub', l)}
-                </p>
-                <form onSubmit={async (e) => {
-                  e.preventDefault();
-                  const fd = new FormData(e.target);
-                  try {
-                    setOrdering(true);
-                    const data = Object.fromEntries(fd);
-                    const res = await orderAPI.create({
-                      items: [{ productId: product.id, quantity: parseInt(data.quantity) || 1 }],
-                      customerName: data.name,
-                      customerEmail: data.email,
-                      customerPhone: data.phone,
-                      customerAddress: data.address,
-                      deliveryMethod: data.deliveryMethod,
-                      notes: data.notes,
-                    });
-                    addToast(t('order_confirm', l), 'success');
-                    navigate(`/track/${res.data.orderNumber}`);
-                  } catch (err) {
-                    addToast(err.response?.data?.error || 'Erreur', 'error');
-                  } finally { setOrdering(false); }
-                }} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                  <div style={{ display:'flex', gap:12 }}>
-                    <input name="name" required placeholder={t('name_label', l)} className="input-luxury" style={{ flex:1 }} />
-                    <input name="quantity" type="number" defaultValue={1} min={1} style={{ width:80, textAlign:'center' }} className="input-luxury" />
-                  </div>
-                  <input name="email" type="email" required placeholder={t('email_label', l)} className="input-luxury" />
-                  <input name="phone" type="tel" required placeholder={t('phone_label', l)} className="input-luxury" />
-                  <input name="address" placeholder={t('address_ph', l)} className="input-luxury" />
-
-                  <div style={{ display:'flex', gap:12 }}>
-                    <label style={{ flex:1, display:'flex', alignItems:'center', gap:8, padding:'12px 14px', borderRadius:10, background:C.card2, border:'1px solid var(--border)', cursor:'pointer' }}>
-                      <input type="radio" name="deliveryMethod" value="delivery" defaultChecked style={{ accentColor:'var(--primary)', width:18, height:18 }} />
-                      <span style={{ fontSize:14, fontWeight:700, color:C.text }}>{t('delivery_delivery', l)}</span>
-                    </label>
-                    <label style={{ flex:1, display:'flex', alignItems:'center', gap:8, padding:'12px 14px', borderRadius:10, background:C.card2, border:'1px solid var(--border)', cursor:'pointer' }}>
-                      <input type="radio" name="deliveryMethod" value="pickup" style={{ accentColor:'var(--primary)', width:18, height:18 }} />
-                      <span style={{ fontSize:14, fontWeight:700, color:C.text }}>{t('delivery_pickup', l)}</span>
-                    </label>
-                  </div>
-
-                  <textarea name="notes" rows={3} placeholder={t('notes_ph', l)} className="input-luxury" />
-                  <button type="submit" disabled={ordering} className="btn-primary" style={{ justifyContent: 'center', padding: '14px' }}>
-                    {ordering ? '⏳...' : `❄ ${t('confirm_order', l)}`}
-                  </button>
-                </form>
-              </motion.div>
+            {inStock && (
+              <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 0, border: `1px solid ${C.border}`, borderRadius: 10, overflow: 'hidden', background: C.card2 }}>
+                  <button onClick={() => setQty(Math.max(1, qty - 1))}
+                    style={{ width: 44, height: 48, border: 'none', background: 'none', cursor: 'pointer', fontSize: 20, color: C.text2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
+                  <span style={{ minWidth: 40, textAlign: 'center', fontSize: 18, fontWeight: 800, color: C.text, fontFamily: "'Outfit',sans-serif" }}>{qty}</span>
+                  <button onClick={() => setQty(qty + 1)}
+                    style={{ width: 44, height: 48, border: 'none', background: 'none', cursor: 'pointer', fontSize: 20, color: C.text2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
+                </div>
+                <button onClick={() => { addItem(product, qty); setQty(1); openCart(); }}
+                  style={{
+                    flex: 1, padding: isMobile ? '14px' : '16px', borderRadius: 10,
+                    fontFamily: "'Outfit',sans-serif", fontSize: isMobile?13:14, fontWeight:800,
+                    letterSpacing: '0.08em', textTransform: 'uppercase', border: 'none',
+                    cursor: 'pointer', transition: 'all 0.3s ease',
+                    background: 'linear-gradient(135deg,var(--primary),var(--primary-dark))',
+                    color: '#fff', boxShadow: '0 4px 16px rgba(46,134,193,0.3)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  }}
+                  onMouseOver={e => { e.currentTarget.style.background='linear-gradient(135deg,var(--primary-dark),#1A5A82)'; e.currentTarget.style.transform='scale(1.02)'; }}
+                  onMouseOut={e => { e.currentTarget.style.background='linear-gradient(135deg,var(--primary),var(--primary-dark))'; e.currentTarget.style.transform='scale(1)'; }}>
+                  🛒 {t('add_to_cart', l)}
+                </button>
+              </div>
             )}
           </div>
         </div>

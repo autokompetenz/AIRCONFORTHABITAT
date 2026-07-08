@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLangStore, useThemeStore, useAdminStore } from '../store';
+import { useLangStore, useThemeStore, useAdminStore, useCartStore } from '../store';
 import { t, LANGUAGES } from '../utils/i18n';
 import { useBreakpoint } from '../hooks';
 
@@ -9,6 +9,7 @@ export default function Navbar() {
   const { lang, setLang } = useLangStore();
   const { theme, toggle } = useThemeStore();
   const { isAuthenticated, logout } = useAdminStore();
+  const { count, openCart } = useCartStore();
   const { isMobile } = useBreakpoint();
   const navigate = useNavigate();
   const location = useLocation();
@@ -119,6 +120,23 @@ export default function Navbar() {
         )}
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, position: 'relative', zIndex: 1 }}>
+          <button onClick={openCart} style={{
+            position: 'relative', background: btnBg, border: `1.5px solid ${btnBorder(false)}`,
+            borderRadius: 8, width: 38, height: 38, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'all 0.2s',
+          }}>
+            <span style={{ fontSize: 18, lineHeight: 1, color: iconColor }}>🛒</span>
+            {count > 0 && (
+              <span style={{
+                position: 'absolute', top: -6, right: -6, background: '#DC2626', color: '#fff',
+                fontSize: 10, fontWeight: 800, minWidth: 20, height: 20, borderRadius: 10,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                border: '2px solid ' + (isDark ? '#0f0f0f' : '#fff'),
+              }}>
+                {count > 99 ? '99+' : count}
+              </span>
+            )}
+          </button>
           <div style={{ position: 'relative' }} ref={menuRef}>
             <button
               onClick={() => setMenuOpen(!menuOpen)}

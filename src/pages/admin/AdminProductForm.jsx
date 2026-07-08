@@ -3,15 +3,26 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { adminAPI } from '../../services/api';
 import { useToastStore } from '../../store';
 import { useBreakpoint } from '../../hooks';
-import { BREEDS } from '../../utils/helpers';
+import { PRODUCT_TYPES, BRANDS, ENERGY_CLASSES } from '../../utils/helpers';
 
 const EMPTY = {
-  name:'', breed:'Golden Retriever', sex:'Male', birthDate:'', price:'',
-  description:'', parentMotherName:'',
-  parentFatherName:'', pedigreeDocUrl:'', microchipNumber:'',
-  vaccinationStatus:'', dewormingStatus:'',
+  name:'', type:'climatiseur_fixe', brand:'Daikin', model:'',
+  description:'',
+  price:'', salePrice:'',
+  btu:'', surface:'', noiseLevel:'', energyClass:'A++', cop:'', seer:'', scop:'',
+  color:'', weight:'', dimensions:'', warranty:'',
+  stock:'', status:'available',
   featured:false, isActive:true,
 };
+
+function slugify(text) {
+  return text.toString().toLowerCase().trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+}
 
 function Section({ title, children }) {
   return (
@@ -41,7 +52,7 @@ function Field({ label, field, type='text', placeholder, opts, rows, value, onCh
   );
 }
 
-export default function AdminPuppyForm() {
+export default function AdminProductForm() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToast } = useToastStore();
@@ -57,13 +68,12 @@ export default function AdminPuppyForm() {
 
   useEffect(() => {
     if (isEdit) {
-      adminAPI.getPuppyById(id).then(r => {
-        const c = r.data.puppy;
-        const birthDate = c.birthDate ? new Date(c.birthDate).toISOString().split('T')[0] : '';
-        setForm({ ...EMPTY, ...c, price: String(c.price || ''), birthDate });
+      adminAPI.getProductById(id).then(r => {
+        const c = r.data.product;
+        setForm({ ...EMPTY, ...c, price: String(c.price || ''), salePrice: String(c.salePrice || ''), stock: String(c.stock ?? '') });
         const existing = [];
-        ['imageUrl', 'imageUrl2', 'imageUrl3', 'imageUrl4', 'imageUrl5'].forEach((field, idx) => {
-          if (c[field]) existing.push({ url: c[field], id: `existing-${idx + 1}`, isExisting: true, field });
+        (c.images || []).forEach((url, idx) => {
+          existing.push({ url, id: `existing-${idx + 1}`, isExisting: true });
         });
         setExistingImages(existing);
       });
@@ -93,11 +103,7 @@ export default function AdminPuppyForm() {
       setPreviews(prev => prev.filter(p => p.id !== imageId));
       return;
     }
-    const existingToRemove = existingImages.find(img => img.id === imageId);
-    if (existingToRemove) {
-      setExistingImages(prev => prev.filter(img => img.id !== imageId));
-      if (existingToRemove.field) setForm(prev => ({ ...prev, [existingToRemove.field]: '' }));
-    }
+    setExistingImages(prev => prev.filter(img => img.id !== imageId));
   };
 
   const handleSubmit = async (e) => {
@@ -105,11 +111,12 @@ export default function AdminPuppyForm() {
     setSaving(true);
     try {
       const formData = new FormData();
-      Object.entries(form).forEach(([k, v]) => { if (v !== undefined && v !== null) formData.append(k, v); });
+      const payload = { ...form, slug: slugify(form.name) };
+      Object.entries(payload).forEach(([k, v]) => { if (v !== undefined && v !== null && v !== '') formData.append(k, v); });
       imageFiles.forEach(file => formData.append('images', file));
       existingImages.forEach(img => formData.append('existingImages', img.url));
-      if (isEdit) { await adminAPI.updatePuppy(id, formData); navigate('/admin/puppies', { replace: true, state: { successMessage: 'Chiot mis à jour' } }); }
-      else { await adminAPI.createPuppy(formData); navigate('/admin/puppies', { replace: true, state: { successMessage: 'Chiot créé' } }); }
+      if (isEdit) { await adminAPI.updateProduct(id, formData); navigate('/admin/products', { replace: true, state: { successMessage: 'Produit mis à jour' } }); }
+      else { await adminAPI.createProduct(formData); navigate('/admin/products', { replace: true, state: { successMessage: 'Produit créé' } }); }
     } catch (err) { addToast(err.response?.data?.error || err.message || 'Erreur', 'error'); }
     finally { setSaving(false); }
   };
@@ -119,35 +126,53 @@ export default function AdminPuppyForm() {
       <div style={{ marginBottom:32 }}>
         <div className="section-eyebrow">{isEdit ? 'Modifier' : 'Ajouter'}</div>
         <h1 style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:'clamp(28px,4vw,44px)', color:'var(--text)', letterSpacing:'-0.02em' }}>
-          {isEdit ? 'Modifier le chiot' : 'Nouveau chiot'}
+          {isEdit ? 'Modifier le produit' : 'Nouveau produit'}
         </h1>
       </div>
 
-      <form onSubmit={handleSubmit} style={{ maxWidth: 780 }}>
+      <form onSubmit={handleSubmit} style={{ maxWidth: 860 }}>
         <Section title="Informations principales">
           <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap:16, marginBottom:16 }}>
-            <Field label="Nom *" field="name" placeholder="Luna" value={form.name} onChange={set("name")} />
-            <Field label="Race *" field="breed" opts={BREEDS} value={form.breed} onChange={set("breed")} />
-            <Field label="Sexe" field="sex" opts={['Male','Female']} value={form.sex} onChange={set("sex")} />
-            <Field label="Date de naissance" field="birthDate" type="date" value={form.birthDate} onChange={set("birthDate")} />
-            <Field label="Prix (€) *" field="price" type="number" placeholder="1500" value={form.price} onChange={set("price")} />
+            <Field label="Nom *" field="name" placeholder="Climatiseur Inverter 9000 BTU" value={form.name} onChange={set("name")} />
+            <Field label="Type *" field="type" opts={PRODUCT_TYPES} value={form.type} onChange={set("type")} />
+            <Field label="Marque *" field="brand" opts={BRANDS} value={form.brand} onChange={set("brand")} />
+            <Field label="Modèle" field="model" placeholder="FTXM-R" value={form.model} onChange={set("model")} />
           </div>
-          <Field label="Description" field="description" rows={4} placeholder="Description détaillée du chiot..." value={form.description} onChange={set("description")} />
+          <Field label="Description" field="description" rows={4} placeholder="Description détaillée du produit..." value={form.description} onChange={set("description")} />
         </Section>
 
-        <Section title="Parents">
-          <div className={isMobile ? 'admin-grid-2' : ''} style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
-            <Field label="Nom de la mère" field="parentMotherName" placeholder="Bella" value={form.parentMotherName} onChange={set("parentMotherName")} />
-            <Field label="Nom du père" field="parentFatherName" placeholder="Max" value={form.parentFatherName} onChange={set("parentFatherName")} />
+        <Section title="Prix">
+          <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap:16 }}>
+            <Field label="Prix (€) *" field="price" type="number" placeholder="999" value={form.price} onChange={set("price")} />
+            <Field label="Prix soldé (€)" field="salePrice" type="number" placeholder="799" value={form.salePrice} onChange={set("salePrice")} />
           </div>
         </Section>
 
-        <Section title="Santé">
-          <div className={isMobile ? 'admin-grid-2' : ''} style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
-            <Field label="Pedigree" field="pedigreeDocUrl" placeholder="LOSH XXXX" value={form.pedigreeDocUrl} onChange={set("pedigreeDocUrl")} />
-            <Field label="Puce électronique" field="microchipNumber" placeholder="528140000000000" value={form.microchipNumber} onChange={set("microchipNumber")} />
-            <Field label="Statut vaccination" field="vaccinationStatus" placeholder="À jour" value={form.vaccinationStatus} onChange={set("vaccinationStatus")} />
-            <Field label="Statut vermifuge" field="dewormingStatus" placeholder="À jour" value={form.dewormingStatus} onChange={set("dewormingStatus")} />
+        <Section title="Caractéristiques techniques">
+          <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr', gap:16 }}>
+            <Field label="BTU" field="btu" type="number" placeholder="9000" value={form.btu} onChange={set("btu")} />
+            <Field label="Surface (m²)" field="surface" type="number" placeholder="25" value={form.surface} onChange={set("surface")} />
+            <Field label="Niveau sonore (dB)" field="noiseLevel" placeholder="42" value={form.noiseLevel} onChange={set("noiseLevel")} />
+            <Field label="Classe énergétique" field="energyClass" opts={ENERGY_CLASSES} value={form.energyClass} onChange={set("energyClass")} />
+            <Field label="COP" field="cop" placeholder="4.5" value={form.cop} onChange={set("cop")} />
+            <Field label="SEER" field="seer" placeholder="6.1" value={form.seer} onChange={set("seer")} />
+            <Field label="SCOP" field="scop" placeholder="4.0" value={form.scop} onChange={set("scop")} />
+          </div>
+        </Section>
+
+        <Section title="Caractéristiques physiques">
+          <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap:16 }}>
+            <Field label="Couleur" field="color" placeholder="Blanc" value={form.color} onChange={set("color")} />
+            <Field label="Poids (kg)" field="weight" placeholder="12.5" value={form.weight} onChange={set("weight")} />
+            <Field label="Dimensions" field="dimensions" placeholder="80 x 30 x 25 cm" value={form.dimensions} onChange={set("dimensions")} />
+            <Field label="Garantie" field="warranty" placeholder="5 ans" value={form.warranty} onChange={set("warranty")} />
+          </div>
+        </Section>
+
+        <Section title="Stock">
+          <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap:16 }}>
+            <Field label="Quantité en stock" field="stock" type="number" placeholder="10" value={form.stock} onChange={set("stock")} />
+            <Field label="Statut" field="status" opts={['available', 'out_of_stock', 'discontinued']} value={form.status} onChange={set("status")} />
           </div>
         </Section>
 
@@ -157,7 +182,7 @@ export default function AdminPuppyForm() {
             style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:12, padding:'16px 20px', background:'var(--primary-bg)', border:'2px dashed var(--border-2)', borderRadius:12, cursor:'pointer', fontSize:14, color:'var(--text-2)', fontWeight:600, transition:'all 0.25s' }}
             onMouseOver={e => { e.currentTarget.style.borderColor='var(--primary)'; e.currentTarget.style.background='var(--bg-card2)'; e.currentTarget.style.color='var(--text)'; }}
             onMouseOut={e => { e.currentTarget.style.borderColor='var(--border-2)'; e.currentTarget.style.background='var(--primary-bg)'; e.currentTarget.style.color='var(--text-2)'; }}>
-            📷 {previews.length + existingImages.length > 0 ? `${previews.length + existingImages.length} / 5 images` : 'Choisir des images'}
+            📷 {previews.length + existingImages.length > 0 ? `${previews.length + existingImages.length} image(s)` : 'Choisir des images'}
           </label>
         </Section>
 
@@ -181,9 +206,9 @@ export default function AdminPuppyForm() {
 
         <Section title="Options">
           <div className={isMobile ? 'admin-flex-wrap' : ''} style={{ display:'flex', gap:28, flexWrap:'wrap' }}>
-            {[['featured','Chiot mis en avant (★ Nouveau)'],['isActive','Actif (visible en catalogue)']].map(([f,l]) => (
+            {[['featured','Produit mis en avant (★ En vedette)'],['isActive','Actif (visible en catalogue)']].map(([f,l]) => (
               <label key={f} style={{ display:'flex', alignItems:'center', gap:12, cursor:'pointer', padding:'12px 16px', borderRadius:10, background:'var(--bg-card2)', border:'1px solid var(--border)' }}>
-                <input type="checkbox" checked={Boolean(form[f])} onChange={set(f)} style={{ accentColor:'#C9762E', width:20, height:20 }} />
+                <input type="checkbox" checked={Boolean(form[f])} onChange={set(f)} style={{ accentColor:'#2E86C1', width:20, height:20 }} />
                 <span style={{ fontSize:14, color:'var(--text-2)', fontWeight:600 }}>{l}</span>
               </label>
             ))}
@@ -192,9 +217,9 @@ export default function AdminPuppyForm() {
 
         <div style={{ display:'flex', gap:16, marginTop:8 }}>
           <button type="submit" disabled={saving} className="btn-primary" style={{ fontSize:15, padding:'18px 36px', borderRadius:10 }}>
-            {saving ? 'Enregistrement...' : isEdit ? '✓ Mettre à jour' : '+ Créer le chiot'}
+            {saving ? 'Enregistrement...' : isEdit ? '✓ Mettre à jour' : '+ Créer le produit'}
           </button>
-          <button type="button" onClick={() => navigate('/admin/puppies')} className="btn-ghost" style={{ fontSize:15, padding:'18px 36px', borderRadius:10 }}>
+          <button type="button" onClick={() => navigate('/admin/products')} className="btn-ghost" style={{ fontSize:15, padding:'18px 36px', borderRadius:10 }}>
             Annuler
           </button>
         </div>

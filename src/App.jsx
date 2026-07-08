@@ -11,21 +11,19 @@ import DeliveryModal from './components/DeliveryModal';
 
 import Home from './pages/Home';
 import Catalog from './pages/Catalog';
-import PuppyDetails from './pages/PuppyDetails';
+import ProductDetails from './pages/ProductDetails';
 import Track from './pages/Track';
-
-
 import Legal from './pages/Legal';
 
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminPuppies from './pages/admin/AdminPuppies';
-import AdminPuppyForm from './pages/admin/AdminPuppyForm';
-import AdminReservations from './pages/admin/AdminReservations';
-import AdminReservationDetail from './pages/admin/AdminReservationDetail';
-import AdminClients from './pages/admin/AdminClients';
-import AdminWaitlist from './pages/admin/AdminWaitlist';
+import AdminProducts from './pages/admin/AdminProducts';
+import AdminProductForm from './pages/admin/AdminProductForm';
+import AdminOrders from './pages/admin/AdminOrders';
+import AdminOrderDetail from './pages/admin/AdminOrderDetail';
+import AdminCustomers from './pages/admin/AdminCustomers';
+import AdminStockAlerts from './pages/admin/AdminStockAlerts';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -65,23 +63,21 @@ export default function App() {
       <Routes>
         <Route path="/" element={<PublicRoute element={<Home />} />} />
         <Route path="/catalog" element={<PublicRoute element={<Catalog />} />} />
-        <Route path="/puppy/:slug" element={<PublicRoute element={<PuppyDetails />} />} />
+        <Route path="/product/:slug" element={<PublicRoute element={<ProductDetails />} />} />
         <Route path="/track" element={<PublicRoute element={<Track />} />} />
         <Route path="/track/:number" element={<PublicRoute element={<Track />} />} />
-
-
         <Route path="/legal" element={<PublicRoute element={<Legal />} />} />
 
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
-          <Route path="puppies" element={<AdminPuppies />} />
-          <Route path="puppies/new" element={<AdminPuppyForm />} />
-          <Route path="puppies/:id/edit" element={<AdminPuppyForm />} />
-          <Route path="reservations" element={<AdminReservations />} />
-          <Route path="reservations/:id" element={<AdminReservationDetail />} />
-          <Route path="clients" element={<AdminClients />} />
-          <Route path="waitlist" element={<AdminWaitlist />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="products/new" element={<AdminProductForm />} />
+          <Route path="products/:id/edit" element={<AdminProductForm />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="orders/:id" element={<AdminOrderDetail />} />
+          <Route path="customers" element={<AdminCustomers />} />
+          <Route path="stock-alerts" element={<AdminStockAlerts />} />
         </Route>
       </Routes>
     </BrowserRouter>

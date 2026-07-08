@@ -4,11 +4,11 @@ import { t } from '../utils/i18n';
 
 const links = [
   { to: '/admin', exact: true, icon: '⊞', label: 'Dashboard' },
-  { to: '/admin/reservations', icon: '📋', label: 'Réservations' },
-  { to: '/admin/puppies', icon: '🐶', label: 'Chiots' },
-  { to: '/admin/puppies/new', icon: '＋', label: 'Ajouter un chiot' },
-  { to: '/admin/clients', icon: '👥', label: 'Clients' },
-  { to: '/admin/waitlist', icon: '⏳', label: "Liste d'attente" },
+  { to: '/admin/orders', icon: '📦', label: 'Commandes' },
+  { to: '/admin/products', icon: '❄', label: 'Produits' },
+  { to: '/admin/products/new', icon: '＋', label: 'Ajouter un produit' },
+  { to: '/admin/customers', icon: '👥', label: 'Clients' },
+  { to: '/admin/stock-alerts', icon: '📢', label: 'Alertes stock' },
 ];
 
 export default function AdminSidebar({ mobileOpen = false, onClose }) {
@@ -31,8 +31,8 @@ export default function AdminSidebar({ mobileOpen = false, onClose }) {
     }}>
       <div style={{ padding: '20px 18px', borderBottom: '1px solid var(--border)' }}>
         <NavLink to="/admin" onClick={closeIfMobile} style={{ textDecoration: 'none' }}>
-          <div style={{ fontFamily: "'Outfit',sans-serif", fontSize: 16, fontWeight: 900, color: 'var(--text)', letterSpacing: '0.04em' }}>
-            ANIMAL <span style={{ color: 'var(--primary)' }}>CONCEPT</span>
+          <div style={{ fontFamily: "'Outfit',sans-serif", fontSize: 15, fontWeight: 900, color: 'var(--text)', letterSpacing: '0.02em' }}>
+            AIRCON<span style={{ color: 'var(--primary)' }}>FORTHABITAT</span>
           </div>
           <div style={{ fontSize: 9, letterSpacing: '0.28em', color: 'var(--text-3)', textTransform: 'uppercase', marginTop: 6, fontWeight: 700 }}>
             Administration
@@ -44,14 +44,14 @@ export default function AdminSidebar({ mobileOpen = false, onClose }) {
         <div style={{ background: 'var(--bg-card2)', border: '1px solid var(--border)', borderRadius: 12, padding: 18, textAlign: 'center', boxShadow: 'var(--shadow-sm)' }}>
           <div style={{
             width: 52, height: 52, borderRadius: '50%',
-            background: 'linear-gradient(135deg,#A8652A,#C9762E)',
+            background: 'linear-gradient(135deg,#2E86C1,#00B4D8)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontFamily: "'Outfit',sans-serif", fontWeight: 900, fontSize: 17,
             color: '#fff', margin: '0 auto 12px',
-            boxShadow: '0 6px 18px rgba(201,118,46,0.28)',
+            boxShadow: '0 6px 18px rgba(46,134,193,0.28)',
           }}>A</div>
           <p style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', letterSpacing: '0.01em' }}>Administrateur</p>
-          <p style={{ fontSize: 11, color: 'var(--primary)', marginTop: 4, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>Éleveur</p>
+          <p style={{ fontSize: 11, color: 'var(--primary)', marginTop: 4, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>AIRCONFORTHABITAT</p>
         </div>
 
         <nav style={{ background: 'var(--bg-card2)', border: '1px solid var(--border)', borderRadius: 12, padding: 6, boxShadow: 'var(--shadow-sm)' }}>

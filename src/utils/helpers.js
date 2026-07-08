@@ -3,11 +3,19 @@ export const formatEuro = (amount) => {
   return '€' + new Intl.NumberFormat('en-US').format(Math.round(amount));
 };
 
-export const BREEDS = [
-  'Jack Russell Terrier', 'Labrador Retriever', 'Chihuahua',
-  'Yorkshire Terrier', 'Berger Allemand', 'Berger Malinois',
-  'Bichon Maltais', 'Shih Tzu', 'Golden Retriever', 'Canis Vulgaris',
+export const PRODUCT_TYPES = [
+  'climatiseur_fixe',
+  'climatiseur_mobile',
+  'ventilateur',
 ];
+
+export const BRANDS = [
+  'Daikin', 'Mitsubishi', 'Hitachi', 'LG', 'Samsung',
+  'Midea', 'Gree', 'Panasonic', 'Toshiba', 'Sharp',
+  'Dyson', 'Rowenta', 'Airconfort', 'Technibel', 'Atlantic',
+];
+
+export const ENERGY_CLASSES = ['A+++', 'A++', 'A+', 'A', 'B', 'C', 'D'];
 
 export function timeAgo(date) {
   const d = new Date(date);
@@ -23,28 +31,39 @@ export function formatDate(date) {
   return new Date(date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-export function getAgeString(birthDate, lang = 'fr') {
-  const now = new Date();
-  const birth = new Date(birthDate);
-  const weeks = Math.floor((now - birth) / (7 * 24 * 60 * 60 * 1000));
-  return `${weeks} ${lang === 'fr' ? 'semaines' : lang === 'nl' ? 'weken' : 'weeks'}`;
-}
-
 export const STATUS_LABELS = {
   pending: 'Demande reçue',
-  deposit_confirmed: 'Acompte confirmé',
+  confirmed: 'Confirmée',
   preparing: 'En préparation',
-  ready: 'Prêt(e) à partir',
-  delivered: 'Remis(e) à la famille',
+  shipped: 'Expédiée',
+  delivered: 'Livrée',
   cancelled: 'Annulée',
 };
 
-export const PUPPY_STATUS_LABELS = {
-  available: 'Disponible',
-  reserved: 'Réservé',
-  sold: 'Vendu',
+export const PRODUCT_STATUS_LABELS = {
+  available: 'En stock',
+  out_of_stock: 'Rupture',
+  discontinued: 'Arrêté',
 };
 
 export function getInitials(name) {
   return name?.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2) || '??';
+}
+
+export function getProductTypeLabel(type, lang = 'fr') {
+  const labels = {
+    climatiseur_fixe: { fr: 'Climatiseur fixe', nl: 'Vaste airco', en: 'Fixed AC' },
+    climatiseur_mobile: { fr: 'Climatiseur mobile', nl: 'Mobiele airco', en: 'Portable AC' },
+    ventilateur: { fr: 'Ventilateur', nl: 'Ventilator', en: 'Fan' },
+  };
+  return labels[type]?.[lang] || labels[type]?.fr || type;
+}
+
+export function getTypeIcon(type) {
+  const icons = {
+    climatiseur_fixe: '🏗',
+    climatiseur_mobile: '🔄',
+    ventilateur: '💨',
+  };
+  return icons[type] || '❄';
 }

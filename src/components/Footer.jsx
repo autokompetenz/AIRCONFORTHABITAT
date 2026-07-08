@@ -53,24 +53,23 @@ export default function Footer() {
         <div>
           <Link to="/" style={{ textDecoration: 'none' }}>
             <div style={{ fontFamily: F, fontSize: 18, fontWeight: 900, color: isDark ? '#fff' : '#111', letterSpacing: '0.05em' }}>
-              ANIMAL CONCEPT SRL
+              AIRCONFORTHABITAT
             </div>
             <div style={{ fontSize: 10, letterSpacing: '0.4em', color: 'var(--primary)', textTransform: 'uppercase', marginTop: 3 }}>
-              Oupeye &middot; Belgique
+              Liège &middot; Belgique
             </div>
           </Link>
           <p style={{ fontSize: 13, color: text2, lineHeight: 1.7, marginTop: 16, maxWidth: 300 }}>
-            {lang === 'fr' ? 'Élevage familial de chiots de race, sélectionnés avec soin pour leur santé et leur tempérament.' : lang === 'en' ? 'Family kennel of purebred puppies, carefully selected for health and temperament.' : 'Familiale fokkerij van rashonden, zorgvuldig geselecteerd op gezondheid en temperament.'}
+            {lang === 'fr' ? 'Spécialiste en climatisation, ventilation et pompes à chaleur — vente, installation et service après-vente en Belgique.' : lang === 'en' ? 'Specialist in air conditioning, ventilation and heat pumps — sales, installation and after-sales service in Belgium.' : 'Specialist in airconditioning, ventilatie en warmtepompen — verkoop, installatie en after-sales service in België.'}
           </p>
         </div>
 
         {/* Navigation */}
         <div>
-          <div style={colTitle}>{t('nav_puppies', lang)}</div>
+          <div style={colTitle}>{t('nav_products', lang)}</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 10 : 8 }}>
-            <Link to="/catalog" style={linkStyle}>{t('nav_puppies', lang)}</Link>
-            <Link to="/catalog" style={linkStyle}>{t('nav_kennel', lang)}</Link>
-
+            <Link to="/catalog" style={linkStyle}>{t('nav_products', lang)}</Link>
+            <Link to="/about" style={linkStyle}>{t('nav_company', lang)}</Link>
             <Link to="/track"   style={linkStyle}>{t('nav_track', lang)}</Link>
           </div>
         </div>
@@ -91,16 +90,16 @@ export default function Footer() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 10 : 8, fontSize: 13, color: text }}>
             <a href="mailto:contact@animalconceptsrl.com" style={{
               fontSize: isMobile ? 14 : 13, fontWeight: 700, color: '#fff',
-              background: '#C9762E', textDecoration: 'none', padding: '10px 20px',
+              background: '#2E86C1', textDecoration: 'none', padding: '10px 20px',
               borderRadius: 8, textAlign: 'center', display: 'inline-block',
               fontFamily: "'Outfit',sans-serif", letterSpacing: '0.04em',
               transition: 'background 0.2s',
             }}
-              onMouseOver={e => e.currentTarget.style.background = '#B8681E'}
-              onMouseOut={e => e.currentTarget.style.background = '#C9762E'}>
+              onMouseOver={e => e.currentTarget.style.background = '#1B6B9C'}
+              onMouseOut={e => e.currentTarget.style.background = '#2E86C1'}>
               ✉ {t('contact_label', lang)}
             </a>
-            <span>Oupeye, Belgique</span>
+            <span>Liège, Belgique</span>
             <Link to="/legal" style={linkStyle}>{t('cookies_label', lang)}</Link>
           </div>
         </div>
@@ -121,7 +120,7 @@ export default function Footer() {
         color: text2,
       }}>
         <span>
-          &copy; {new Date().getFullYear()} ANIMAL CONCEPT SRL — {t('copyright', lang)}
+          &copy; {new Date().getFullYear()} AIRCONFORTHABITAT — {t('copyright', lang)}
         </span>
         <span>{t('made_in', lang)}</span>
       </div>

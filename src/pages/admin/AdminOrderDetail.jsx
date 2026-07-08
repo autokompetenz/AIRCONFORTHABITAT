@@ -1,28 +1,27 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { adminAPI } from '../../services/api';
 import { useToastStore } from '../../store';
 import { useBreakpoint } from '../../hooks';
-import { formatEuro, formatDate, timeAgo } from '../../utils/helpers';
+import { formatEuro, formatDate, timeAgo, STATUS_LABELS } from '../../utils/helpers';
 import { Loader } from '../../components/UI';
 
-const STATUS_LABELS = { pending:'En attente', deposit_confirmed:'Acompte confirmé', preparing:'En préparation', ready:'Prêt(e)', delivered:'Remis(e)', cancelled:'Annulée' };
-
-export default function AdminReservationDetail() {
+export default function AdminOrderDetail() {
   const { id } = useParams();
   const { addToast } = useToastStore();
   const { isMobile } = useBreakpoint();
-  const [reservation, setReservation] = useState(null);
+  const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [newStatus, setNewStatus] = useState('');
   const [comment, setComment] = useState('');
   const [saving, setSaving] = useState(false);
   const [replyMsg, setReplyMsg] = useState('');
   const [sendingReply, setSendingReply] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const load = () => {
-    adminAPI.reservationById(id)
-      .then(r => { setReservation(r.data.reservation); setNewStatus(r.data.reservation.status); setLoading(false); })
+    adminAPI.orderById(id)
+      .then(r => { setOrder(r.data.order); setNewStatus(r.data.order.status); setLoading(false); })
       .catch(() => setLoading(false));
   };
   useEffect(load, [id]);
@@ -31,7 +30,7 @@ export default function AdminReservationDetail() {
     e.preventDefault();
     setSaving(true);
     try {
-      const { data } = await adminAPI.updateReservation(id, { status: newStatus, comment });
+      const { data } = await adminAPI.updateOrder(id, { status: newStatus, comment });
       addToast(data.message || 'Mise à jour effectuée', 'success');
       setComment('');
       load();
@@ -41,14 +40,14 @@ export default function AdminReservationDetail() {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm('Supprimer définitivement cette réservation ? Cette action est irréversible.')) return;
     try {
-      await adminAPI.deleteReservation(id);
-      addToast('Réservation supprimée', 'success');
-      window.location.href = '/admin/reservations';
+      await adminAPI.deleteOrder(id);
+      addToast('Commande supprimée', 'success');
+      window.location.href = '/admin/orders';
     } catch (err) {
       addToast(err.response?.data?.error || 'Suppression impossible', 'error');
     }
+    setShowDeleteModal(false);
   };
 
   const handleReply = async () => {
@@ -64,7 +63,7 @@ export default function AdminReservationDetail() {
   };
 
   if (loading) return <div style={{ padding:40 }}><Loader /></div>;
-  if (!reservation)  return <div style={{ padding:40, color:'var(--text-3)', fontSize:16 }}>Réservation introuvable.</div>;
+  if (!order)  return <div style={{ padding:40, color:'var(--text-3)', fontSize:16 }}>Commande introuvable.</div>;
 
   const InfoRow = ({ label, value }) => (
     <div><p style={{ fontSize:11, fontWeight:700, letterSpacing:'0.14em', textTransform:'uppercase', color:'var(--text-3)', marginBottom:4 }}>{label}</p><p style={{ fontSize:15, color:'var(--text)', fontWeight:500 }}>{value || '—'}</p></div>
@@ -76,14 +75,14 @@ export default function AdminReservationDetail() {
     <div style={{ padding:'clamp(24px,5vw,48px) clamp(16px,4vw,44px) 60px', minHeight:'100vh', background:'var(--bg)' }}>
       <div style={{ display:'flex', alignItems:'center', gap:20, marginBottom:32, flexWrap:'wrap' }}>
         <div>
-          <div className="section-eyebrow">Réservation</div>
+          <div className="section-eyebrow">Commande</div>
           <h1 style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:'clamp(26px,3.5vw,40px)', color:'var(--primary)', letterSpacing:'-0.02em' }}>
-            {reservation.reservationNumber}
+            {order.orderNumber}
           </h1>
         </div>
-        <span className={'badge badge-' + reservation.status}>
+        <span className={'badge badge-' + order.status}>
           <span style={{ width:6, height:6, borderRadius:'50%', background:'currentColor', display:'inline-block' }} />
-          {STATUS_LABELS[reservation.status] || reservation.status}
+          {STATUS_LABELS[order.status] || order.status}
         </span>
       </div>
 
@@ -92,55 +91,56 @@ export default function AdminReservationDetail() {
           <div style={cardStyle}>
             <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--primary)', marginBottom:18 }}>Informations client</p>
             <div className={isMobile ? 'admin-grid-2' : ''} style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
-              <InfoRow label="Nom" value={reservation.guestName} />
-              <InfoRow label="Email" value={reservation.guestEmail} />
-              <InfoRow label="Téléphone" value={reservation.guestPhone} />
-              <InfoRow label="Profession" value={reservation.guestProfession} />
-              <InfoRow label="Adresse domicile" value={reservation.guestHomeAddress} />
-              <InfoRow label="Réservé le" value={formatDate(reservation.createdAt)} />
-              <InfoRow label="Paiement" value={reservation.paymentLabel || (reservation.paymentMethod === 'full' ? 'Intégral' : 'Acompte 50%')} />
-              <InfoRow label="A un animal ?" value={reservation.hasPet === true ? 'Oui' : reservation.hasPet === false ? 'Non' : '—'} />
-              <InfoRow label="Déjà perdu un animal ?" value={reservation.hasLostPet === true ? 'Oui' : reservation.hasLostPet === false ? 'Non' : '—'} />
+              <InfoRow label="Nom" value={order.customerName} />
+              <InfoRow label="Email" value={order.customerEmail} />
+              <InfoRow label="Téléphone" value={order.customerPhone} />
+              <InfoRow label="Adresse" value={order.customerAddress} />
+              <InfoRow label="Ville" value={order.customerCity} />
+              <InfoRow label="Date de commande" value={formatDate(order.createdAt)} />
             </div>
-            {reservation.notes && (
+            {order.notes && (
               <div style={{ marginTop:16, padding:'12px 16px', background:'var(--primary-bg)', border:'1px solid var(--primary-border)', borderRadius:8 }}>
                 <p style={{ fontSize:11, fontWeight:700, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--primary)', marginBottom:6 }}>Notes</p>
-                <p style={{ fontSize:14, color:'var(--text-2)', lineHeight:1.6 }}>{reservation.notes}</p>
+                <p style={{ fontSize:14, color:'var(--text-2)', lineHeight:1.6 }}>{order.notes}</p>
               </div>
             )}
           </div>
 
-          {reservation.puppy && (
+          {order.items?.length > 0 && (
             <div style={cardStyle}>
-              <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--primary)', marginBottom:18 }}>Chiot réservé</p>
-              <div style={{ display:'flex', gap:14, alignItems:'center', flexWrap:'wrap' }}>
-                <img src={reservation.puppy.imageUrl || ''} alt={reservation.puppy.name}
-                  style={{ width:96, height:68, objectFit:'cover', borderRadius:8, flexShrink:0, border:'1px solid var(--border)' }} />
-                <div style={{ flex:1, minWidth:160 }}>
-                  <p style={{ fontWeight:700, color:'var(--text)', fontSize:16 }}>{reservation.puppy.name}</p>
-                  <p style={{ fontSize:13, color:'var(--text-3)', marginTop:3 }}>{reservation.puppy.breed}</p>
+              <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--primary)', marginBottom:18 }}>Articles commandés</p>
+              {order.items.map((item, idx) => (
+                <div key={item.id || idx} style={{ display:'flex', gap:14, alignItems:'center', flexWrap:'wrap', padding: idx > 0 ? '12px 0 0 0' : 0, borderTop: idx > 0 ? '1px solid var(--border)' : 'none', marginTop: idx > 0 ? 12 : 0 }}>
+                  {item.image ? (
+                    <img src={item.image} alt={item.name} style={{ width:80, height:60, objectFit:'cover', borderRadius:8, flexShrink:0, border:'1px solid var(--border)' }} />
+                  ) : (
+                    <div style={{ width:80, height:60, borderRadius:8, background:'var(--bg-card2)', border:'1px solid var(--border)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:24, flexShrink:0 }}>❄</div>
+                  )}
+                  <div style={{ flex:1, minWidth:160 }}>
+                    <p style={{ fontWeight:700, color:'var(--text)', fontSize:15 }}>{item.name}</p>
+                    <p style={{ fontSize:13, color:'var(--text-3)', marginTop:2 }}>{item.brand} — {item.model}</p>
+                    {item.quantity > 1 && <p style={{ fontSize:12, color:'var(--text-2)', marginTop:2 }}>Qty: {item.quantity}</p>}
+                  </div>
+                  <p style={{ fontFamily:"'Outfit',sans-serif", fontWeight:800, fontSize:17, color:'var(--primary)', flexShrink:0 }}>{formatEuro(item.price)}</p>
                 </div>
-                <p style={{ fontFamily:"'Outfit',sans-serif", fontWeight:800, fontSize:20, color:'var(--primary)', flexShrink:0 }}>{formatEuro(reservation.puppy.price)}</p>
-              </div>
-              <div className={isMobile ? 'admin-flex-wrap' : ''} style={{ display:'flex', gap:24, marginTop:16, paddingTop:16, borderTop:'1px solid var(--border)' }}>
-                {reservation.discountAmount > 0 && <div><p style={{ fontSize:11, color:'var(--text-3)' }}>{'Réduction'}</p><p style={{ fontWeight:700, color:'#22C55E', fontSize:16 }}>-{formatEuro(reservation.discountAmount)}</p></div>}
-                <div><p style={{ fontSize:11, color:'var(--text-3)' }}>{'Acompte'}</p><p style={{ fontWeight:700, color:'var(--text)', fontSize:16 }}>{formatEuro(reservation.depositAmount || 0)}</p></div>
-                {reservation.balanceAmount > 0 && <div><p style={{ fontSize:11, color:'var(--text-3)' }}>{'Solde'}</p><p style={{ fontWeight:700, color:'var(--text)', fontSize:16 }}>{formatEuro(reservation.balanceAmount)}</p></div>}
-                <div><p style={{ fontSize:11, color:'var(--text-3)' }}>{'Total'}</p><p style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:22, color:'var(--primary)' }}>{formatEuro(reservation.totalPrice || reservation.puppy?.price)}</p></div>
+              ))}
+              <div style={{ marginTop:16, paddingTop:16, borderTop:'1px solid var(--border)', textAlign:'right' }}>
+                <p style={{ fontSize:11, color:'var(--text-3)', marginBottom:4 }}>Total</p>
+                <p style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:24, color:'var(--primary)' }}>{formatEuro(order.total)}</p>
               </div>
             </div>
           )}
 
-          {reservation.tracking?.length > 0 && (
+          {order.tracking?.length > 0 && (
             <div style={cardStyle}>
               <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--primary)', marginBottom:20 }}>Historique</p>
               <div style={{ display:'flex', flexDirection:'column', gap:18 }}>
-                {reservation.tracking.map(event => (
+                {order.tracking.map(event => (
                   <div key={event.id} className="timeline-item">
                     <div className="timeline-dot"><div style={{ width:8, height:8, borderRadius:'50%', background:'var(--primary)' }} /></div>
                     <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:16 }}>
                       <div>
-                        <span className={'badge badge-' + event.status}>{event.status}</span>
+                        <span className={'badge badge-' + event.status}>{STATUS_LABELS[event.status] || event.status}</span>
                         {event.comment && <p style={{ fontSize:13, color:'var(--text-2)', marginTop:8, lineHeight:1.6 }}>{event.comment}</p>}
                       </div>
                       <p style={{ fontSize:12, color:'var(--text-3)', flexShrink:0 }}>{timeAgo(event.createdAt)}</p>
@@ -165,7 +165,7 @@ export default function AdminReservationDetail() {
                   background: newStatus===val ? 'var(--primary-bg)' : 'var(--bg-card2)',
                   transition:'all 0.2s',
                 }}>
-                  <input type="radio" name="status" value={val} checked={newStatus===val} onChange={() => setNewStatus(val)} style={{ accentColor:'#C9762E', width:16, height:16 }} />
+                  <input type="radio" name="status" value={val} checked={newStatus===val} onChange={() => setNewStatus(val)} style={{ accentColor:'#2E86C1', width:16, height:16 }} />
                   <span style={{ fontSize:14, color:'var(--text)', fontWeight: newStatus===val ? 700 : 500 }}>{label}</span>
                 </label>
               ))}
@@ -176,7 +176,7 @@ export default function AdminReservationDetail() {
                 Message au client
               </label>
               <textarea value={comment} onChange={e => setComment(e.target.value)} rows={4}
-                placeholder="Ex : Votre chiot est prêt..." className="input-luxury" style={{ resize:'none', fontSize:14 }} />
+                placeholder="Ex : Votre commande est en préparation..." className="input-luxury" style={{ resize:'none', fontSize:14 }} />
             </div>
 
             <button type="submit" disabled={saving} className="btn-primary" style={{ width:'100%', justifyContent:'center', padding:14, fontSize:14 }}>
@@ -187,11 +187,11 @@ export default function AdminReservationDetail() {
           <div style={cardStyle}>
             <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--primary)', marginBottom:18 }}>Répondre au client</p>
             <div style={{ display:'flex', gap:10, marginBottom:16 }}>
-              <a href={`mailto:${reservation.guestEmail}?subject=${encodeURIComponent('ANIMAL CONCEPT SRL — Suivi réservation ' + reservation.reservationNumber)}`}
+              <a href={`mailto:${order.customerEmail}?subject=${encodeURIComponent('AIRCONFORTHABITAT — Suivi commande ' + order.orderNumber)}`}
                 style={{ flex:1, textAlign:'center', padding:'12px 14px', fontSize:13, fontWeight:700, color:'#fff', background:'var(--primary)', borderRadius:8, textDecoration:'none', fontFamily:"'Outfit',sans-serif" }}>
                 📧 Email
               </a>
-              <a href={`tel:${reservation.guestPhone}`}
+              <a href={`tel:${order.customerPhone}`}
                 style={{ flex:1, textAlign:'center', padding:'12px 14px', fontSize:13, fontWeight:700, color:'var(--text)', background:'var(--bg-card2)', border:'1px solid var(--border)', borderRadius:8, textDecoration:'none', fontFamily:"'Outfit',sans-serif" }}>
                 📞 Appeler
               </a>
@@ -206,14 +206,33 @@ export default function AdminReservationDetail() {
           <div style={{ marginTop:20, padding:20, background:'rgba(239,68,68,0.06)', border:'1px solid rgba(239,68,68,0.2)', borderRadius:12 }}>
             <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.15em', textTransform:'uppercase', color:'#DC2626', marginBottom:12 }}>Zone dangereuse</p>
             <p style={{ fontSize:13, color:'var(--text-3)', marginBottom:14, lineHeight:1.5 }}>
-              Supprimer définitivement cette réservation. Cette action est irréversible.
+              Supprimer définitivement cette commande. Cette action est irréversible.
             </p>
-            <button onClick={handleDelete} className="btn-ghost" style={{ color:'#DC2626', borderColor:'rgba(239,68,68,0.3)', fontSize:13 }}>
-              🗑 Supprimer la réservation
+            <button onClick={() => setShowDeleteModal(true)} className="btn-ghost" style={{ color:'#DC2626', borderColor:'rgba(239,68,68,0.3)', fontSize:13 }}>
+              🗑 Supprimer la commande
             </button>
           </div>
         </div>
       </div>
+
+      {showDeleteModal && (
+        <div style={{ position:'fixed', inset:0, zIndex:1000, display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(0,0,0,0.6)', backdropFilter:'blur(4px)' }}>
+          <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16, padding:32, maxWidth:400, width:'90%', boxShadow:'var(--shadow-lg)' }}>
+            <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.15em', textTransform:'uppercase', color:'#DC2626', marginBottom:12 }}>Confirmation</p>
+            <p style={{ fontSize:15, color:'var(--text)', lineHeight:1.6, marginBottom:20 }}>
+              Êtes-vous sûr de vouloir supprimer définitivement la commande <strong>{order.orderNumber}</strong> ? Cette action est irréversible.
+            </p>
+            <div style={{ display:'flex', gap:12, justifyContent:'flex-end' }}>
+              <button type="button" onClick={() => setShowDeleteModal(false)} className="btn-ghost" style={{ fontSize:14, padding:'12px 20px' }}>
+                Annuler
+              </button>
+              <button type="button" onClick={handleDelete} className="btn-primary" style={{ fontSize:14, padding:'12px 20px', background:'#DC2626', borderColor:'#DC2626' }}>
+                Confirmer la suppression
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

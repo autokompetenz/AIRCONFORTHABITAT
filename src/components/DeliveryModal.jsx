@@ -3,21 +3,21 @@ import { useLangStore } from '../store';
 
 const texts = {
   fr: {
-    title: '🚚 Livraison possible en France',
-    body: 'Nous livrons nos chiots dans toute la France métropolitaine. Transport sécurisé et confortable, avec suivi en temps réel.',
-    note: 'Contactez-nous pour un devis personnalisé.',
+    title: '🚚 Livraison et installation en Belgique',
+    body: 'Nous livrons et installons nos climatiseurs et ventilateurs dans toute la Belgique. Transport sécurisé et installation professionnelle incluse.',
+    note: 'Contactez-nous pour un devis personnalisé selon vos besoins.',
     btn: 'Compris !',
   },
   nl: {
-    title: '🚚 Levering mogelijk in Frankrijk',
-    body: 'Wij leveren onze puppy\'s in heel Europees Frankrijk. Veilig en comfortabel transport met realtime tracking.',
-    note: 'Neem contact met ons op voor een aangepaste offerte.',
-    btn: 'Begrepen !',
+    title: '🚚 Levering en installatie in België',
+    body: 'Wij leveren en installeren onze airconditioners en ventilatoren in heel België. Veilig transport en professionele installatie inbegrepen.',
+    note: 'Neem contact met ons op voor een persoonlijke offerte op maat.',
+    btn: 'Begrepen!',
   },
   en: {
-    title: '🚚 Delivery available in France',
-    body: 'We deliver our puppies throughout metropolitan France. Safe and comfortable transport with real-time tracking.',
-    note: 'Contact us for a personalized quote.',
+    title: '🚚 Delivery and installation in Belgium',
+    body: 'We deliver and install our air conditioners and fans throughout Belgium. Secure transport and professional installation included.',
+    note: 'Contact us for a personalized quote based on your needs.',
     btn: 'Got it!',
   },
 };
@@ -62,8 +62,8 @@ export default function DeliveryModal() {
         <div style={{ textAlign: 'center', marginBottom: 20 }}>
           <div style={{
             width: 64, height: 64, borderRadius: '50%',
-            background: 'rgba(201,118,46,0.12)',
-            border: '2px solid rgba(201,118,46,0.25)',
+            background: 'rgba(46,134,193,0.12)',
+            border: '2px solid rgba(46,134,193,0.25)',
             display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 28, marginBottom: 16,
           }}>🚚</div>

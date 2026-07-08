@@ -5,14 +5,15 @@ import { useLangStore, useThemeStore } from '../store';
 import { t } from '../utils/i18n';
 import { formatEuro } from '../utils/helpers';
 import { useBreakpoint } from '../hooks';
+import { orderAPI } from '../services/api';
 
 const STATUS_ICONS = {
-  pending:          '📝',
-  deposit_confirmed: '💳',
-  preparing:        '💉',
-  ready:            '🐶',
-  delivered:        '🏠',
-  cancelled:        '❌',
+  pending:   '📝',
+  confirmed: '✅',
+  preparing: '📦',
+  shipped:   '🚚',
+  delivered: '🏠',
+  cancelled: '❌',
 };
 
 export default function Track() {
@@ -24,7 +25,7 @@ export default function Track() {
 
   const { number } = useParams();
   const [searchNum, setSearchNum] = useState(number || '');
-  const [reservation, setReservation] = useState(null);
+  const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
 
@@ -34,18 +35,18 @@ export default function Track() {
     try {
       setLoading(true);
       setSearched(true);
-      const { data } = await reservationAPI.track(searchNum.trim().toUpperCase());
-      setReservation(data.reservation);
+      const { data } = await orderAPI.track(searchNum.trim().toUpperCase());
+      setOrder(data.order);
     } catch {
-      setReservation(null);
+      setOrder(null);
     } finally { setLoading(false); }
   };
 
   const timelineSteps = [
     { key: 'pending', label: t('timeline_pending', l) },
-    { key: 'deposit_confirmed', label: t('timeline_deposit', l) },
+    { key: 'confirmed', label: t('timeline_confirmed', l) },
     { key: 'preparing', label: t('timeline_prep', l) },
-    { key: 'ready', label: t('timeline_ready', l) },
+    { key: 'shipped', label: t('timeline_shipped', l) },
     { key: 'delivered', label: t('timeline_done', l) },
   ];
 
@@ -57,9 +58,9 @@ export default function Track() {
             {t('track_order', l)}
           </h1>
           <p style={{ fontSize: 16, color: 'var(--text-3)', maxWidth: 520 }}>
-            {l==='fr'?'Entrez votre numéro de réservation pour suivre l\u2019état de votre futur compagnon.':
-              l==='nl'?'Voer uw reserveringsnummer in om de status van uw toekomstige metgezel te volgen.':
-              l==='en'?'Enter your reservation number to track the status of your future companion.':'Entrez votre num?ro de r?servation pour suivre l’?tat de votre futur compagnon.'}
+            {l==='fr'?'Entrez votre numéro de commande pour suivre l\u2019état de votre livraison.':
+              l==='nl'?'Voer uw bestelnummer in om de status van uw levering te volgen.':
+              l==='en'?'Enter your order number to track the status of your delivery.':'Entrez votre numéro de commande pour suivre l\'état de votre livraison.'}
           </p>
         </div>
       </div>
@@ -75,33 +76,33 @@ export default function Track() {
 
         {loading && (
           <div style={{ textAlign: 'center', padding: 40 }}>
-            <div style={{ width: 40, height: 40, border: '3px solid rgba(201,118,46,0.15)', borderTopColor: '#C9762E', borderRadius: '50%', animation: 'spin 0.9s linear infinite', margin: '0 auto' }} />
+            <div style={{ width: 40, height: 40, border: '3px solid rgba(46,134,193,0.15)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.9s linear infinite', margin: '0 auto' }} />
           </div>
         )}
 
-        {!loading && searched && !reservation && (
+        {!loading && searched && !order && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
             style={{ textAlign: 'center', padding: 40, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12 }}>
             <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
             <h3 style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 800, fontSize: 20, color: 'var(--text)', marginBottom: 8 }}>
-              {l==='fr'?'Réservation introuvable':l==='nl'?'Reservering niet gevonden':l==='en'?'Reservation not found':'Réservation introuvable'}
+              {l==='fr'?'Commande introuvable':l==='nl'?'Bestelling niet gevonden':l==='en'?'Order not found':'Commande introuvable'}
             </h3>
             <p style={{ fontSize: 14, color: 'var(--text-3)' }}>
-              {l==='fr'?'Vérifiez le numéro et réessayez.':l==='nl'?'Controleer het nummer en probeer het opnieuw.':l==='en'?'Check the number and try again.':'V?rifiez le num?ro et r?essayez.'}
+              {l==='fr'?'Vérifiez le numéro et réessayez.':l==='nl'?'Controleer het nummer en probeer het opnieuw.':l==='en'?'Check the number and try again.':'Vérifiez le numéro et réessayez.'}
             </p>
           </motion.div>
         )}
 
-        {reservation && (
+        {order && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: isMobile ? 20 : 24, marginBottom: 20, boxShadow: 'var(--shadow-sm)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                 <div>
                   <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: 4 }}>
-                    {l==='fr'?'Réservation':l==='nl'?'Reservering':l==='en'?'Reservation':'Réservation'}
+                    {l==='fr'?'Commande':l==='nl'?'Bestelling':l==='en'?'Order':'Commande'}
                   </p>
                   <p style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 800, fontSize: 20, color: 'var(--text)' }}>
-                    {reservation.number}
+                    {order.number}
                   </p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
@@ -109,34 +110,30 @@ export default function Track() {
                     {t('total', l)}
                   </p>
                   <p style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 900, fontSize: 22, color: 'var(--primary)' }}>
-                    {formatEuro(reservation.puppy?.price || 0)}
+                    {formatEuro(order.total || 0)}
                   </p>
                 </div>
               </div>
 
-              {reservation.puppy && (
+              {order.product && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: 14, background: 'var(--bg-card2)', borderRadius: 10, marginBottom: 16 }}>
-                  <img src={reservation.puppy.imageUrl || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=100&q=70'}
-                    alt={reservation.puppy.name} style={{ width: 60, height: 60, borderRadius: 10, objectFit: 'cover' }} />
+                  <img src={order.product.imageUrl || 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=100&q=70'}
+                    alt={order.product.name} style={{ width: 60, height: 60, borderRadius: 10, objectFit: 'cover' }} />
                   <div>
-                    <p style={{ fontWeight: 700, fontSize: 16, color: 'var(--text)' }}>{reservation.puppy.name}</p>
-                    <p style={{ fontSize: 13, color: 'var(--text-3)' }}>{reservation.puppy.breed}</p>
+                    <p style={{ fontWeight: 700, fontSize: 16, color: 'var(--text)' }}>{order.product.name}</p>
+                    <p style={{ fontSize: 13, color: 'var(--text-3)' }}>{order.product.brand} · {order.quantity || 1}x</p>
                   </div>
                 </div>
               )}
 
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
                 <div>
-                  <p style={{ fontSize: 11, color: 'var(--text-3)' }}>{t('deposit', l)}</p>
-                  <p style={{ fontWeight: 700, color: 'var(--text)' }}>{formatEuro(reservation.depositAmount)}</p>
-                </div>
-                <div>
-                  <p style={{ fontSize: 11, color: 'var(--text-3)' }}>{t('balance', l)}</p>
-                  <p style={{ fontWeight: 700, color: 'var(--text)' }}>{formatEuro((reservation.puppy?.price || 0) - (reservation.depositAmount || 0))}</p>
-                </div>
-                <div>
                   <p style={{ fontSize: 11, color: 'var(--text-3)' }}>{l==='fr'?'Client':l==='nl'?'Klant':l==='en'?'Client':'Client'}</p>
-                  <p style={{ fontWeight: 700, color: 'var(--text)' }}>{reservation.guestName}</p>
+                  <p style={{ fontWeight: 700, color: 'var(--text)' }}>{order.guestName}</p>
+                </div>
+                <div>
+                  <p style={{ fontSize: 11, color: 'var(--text-3)' }}>{l==='fr'?'Date':l==='nl'?'Datum':l==='en'?'Date':'Date'}</p>
+                  <p style={{ fontWeight: 700, color: 'var(--text)' }}>{new Date(order.createdAt).toLocaleDateString(l==='nl'?'nl-BE':l==='en'?'en-GB':'fr-BE')}</p>
                 </div>
               </div>
             </div>
@@ -144,23 +141,22 @@ export default function Track() {
             {/* Timeline */}
             <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: isMobile ? 20 : 28, boxShadow: 'var(--shadow-sm)' }}>
               <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--primary)', marginBottom: 20 }}>
-                {l==='fr'?'Suivi de la réservation':l==='nl'?'Reserveringsstatus':l==='en'?'Reservation status':'Suivi de la réservation'}
+                {l==='fr'?'Suivi de la commande':l==='nl'?'Bestelstatus':l==='en'?'Order status':'Suivi de la commande'}
               </p>
 
               <div className="reservation-timeline">
                 {timelineSteps.map((step, i) => {
-                  const isActive = reservation.status === step.key || (timelineSteps.findIndex(s => s.key === reservation.status) >= i);
-                  const isCancelled = reservation.status === 'cancelled';
-                  const isCurrentStep = reservation.status === step.key;
+                  const isActive = order.status === step.key || (timelineSteps.findIndex(s => s.key === order.status) >= i);
+                  const isCancelled = order.status === 'cancelled';
+                  const isCurrentStep = order.status === step.key;
 
                   return (
-                    <div key={step.key} className={`timeline-step ${isActive ? 'active' : ''} ${isCancelled && !isActive ? 'cancelled' : ''}`}
-                      style={{ display: 'flex', gap: 14, padding: '0 0 24px', position: 'relative' }}>
+                    <div key={step.key} style={{ display: 'flex', gap: 14, padding: '0 0 24px', position: 'relative' }}>
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
                         <div style={{
                           width: 36, height: 36, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          background: isCurrentStep ? 'linear-gradient(135deg,#A8652A,#C9762E)' : isActive ? 'rgba(201,118,46,0.15)' : 'var(--bg-card2)',
-                          border: `2px solid ${isCurrentStep ? '#C9762E' : isActive ? 'rgba(201,118,46,0.4)' : 'var(--border)'}`,
+                          background: isCurrentStep ? 'linear-gradient(135deg,var(--secondary),var(--primary))' : isActive ? 'var(--primary-bg)' : 'var(--bg-card2)',
+                          border: `2px solid ${isCurrentStep ? 'var(--primary)' : isActive ? 'rgba(46,134,193,0.4)' : 'var(--border)'}`,
                           fontSize: 16, zIndex: 2, transition: 'all 0.3s',
                         }}>
                           <span style={{ fontSize: 14 }}>{STATUS_ICONS[step.key]}</span>
@@ -168,11 +164,11 @@ export default function Track() {
                         {i < timelineSteps.length - 1 && (
                           <div style={{
                             flex: 1, width: 2,
-                            background: isActive ? 'linear-gradient(to bottom,#C9762E,rgba(201,118,46,0.2))' : 'var(--border)',
+                            background: isActive ? 'linear-gradient(to bottom,var(--primary),rgba(46,134,193,0.2))' : 'var(--border)',
                           }} />
                         )}
                       </div>
-                      <div style={{ paddingBottom: i < timelineSteps.length - 1 ? 0 : 0 }}>
+                      <div>
                         <p style={{ fontSize: 14, fontWeight: isCurrentStep ? 700 : 500, color: isActive ? 'var(--text)' : 'var(--text-3)', marginBottom: 2 }}>
                           {step.label}
                         </p>
@@ -183,7 +179,7 @@ export default function Track() {
               </div>
 
               {/* Cancelled */}
-              {reservation.status === 'cancelled' && (
+              {order.status === 'cancelled' && (
                 <div style={{ marginTop: 12, padding: 14, background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: 8, textAlign: 'center' }}>
                   <p style={{ fontSize: 14, fontWeight: 700, color: '#DC2626' }}>{t('timeline_cancel', l)}</p>
                 </div>
@@ -195,5 +191,3 @@ export default function Track() {
     </div>
   );
 }
-
-import { reservationAPI } from '../services/api';

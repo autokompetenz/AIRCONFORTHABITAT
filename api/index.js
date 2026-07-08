@@ -5,8 +5,9 @@ const multer = require('multer');
 const { createClient } = require('@supabase/supabase-js');
 const rateLimit = require('express-rate-limit');
 const { prisma } = require('../lib/prisma.js');
-const { sendReservationConfirmation, sendAdminNotification, sendStatusNotification, sendReplyToCustomer } = require('../lib/mailer.js');
-const { generateReservationNumber } = require('../lib/helpers.js');
+const { sendOrderConfirmation, sendAdminNotification, sendStatusNotification, sendReplyToCustomer } = require('../lib/mailer.js');
+const { generateOrderNumber } = require('../lib/helpers.js');
+const { Prisma } = require('@prisma/client');
 
 const app = express();
 
@@ -17,13 +18,12 @@ if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET manquant');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
-// Ensure storage bucket exists
 (async () => {
   const { data: buckets } = await supabase.storage.listBuckets();
-  if (!buckets?.find(b => b.name === 'puppies')) {
-    const { error } = await supabase.storage.createBucket('puppies', { public: true });
-    if (error) console.error('⚠ Erreur création bucket puppies:', error.message);
-    else console.log('✅ Bucket puppies créé');
+  if (!buckets?.find(b => b.name === 'products')) {
+    const { error } = await supabase.storage.createBucket('products', { public: true });
+    if (error) console.error('⚠ Erreur création bucket products:', error.message);
+    else console.log('✅ Bucket products créé');
   }
 })();
 
@@ -31,15 +31,15 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024, fieldSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    if (file.mimetype && (file.mimetype.startsWith('image/') || file.mimetype === 'application/pdf')) {
+    if (file.mimetype && file.mimetype.startsWith('image/')) {
       cb(null, true);
     } else {
-      cb(new Error('Seuls les fichiers image et PDF sont autorisés'), false);
+      cb(new Error('Seuls les fichiers image sont autorisés'), false);
     }
   }
 });
 
-async function uploadFiles(files, folder = 'puppies') {
+async function uploadFiles(files, folder = 'products') {
   const sorted = [...files].sort((a, b) =>
     a.originalname.localeCompare(b.originalname, undefined, { numeric: true })
   );
@@ -84,9 +84,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
-// Rate limiter for admin code attempts
 const adminLoginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,
@@ -125,183 +124,321 @@ function authenticateAdmin(req, res, next) {
 app.get('/api', (req, res) => {
   res.json({
     status: 'ok',
-    service: 'ANIMAL CONCEPT SRL API',
-    version: '1.0.0',
+    service: 'AIRCONFORTHABITAT API',
+    version: '2.0.0',
     time: new Date().toISOString()
   });
 });
 
-// ─── Puppies Routes ────────────────────────────────────────────────────────
-app.get('/api/puppies', async (req, res) => {
+// ─── Products ─────────────────────────────────────────────────────────────
+app.get('/api/products', async (req, res) => {
   try {
-    const { breed, sex, status, featured, search, minPrice, maxPrice, limit, page = 1 } = req.query;
+    const { type, brand, status, featured, search, minPrice, maxPrice, sort, limit, page = 1 } = req.query;
     const take = limit ? parseInt(limit) : undefined;
     const skip = page ? (parseInt(page) - 1) * (take || 12) : 0;
-    const where = { isActive: true, status: { not: 'sold' } };
+    const where = { isActive: true, status: { not: 'discontinued' } };
 
-    if (breed) where.breed = { contains: breed, mode: 'insensitive' };
-    if (sex) where.sex = sex;
+    if (type) where.type = type;
+    if (brand) where.brand = { contains: brand, mode: 'insensitive' };
     if (status) where.status = status;
     if (featured !== undefined) where.featured = featured === 'true';
     if (search) where.OR = [
       { name: { contains: search, mode: 'insensitive' } },
-      { breed: { contains: search, mode: 'insensitive' } },
+      { brand: { contains: search, mode: 'insensitive' } },
+      { model: { contains: search, mode: 'insensitive' } },
       { description: { contains: search, mode: 'insensitive' } },
     ];
     if (minPrice) where.price = { ...where.price, gte: parseFloat(minPrice) };
     if (maxPrice) where.price = { ...where.price, lte: parseFloat(maxPrice) };
 
-    const [puppies, total] = await Promise.all([
-      prisma.puppy.findMany({ where, take, skip, orderBy: { createdAt: 'desc' } }),
-      prisma.puppy.count({ where })
+    let orderBy = { createdAt: 'desc' };
+    if (sort === 'price_asc') orderBy = { price: 'asc' };
+    else if (sort === 'price_desc') orderBy = { price: 'desc' };
+    else if (sort === 'newest') orderBy = { createdAt: 'desc' };
+
+    const [products, total] = await Promise.all([
+      prisma.product.findMany({ where, take, skip, orderBy, include: { category: true } }),
+      prisma.product.count({ where })
     ]);
 
-    res.json({ puppies, total });
+    res.json({ products, total });
   } catch (error) {
-    console.error('GET /api/puppies error:', error);
-    res.status(500).json({ error: error.message || 'Erreur serveur', puppies: [], total: 0 });
+    console.error('GET /api/products error:', error);
+    res.status(500).json({ error: error.message || 'Erreur serveur', products: [], total: 0 });
   }
 });
 
-app.get('/api/puppies/breeds', async (req, res) => {
+app.get('/api/products/types', async (req, res) => {
   try {
-    const breeds = await prisma.puppy.groupBy({
-      by: ['breed'],
-      where: { isActive: true, status: { not: 'sold' } },
-      _count: { breed: true }
+    const types = await prisma.product.groupBy({
+      by: ['type'],
+      where: { isActive: true, status: { not: 'discontinued' } },
+      _count: { type: true }
     });
-    res.json({ breeds: breeds.map(b => ({ breed: b.breed, count: b._count.breed })) });
+    res.json({ types: types.map(t => ({ type: t.type, count: t._count.type })) });
   } catch (error) {
-    res.status(500).json({ error: 'Erreur serveur', breeds: [] });
+    res.status(500).json({ error: 'Erreur serveur', types: [] });
   }
 });
 
-app.get('/api/puppies/:id', async (req, res) => {
+app.get('/api/products/brands', async (req, res) => {
+  try {
+    const brands = await prisma.product.groupBy({
+      by: ['brand'],
+      where: { isActive: true, status: { not: 'discontinued' } },
+      _count: { brand: true }
+    });
+    res.json({ brands: brands.map(b => ({ brand: b.brand, count: b._count.brand })) });
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur', brands: [] });
+  }
+});
+
+app.get('/api/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const puppyId = Number(id);
-    if (isNaN(puppyId) || puppyId <= 0) {
+    const productId = Number(id);
+    if (isNaN(productId) || productId <= 0) {
       return res.status(400).json({ error: 'ID invalide' });
     }
-    const puppy = await prisma.puppy.findUnique({ where: { id: puppyId } });
-    if (!puppy) return res.status(404).json({ error: 'Chiot non trouvé' });
-    res.json({ puppy });
+    const product = await prisma.product.findUnique({ where: { id: productId }, include: { category: true } });
+    if (!product) return res.status(404).json({ error: 'Produit non trouvé' });
+    res.json({ product });
   } catch (error) {
     res.status(500).json({ error: error.message || 'Erreur serveur' });
   }
 });
 
-// ─── Admin: Puppies CRUD ──────────────────────────────────────────────────
-app.get('/api/admin/puppies', authenticateAdmin, async (req, res) => {
+// ─── Orders ───────────────────────────────────────────────────────────────
+app.post('/api/orders', async (req, res) => {
   try {
-    const puppies = await prisma.puppy.findMany({ orderBy: { createdAt: 'desc' } });
-    res.json({ puppies, total: puppies.length });
-  } catch (error) {
-    res.status(500).json({ error: 'Erreur serveur', puppies: [], total: 0 });
+    const { items, customerName, customerEmail, customerPhone, customerAddress, deliveryMethod, deliveryAddress, notes } = req.body;
+    if (!customerName || !customerEmail || !customerPhone) {
+      return res.status(400).json({ error: 'Nom, email et téléphone requis' });
+    }
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: 'Au moins un produit requis' });
+    }
+
+    // Validate products
+    const productIds = items.map(i => parseInt(i.productId)).filter(id => !isNaN(id));
+    const products = await prisma.product.findMany({ where: { id: { in: productIds }, isActive: true } });
+    if (products.length === 0) {
+      return res.status(404).json({ error: 'Produits non trouvés' });
+    }
+
+    // Calculate total
+    let totalAmount = 0;
+    const orderItems = items.map(item => {
+      const product = products.find(p => p.id === parseInt(item.productId));
+      if (!product) return null;
+      const qty = parseInt(item.quantity) || 1;
+      const price = product.salePrice || product.price;
+      totalAmount += price * qty;
+      return { productId: product.id, quantity: qty, price };
+    }).filter(Boolean);
+
+    let orderNumber;
+    let exists = true;
+    while (exists) {
+      orderNumber = generateOrderNumber();
+      exists = !!(await prisma.order.findUnique({ where: { orderNumber } }));
+    }
+
+    // Upsert customer
+    let customer = await prisma.customer.findFirst({ where: { email: customerEmail } });
+    if (!customer) {
+      customer = await prisma.customer.create({
+        data: { name: customerName, email: customerEmail, phone: customerPhone, address: deliveryAddress || customerAddress || null }
+      });
+    }
+
+    const order = await prisma.$transaction(async (tx) => {
+      const newOrder = await tx.order.create({
+        data: {
+          orderNumber,
+          customerId: customer.id,
+          customerName, customerEmail, customerPhone,
+          customerAddress: customerAddress || null,
+          deliveryMethod: deliveryMethod || 'pickup',
+          deliveryAddress: deliveryAddress || null,
+          totalAmount,
+          notes: notes || null,
+          status: 'pending',
+          items: {
+            create: orderItems,
+          },
+        },
+      });
+
+      await tx.orderTracking.create({
+        data: {
+          orderId: newOrder.id,
+          status: 'pending',
+          comment: 'Demande de commande reçue',
+        },
+      });
+
+      return newOrder;
+    });
+
+    const orderWithItems = await prisma.order.findUnique({
+      where: { id: order.id },
+      include: { items: { include: { product: true } } },
+    });
+
+    try {
+      await sendOrderConfirmation({ email: customerEmail, name: customerName, order, items: orderWithItems.items });
+    } catch (err) {
+      console.error('Confirmation email error:', err.message);
+    }
+    try {
+      await sendAdminNotification({ order, items: orderWithItems.items });
+    } catch (err) {
+      console.error('Admin notification error:', err.message);
+    }
+
+    res.status(201).json({ success: true, orderNumber: order.orderNumber, order });
+  } catch (e) {
+    console.error('Create order error:', e);
+    res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 
-app.get('/api/admin/puppies/:id', authenticateAdmin, async (req, res) => {
+app.get('/api/orders/track/:orderNumber', async (req, res) => {
+  try {
+    const { orderNumber } = req.params;
+    const order = await prisma.order.findUnique({
+      where: { orderNumber },
+      include: {
+        items: { include: { product: true } },
+        tracking: { orderBy: { createdAt: 'desc' } },
+      },
+    });
+    if (!order) return res.status(404).json({ error: 'Commande non trouvée' });
+    res.json({ order });
+  } catch (e) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+// ─── Admin: Products CRUD ─────────────────────────────────────────────────
+app.get('/api/admin/products', authenticateAdmin, async (req, res) => {
+  try {
+    const products = await prisma.product.findMany({ orderBy: { createdAt: 'desc' }, include: { category: true } });
+    res.json({ products, total: products.length });
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur', products: [], total: 0 });
+  }
+});
+
+app.get('/api/admin/products/:id', authenticateAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const puppyId = Number(id);
-    if (isNaN(puppyId) || puppyId <= 0) return res.status(400).json({ error: 'ID invalide' });
-    const puppy = await prisma.puppy.findUnique({ where: { id: puppyId } });
-    if (!puppy) return res.status(404).json({ error: 'Chiot non trouvé' });
-    res.json({ puppy });
+    const productId = Number(id);
+    if (isNaN(productId) || productId <= 0) return res.status(400).json({ error: 'ID invalide' });
+    const product = await prisma.product.findUnique({ where: { id: productId }, include: { category: true } });
+    if (!product) return res.status(404).json({ error: 'Produit non trouvé' });
+    res.json({ product });
   } catch (error) {
     res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 
-app.post('/api/admin/puppies', authenticateAdmin, upload.any(), async (req, res) => {
+app.post('/api/admin/products', authenticateAdmin, upload.any(), async (req, res) => {
   req.files = (req.files || []).filter(f => f.fieldname === 'images');
   try {
-    const sexMap = { 'male': 'Male', 'female': 'Female' };
-    if (req.body.sex) req.body.sex = sexMap[req.body.sex.toLowerCase()] || req.body.sex;
-
-    const requiredFields = ['name', 'breed', 'sex', 'birthDate', 'price'];
+    const requiredFields = ['name', 'type', 'brand', 'model', 'price'];
     const missingFields = requiredFields.filter(field => !req.body[field]);
     if (missingFields.length > 0) {
       return res.status(400).json({ error: `Champs obligatoires: ${missingFields.join(', ')}` });
     }
 
-    const puppyData = {
+    const slug = req.body.name
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_]+/g, '-')
+      .replace(/-+/g, '-')
+      .trim() + '-' + Date.now();
+
+    const productData = {
       name: req.body.name,
-      breed: req.body.breed,
-      sex: req.body.sex,
-      birthDate: new Date(req.body.birthDate),
-      color: req.body.color || 'Non spécifiée',
-      price: parseFloat(req.body.price),
-      deposit: req.body.deposit ? parseFloat(req.body.deposit) : Math.round(parseFloat(req.body.price) * 0.25),
-      microchipNumber: req.body.microchipNumber || null,
-      vaccinationStatus: req.body.vaccinationStatus || 'À jour',
-      dewormingStatus: req.body.dewormingStatus || 'À jour',
-      weightEstimatedAdult: req.body.weightEstimatedAdult ? parseFloat(req.body.weightEstimatedAdult) : null,
+      slug,
+      type: req.body.type,
+      brand: req.body.brand,
+      model: req.body.model,
       description: req.body.description || null,
-      pedigreeDocUrl: req.body.pedigreeDocUrl || null,
-      healthCertificateUrl: req.body.healthCertificateUrl || null,
-      parentMotherName: req.body.parentMotherName || null,
-      parentFatherName: req.body.parentFatherName || null,
+      price: parseFloat(req.body.price),
+      salePrice: req.body.salePrice ? parseFloat(req.body.salePrice) : null,
+      btu: req.body.btu || null,
+      surface: req.body.surface || null,
+      noiseLevel: req.body.noiseLevel ? parseFloat(req.body.noiseLevel) : null,
+      energyClass: req.body.energyClass || null,
+      cop: req.body.cop ? parseFloat(req.body.cop) : null,
+      seer: req.body.seer ? parseFloat(req.body.seer) : null,
+      scop: req.body.scop ? parseFloat(req.body.scop) : null,
+      color: req.body.color || null,
+      weight: req.body.weight ? parseFloat(req.body.weight) : null,
+      dimensions: req.body.dimensions || null,
+      warranty: req.body.warranty || null,
+      stock: req.body.stock ? parseInt(req.body.stock) : 0,
       status: req.body.status || 'available',
-      availableFrom: req.body.availableFrom ? new Date(req.body.availableFrom) : null,
-      location: req.body.location || null,
       featured: req.body.featured === 'true' || req.body.featured === true,
       isActive: req.body.isActive !== 'false' && req.body.isActive !== false,
+      categoryId: req.body.categoryId ? parseInt(req.body.categoryId) : null,
       videoUrl: req.body.videoUrl || null,
     };
 
     if (req.files && req.files.length > 0) {
-      Object.assign(puppyData, await uploadFiles(req.files, 'puppies'));
+      Object.assign(productData, await uploadFiles(req.files, 'products'));
     }
 
-    const puppy = await prisma.puppy.create({ data: puppyData });
-    res.status(201).json({ puppy });
+    const product = await prisma.product.create({ data: productData });
+    res.status(201).json({ product });
   } catch (error) {
-    console.error('Create puppy error:', error);
-    res.status(500).json({ error: 'Erreur lors de la création du chiot' });
+    console.error('Create product error:', error);
+    res.status(500).json({ error: 'Erreur lors de la création du produit' });
   }
 });
 
-app.put('/api/admin/puppies/:id', authenticateAdmin, upload.any(), async (req, res) => {
+app.put('/api/admin/products/:id', authenticateAdmin, upload.any(), async (req, res) => {
   req.files = (req.files || []).filter(f => f.fieldname === 'images');
   try {
-    const sexMap = { 'male': 'Male', 'female': 'Female' };
-    if (req.body.sex) req.body.sex = sexMap[req.body.sex.toLowerCase()] || req.body.sex;
-
     const { id } = req.params;
-    const puppyId = Number(id);
-    if (isNaN(puppyId) || puppyId <= 0) {
+    const productId = Number(id);
+    if (isNaN(productId) || productId <= 0) {
       return res.status(400).json({ error: 'ID invalide' });
     }
 
-    const puppyData = {
+    const productData = {
       name: req.body.name,
-      breed: req.body.breed,
-      sex: req.body.sex,
-      birthDate: new Date(req.body.birthDate),
-      color: req.body.color || 'Non spécifiée',
-      price: parseFloat(req.body.price),
-      deposit: req.body.deposit ? parseFloat(req.body.deposit) : Math.round(parseFloat(req.body.price) * 0.25),
-      microchipNumber: req.body.microchipNumber || null,
-      vaccinationStatus: req.body.vaccinationStatus || 'À jour',
-      dewormingStatus: req.body.dewormingStatus || 'À jour',
-      weightEstimatedAdult: req.body.weightEstimatedAdult ? parseFloat(req.body.weightEstimatedAdult) : null,
+      type: req.body.type,
+      brand: req.body.brand,
+      model: req.body.model,
       description: req.body.description || null,
-      pedigreeDocUrl: req.body.pedigreeDocUrl || null,
-      healthCertificateUrl: req.body.healthCertificateUrl || null,
-      parentMotherName: req.body.parentMotherName || null,
-      parentFatherName: req.body.parentFatherName || null,
+      price: parseFloat(req.body.price),
+      salePrice: req.body.salePrice ? parseFloat(req.body.salePrice) : null,
+      btu: req.body.btu || null,
+      surface: req.body.surface || null,
+      noiseLevel: req.body.noiseLevel ? parseFloat(req.body.noiseLevel) : null,
+      energyClass: req.body.energyClass || null,
+      cop: req.body.cop ? parseFloat(req.body.cop) : null,
+      seer: req.body.seer ? parseFloat(req.body.seer) : null,
+      scop: req.body.scop ? parseFloat(req.body.scop) : null,
+      color: req.body.color || null,
+      weight: req.body.weight ? parseFloat(req.body.weight) : null,
+      dimensions: req.body.dimensions || null,
+      warranty: req.body.warranty || null,
+      stock: req.body.stock ? parseInt(req.body.stock) : 0,
       status: req.body.status || 'available',
-      availableFrom: req.body.availableFrom ? new Date(req.body.availableFrom) : null,
-      location: req.body.location || null,
       featured: req.body.featured === 'true' || req.body.featured === true,
       isActive: req.body.isActive !== 'false' && req.body.isActive !== false,
+      categoryId: req.body.categoryId ? parseInt(req.body.categoryId) : null,
       videoUrl: req.body.videoUrl || null,
     };
 
     if (req.files && req.files.length > 0) {
-      Object.assign(puppyData, await uploadFiles(req.files, 'puppies'));
+      Object.assign(productData, await uploadFiles(req.files, 'products'));
     }
 
     if (req.body.existingImages) {
@@ -310,302 +447,161 @@ app.put('/api/admin/puppies/:id', authenticateAdmin, upload.any(), async (req, r
         : [req.body.existingImages];
       existingImages.forEach((url, idx) => {
         const fieldName = idx === 0 ? 'imageUrl' : `imageUrl${idx + 1}`;
-        if (!puppyData[fieldName]) puppyData[fieldName] = url;
+        if (!productData[fieldName]) productData[fieldName] = url;
       });
     }
 
-    const puppy = await prisma.puppy.update({ where: { id: puppyId }, data: puppyData });
-    res.json({ puppy });
+    const product = await prisma.product.update({ where: { id: productId }, data: productData });
+    res.json({ product });
   } catch (error) {
-    console.error('Update puppy error:', error);
+    console.error('Update product error:', error);
     res.status(500).json({ error: 'Erreur lors de la mise à jour' });
   }
 });
 
-app.patch('/api/admin/puppies/:id/toggle', authenticateAdmin, async (req, res) => {
+app.patch('/api/admin/products/:id/toggle', authenticateAdmin, async (req, res) => {
   try {
-    const puppyId = parseInt(req.params.id);
-    if (isNaN(puppyId)) return res.status(400).json({ error: 'ID invalide' });
-    const existing = await prisma.puppy.findUnique({ where: { id: puppyId } });
-    if (!existing) return res.status(404).json({ error: 'Chiot non trouvé' });
-    const puppy = await prisma.puppy.update({
-      where: { id: puppyId },
+    const productId = parseInt(req.params.id);
+    if (isNaN(productId)) return res.status(400).json({ error: 'ID invalide' });
+    const existing = await prisma.product.findUnique({ where: { id: productId } });
+    if (!existing) return res.status(404).json({ error: 'Produit non trouvé' });
+    const product = await prisma.product.update({
+      where: { id: productId },
       data: { isActive: !existing.isActive },
     });
-    res.json({ puppy });
+    res.json({ product });
   } catch (e) {
     res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 
-app.delete('/api/admin/puppies/:id', authenticateAdmin, async (req, res) => {
+app.delete('/api/admin/products/:id', authenticateAdmin, async (req, res) => {
   try {
-    const puppyId = parseInt(req.params.id);
-    if (isNaN(puppyId) || puppyId <= 0) return res.status(400).json({ error: 'ID invalide' });
-    const existing = await prisma.puppy.findUnique({ where: { id: puppyId } });
-    if (!existing) return res.status(404).json({ error: 'Chiot non trouvé' });
+    const productId = parseInt(req.params.id);
+    if (isNaN(productId) || productId <= 0) return res.status(400).json({ error: 'ID invalide' });
+    const existing = await prisma.product.findUnique({ where: { id: productId } });
+    if (!existing) return res.status(404).json({ error: 'Produit non trouvé' });
     await prisma.$transaction([
-      prisma.reservationTracking.deleteMany({ where: { reservation: { puppyId } } }),
-      prisma.reservation.deleteMany({ where: { puppyId } }),
-      prisma.puppy.delete({ where: { id: puppyId } }),
+      prisma.orderItem.deleteMany({ where: { productId } }),
+      prisma.product.delete({ where: { id: productId } }),
     ]);
-    res.json({ success: true, message: 'Chiot supprimé' });
+    res.json({ success: true, message: 'Produit supprimé' });
   } catch (e) {
-    console.error('Delete puppy error:', e);
+    console.error('Delete product error:', e);
     res.status(500).json({ error: 'Erreur lors de la suppression' });
   }
 });
 
-// ─── Waitlist ───────────────────────────────────────────────────────────────
-app.post('/api/waitlist', async (req, res) => {
-  try {
-    const { breed, name, email, phone } = req.body;
-    if (!breed || !name || !email) {
-      return res.status(400).json({ error: 'Race, nom et email requis' });
-    }
-    const entry = await prisma.waitlistEntry.create({
-      data: { breed, name, email, phone: phone || null }
-    });
-    res.status(201).json({ success: true, entry });
-  } catch (e) {
-    res.status(500).json({ error: 'Erreur serveur' });
-  }
-});
-
-// ─── Reservations ─────────────────────────────────────────────────────────
-app.post('/api/reservations', async (req, res) => {
-  try {
-    const { puppyId, guestName, guestEmail, guestPhone, guestProfession, guestHomeAddress, deliveryMethod, deliveryAddress, notes, paymentMethod, hasPet, hasLostPet } = req.body;
-    if (!puppyId || !guestName || !guestEmail || !guestPhone) {
-      return res.status(400).json({ error: 'Champs obligatoires manquants' });
-    }
-
-    const puppy = await prisma.puppy.findUnique({ where: { id: parseInt(puppyId) } });
-    if (!puppy || !puppy.isActive || puppy.status === 'sold') {
-      return res.status(404).json({ error: 'Chiot non trouvé' });
-    }
-
-    // Payment logic
-    const isFullPayment = paymentMethod === 'full';
-    const discountPercent = isFullPayment ? 15 : 0;
-    const discountAmount = isFullPayment ? Math.round(puppy.price * 0.15) : 0;
-    const totalPrice = puppy.price - discountAmount;
-    const depositAmount = isFullPayment ? totalPrice : Math.round(puppy.price * 0.5);
-    const balanceAmount = isFullPayment ? 0 : puppy.price - depositAmount;
-    const paymentLabel = isFullPayment
-      ? `Paiement intégral (-${discountPercent}%)`
-      : `Acompte 50% (solde à la livraison)`;
-
-    let reservationNumber;
-    let exists = true;
-    while (exists) {
-      reservationNumber = generateReservationNumber();
-      exists = !!(await prisma.reservation.findUnique({ where: { reservationNumber } }));
-    }
-
-    // Upsert guest
-    let guest = await prisma.guest.findFirst({ where: { email: guestEmail } });
-    if (!guest) {
-      guest = await prisma.guest.create({
-        data: { name: guestName, email: guestEmail, phone: guestPhone, address: deliveryAddress || null, hasPet: hasPet === 'true' || hasPet === true || null, hasLostPet: hasLostPet === 'true' || hasLostPet === true || null }
-      });
-    }
-
-    const reservation = await prisma.$transaction(async (tx) => {
-      const newReservation = await tx.reservation.create({
-        data: {
-          reservationNumber,
-          puppyId: puppy.id,
-          guestId: guest.id,
-          guestName, guestEmail, guestPhone,
-          guestProfession: guestProfession || null,
-          guestHomeAddress: guestHomeAddress || null,
-          paymentMethod: isFullPayment ? 'full' : 'deposit',
-          paymentLabel,
-          hasPet: hasPet === 'true' || hasPet === true || null,
-          hasLostPet: hasLostPet === 'true' || hasLostPet === true || null,
-          discountPercent, discountAmount, totalPrice,
-          depositAmount, balanceAmount,
-          deliveryMethod: deliveryMethod || 'pickup',
-          deliveryAddress: deliveryAddress || null,
-          notes: notes || null,
-          status: 'pending',
-        },
-      });
-
-      await tx.reservationTracking.create({
-        data: {
-          reservationId: newReservation.id,
-          status: 'pending',
-          comment: 'Demande de réservation reçue',
-        },
-      });
-
-      return newReservation;
-    });
-
-    // Send confirmation emails (sequential, shares 1 pooled connection)
-    try {
-      await sendReservationConfirmation({ email: guestEmail, name: guestName, reservation, puppy });
-      console.log('Confirmation email sent to', guestEmail);
-    } catch (err) {
-      console.error('Confirmation email error:', err.message);
-    }
-    try {
-      await sendAdminNotification({ reservation, puppy });
-      console.log('Admin notification sent');
-    } catch (err) {
-      console.error('Admin notification error:', err.message);
-    }
-
-    res.status(201).json({ success: true, reservationNumber: reservation.reservationNumber, reservation });
-  } catch (e) {
-    console.error('Create reservation error:', e);
-    res.status(500).json({ error: 'Erreur serveur' });
-  }
-});
-
-app.get('/api/reservations/track/:reservationNumber', async (req, res) => {
-  try {
-    const { reservationNumber } = req.params;
-    const reservation = await prisma.reservation.findUnique({
-      where: { reservationNumber },
-      include: {
-        puppy: true,
-        tracking: { orderBy: { createdAt: 'desc' } },
-      },
-    });
-    if (!reservation) return res.status(404).json({ error: 'Réservation non trouvée' });
-    res.json({ reservation });
-  } catch (e) {
-    res.status(500).json({ error: 'Erreur serveur' });
-  }
-});
-
-// ─── Admin: Reservations ───────────────────────────────────────────────────
-app.get('/api/admin/reservations', authenticateAdmin, async (req, res) => {
+// ─── Admin: Orders ─────────────────────────────────────────────────────────
+app.get('/api/admin/orders', authenticateAdmin, async (req, res) => {
   try {
     const { status, page = 1, limit = 20 } = req.query;
     const where = status ? { status } : {};
-    const [reservations, total] = await Promise.all([
-      prisma.reservation.findMany({
+    const [orders, total] = await Promise.all([
+      prisma.order.findMany({
         where,
         include: {
-          puppy: { select: { name: true, breed: true, imageUrl: true } },
+          items: { include: { product: { select: { name: true, imageUrl: true } } } },
         },
         orderBy: { createdAt: 'desc' },
         skip: (parseInt(page)-1)*parseInt(limit),
         take: parseInt(limit),
       }),
-      prisma.reservation.count({ where }),
+      prisma.order.count({ where }),
     ]);
-    const statusCounts = await prisma.reservation.groupBy({
+    const statusCounts = await prisma.order.groupBy({
       by: ['status'],
       _count: { status: true },
     });
-    res.json({ reservations, total, statusCounts });
+    res.json({ orders, total, statusCounts });
   } catch (e) {
     res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 
-app.get('/api/admin/reservations/:id', authenticateAdmin, async (req, res) => {
+app.get('/api/admin/orders/:id', authenticateAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const reservationId = parseInt(id);
-    const isNumeric = !isNaN(reservationId) && reservationId > 0;
-    const where = isNumeric ? { id: reservationId } : { reservationNumber: id };
+    const orderId = parseInt(id);
+    const isNumeric = !isNaN(orderId) && orderId > 0;
+    const where = isNumeric ? { id: orderId } : { orderNumber: id };
 
-    const reservation = await prisma.reservation.findFirst({
+    const order = await prisma.order.findFirst({
       where,
       include: {
-        puppy: true,
+        items: { include: { product: true } },
         tracking: { orderBy: { createdAt: 'desc' } },
       },
     });
-    if (!reservation) return res.status(404).json({ error: 'Réservation non trouvée' });
-    res.json({ reservation });
+    if (!order) return res.status(404).json({ error: 'Commande non trouvée' });
+    res.json({ order });
   } catch (e) {
     res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 
-app.patch('/api/admin/reservations/:id', authenticateAdmin, async (req, res) => {
+app.patch('/api/admin/orders/:id', authenticateAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { status, comment } = req.body;
-    const validStatuses = ['pending', 'deposit_confirmed', 'preparing', 'ready', 'delivered', 'cancelled'];
+    const validStatuses = ['pending', 'confirmed', 'preparing', 'shipped', 'delivered', 'cancelled'];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ error: 'Statut invalide' });
     }
 
-    const reservation = await prisma.reservation.update({
+    const order = await prisma.order.update({
       where: { id: parseInt(id) },
       data: { status },
     });
 
-    await prisma.reservationTracking.create({
-      data: { reservationId: reservation.id, status, comment: comment || null },
+    await prisma.orderTracking.create({
+      data: { orderId: order.id, status, comment: comment || null },
     });
 
-    // If delivered, set puppy to sold
-    if (status === 'delivered') {
-      await prisma.puppy.update({
-        where: { id: reservation.puppyId },
-        data: { status: 'sold' },
-      });
-    }
-
-    // Notify customer of status change
-    const puppy = await prisma.puppy.findUnique({ where: { id: reservation.puppyId }, select: { name: true, breed: true } });
     try {
       await sendStatusNotification({
-        email: reservation.guestEmail,
-        name: reservation.guestName,
-        reservationNumber: reservation.reservationNumber,
+        email: order.customerEmail,
+        name: order.customerName,
+        orderNumber: order.orderNumber,
         status,
-        puppy: puppy || null,
       });
     } catch (err) {
       console.error('Status notification failed:', err.message);
     }
 
-    res.json({ success: true, reservation });
+    res.json({ success: true, order });
   } catch (e) {
-    console.error('Update reservation error:', e);
+    console.error('Update order error:', e);
     res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 
 // ─── Admin: Reply to customer ─────────────────────────────────────────────
-app.post('/api/admin/reservations/:id/reply', authenticateAdmin, async (req, res) => {
+app.post('/api/admin/orders/:id/reply', authenticateAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const reservationId = parseInt(id);
-    if (isNaN(reservationId)) return res.status(400).json({ error: 'ID invalide' });
+    const orderId = parseInt(id);
+    if (isNaN(orderId)) return res.status(400).json({ error: 'ID invalide' });
 
     const { message, subject } = req.body;
     if (!message || !message.trim()) {
       return res.status(400).json({ error: 'Message requis' });
     }
 
-    const reservation = await prisma.reservation.findUnique({
-      where: { id: reservationId },
-      include: { puppy: { select: { name: true } } },
-    });
-    if (!reservation) return res.status(404).json({ error: 'Réservation non trouvée' });
+    const order = await prisma.order.findUnique({ where: { id: orderId } });
+    if (!order) return res.status(404).json({ error: 'Commande non trouvée' });
 
     await sendReplyToCustomer({
-      email: reservation.guestEmail,
-      name: reservation.guestName,
-      subject: subject || `ANIMAL CONCEPT SRL — Suivi réservation ${reservation.reservationNumber}`,
+      email: order.customerEmail,
+      name: order.customerName,
+      subject: subject || `AIRCONFORTHABITAT — Suivi commande ${order.orderNumber}`,
       message: message.trim(),
     });
 
-    await prisma.reservationTracking.create({
+    await prisma.orderTracking.create({
       data: {
-        reservationId,
-        status: reservation.status,
+        orderId,
+        status: order.status,
         comment: `📧 Message envoyé au client : ${message.trim().substring(0, 100)}${message.length > 100 ? '...' : ''}`,
       },
     });
@@ -617,27 +613,28 @@ app.post('/api/admin/reservations/:id/reply', authenticateAdmin, async (req, res
   }
 });
 
-// ─── Admin: Hard delete reservation ────────────────────────────────────────
-app.delete('/api/admin/reservations/:id', authenticateAdmin, async (req, res) => {
+// ─── Admin: Hard delete order ──────────────────────────────────────────────
+app.delete('/api/admin/orders/:id', authenticateAdmin, async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json({ error: 'ID invalide' });
 
-    const reservation = await prisma.reservation.findUnique({ where: { id } });
-    if (!reservation) return res.status(404).json({ error: 'Réservation non trouvée' });
+    const order = await prisma.order.findUnique({ where: { id } });
+    if (!order) return res.status(404).json({ error: 'Commande non trouvée' });
 
     await prisma.$transaction(async (tx) => {
-      await tx.reservationTracking.deleteMany({ where: { reservationId: id } });
-      await tx.reservation.delete({ where: { id } });
+      await tx.orderTracking.deleteMany({ where: { orderId: id } });
+      await tx.orderItem.deleteMany({ where: { orderId: id } });
+      await tx.order.delete({ where: { id } });
     });
 
     await prisma.adminLog.create({
-      data: { action: 'DELETE_RESERVATION', detail: `Réservation #${reservation.reservationNumber} supprimée` },
+      data: { action: 'DELETE_ORDER', detail: `Commande #${order.orderNumber} supprimée` },
     });
 
-    res.json({ success: true, message: 'Réservation supprimée définitivement' });
+    res.json({ success: true, message: 'Commande supprimée définitivement' });
   } catch (e) {
-    console.error('Hard delete reservation error:', e);
+    console.error('Hard delete order error:', e);
     res.status(500).json({ error: 'Erreur lors de la suppression' });
   }
 });
@@ -645,37 +642,37 @@ app.delete('/api/admin/reservations/:id', authenticateAdmin, async (req, res) =>
 // ─── Admin: Stats ──────────────────────────────────────────────────────────
 app.get('/api/admin/stats', authenticateAdmin, async (req, res) => {
   try {
-    const totalPuppies = await prisma.puppy.count();
-    const availablePuppies = await prisma.puppy.count({ where: { status: 'available' } });
-    const totalReservations = await prisma.reservation.count();
-    const pendingReservations = await prisma.reservation.count({ where: { status: 'pending' } });
-    const totalRevenue = await prisma.reservation.aggregate({ _sum: { depositAmount: true } });
+    const totalProducts = await prisma.product.count();
+    const availableProducts = await prisma.product.count({ where: { status: 'available' } });
+    const totalOrders = await prisma.order.count();
+    const pendingOrders = await prisma.order.count({ where: { status: 'pending' } });
+    const totalRevenue = await prisma.order.aggregate({ _sum: { totalAmount: true } });
 
-    const recentReservations = await prisma.reservation.findMany({
+    const recentOrders = await prisma.order.findMany({
       take: 5,
       orderBy: { createdAt: 'desc' },
       include: {
-        puppy: { select: { name: true, breed: true } },
+        items: { include: { product: { select: { name: true } } } },
       },
     });
 
     res.json({
-      totalPuppies, availablePuppies, totalReservations,
-      pendingReservations,
-      totalRevenue: totalRevenue._sum.depositAmount || 0,
-      recentReservations,
+      totalProducts, availableProducts, totalOrders,
+      pendingOrders,
+      totalRevenue: totalRevenue._sum.totalAmount || 0,
+      recentOrders,
     });
   } catch (e) {
     res.status(500).json({
-      totalPuppies: 0, availablePuppies: 0, totalReservations: 0,
-      pendingReservations: 0, totalRevenue: 0, recentReservations: [],
+      totalProducts: 0, availableProducts: 0, totalOrders: 0,
+      pendingOrders: 0, totalRevenue: 0, recentOrders: [],
       error: 'Erreur récupération statistiques'
     });
   }
 });
 
-// ─── Admin: Clients ────────────────────────────────────────────────────────
-app.get('/api/admin/clients', authenticateAdmin, async (req, res) => {
+// ─── Admin: Customers ─────────────────────────────────────────────────────
+app.get('/api/admin/customers', authenticateAdmin, async (req, res) => {
   try {
     const { search, page = 1, limit = 20 } = req.query;
     const take = parseInt(limit);
@@ -688,33 +685,47 @@ app.get('/api/admin/clients', authenticateAdmin, async (req, res) => {
         { phone: { contains: search, mode: 'insensitive' } },
       ];
     }
-    const [clients, total] = await Promise.all([
-      prisma.guest.findMany({ where, orderBy: { createdAt: 'desc' }, take, skip }),
-      prisma.guest.count({ where }),
+    const [customers, total] = await Promise.all([
+      prisma.customer.findMany({ where, orderBy: { createdAt: 'desc' }, take, skip }),
+      prisma.customer.count({ where }),
     ]);
-    res.json({ clients, total, page: parseInt(page), limit: take });
+    res.json({ customers, total, page: parseInt(page), limit: take });
   } catch (e) {
     res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 
-// ─── Waitlist (admin) ──────────────────────────────────────────────────────
-app.get('/api/admin/waitlist', authenticateAdmin, async (req, res) => {
+// ─── Admin: Stock Alerts ──────────────────────────────────────────────────
+app.get('/api/admin/stock-alerts', authenticateAdmin, async (req, res) => {
   try {
-    const entries = await prisma.waitlistEntry.findMany({ orderBy: { createdAt: 'desc' } });
-    res.json({ entries });
+    const alerts = await prisma.stockAlert.findMany({ orderBy: { createdAt: 'desc' } });
+    res.json({ alerts });
   } catch (e) {
     res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 
-// Error handling middleware
+app.post('/api/stock-alerts', async (req, res) => {
+  try {
+    const { productId, productName, brand, name, email, phone } = req.body;
+    if (!name || !email) {
+      return res.status(400).json({ error: 'Nom et email requis' });
+    }
+    const entry = await prisma.stockAlert.create({
+      data: { productId: productId ? parseInt(productId) : null, productName: productName || null, brand: brand || null, name, email, phone: phone || null }
+    });
+    res.status(201).json({ success: true, entry });
+  } catch (e) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+// ─── Error handling ───────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Erreur serveur interne' });
 });
 
-// 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Route non trouvée' });
 });

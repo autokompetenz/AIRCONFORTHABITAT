@@ -8,15 +8,19 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-enum Sex {
-  Male
-  Female
+enum ProductStatus {
+  available
+  out_of_stock
+  discontinued
 }
 
-enum PuppyStatus {
-  available
-  reserved
-  sold
+enum OrderStatus {
+  pending
+  confirmed
+  preparing
+  shipped
+  delivered
+  cancelled
 }
 
 enum DeliveryMethod {
@@ -24,105 +28,110 @@ enum DeliveryMethod {
   delivery
 }
 
-enum ReservationStatus {
-  pending
-  deposit_confirmed
-  preparing
-  ready
-  delivered
-  cancelled
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String
+  slug     String    @unique
+  icon     String?
+  sort     Int       @default(0)
+  isActive Boolean   @default(true)
+  createdAt DateTime @default(now())
+
+  products Product[]
 }
 
-model Puppy {
-  id                  Int         @id @default(autoincrement())
-  name                String
-  breed               String
-  sex                 Sex
-  birthDate           DateTime
-  color               String
-  microchipNumber     String?     @unique
-  vaccinationStatus   String      @default("À jour")
-  dewormingStatus     String      @default("À jour")
-  weightCurrent       Float?
-  weightEstimatedAdult Float?
-  price               Float
-  deposit             Float?
-  description         String?     @db.Text
-  pedigreeDocUrl      String?
-  healthCertificateUrl String?
-  parentMotherName    String?
-  parentFatherName    String?
-  status              PuppyStatus @default(available)
-  availableFrom       DateTime?
-  location            String?
-  featured            Boolean     @default(false)
-  isActive            Boolean     @default(true)
-  imageUrl            String?
-  imageUrl2           String?
-  imageUrl3           String?
-  imageUrl4           String?
-  imageUrl5           String?
-  videoUrl            String?
-  createdAt           DateTime    @default(now())
+model Product {
+  id          Int           @id @default(autoincrement())
+  name        String
+  slug        String        @unique
+  type        String        // climatiseur_fixe, climatiseur_mobile, ventilateur
+  brand       String
+  model       String
+  description String?       @db.Text
+  price       Float
+  salePrice   Float?
+  btu         String?
+  surface     String?       // surface recommandée en m²
+  noiseLevel  Float?        // dB
+  energyClass String?       // A++, A+, A, B, C
+  cop         Float?        // COP performance
+  seer        Float?        // SEER
+  scop        Float?        // SCOP
+  color       String?
+  weight      Float?
+  dimensions  String?
+  warranty    String?       // durée garantie
+  stock       Int           @default(0)
+  status      ProductStatus @default(available)
+  featured    Boolean       @default(false)
+  isActive    Boolean       @default(true)
+  imageUrl    String?
+  imageUrl2   String?
+  imageUrl3   String?
+  imageUrl4   String?
+  imageUrl5   String?
+  videoUrl    String?
+  categoryId  Int?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 
-  reservations Reservation[]
+  category   Category?   @relation(fields: [categoryId], references: [id])
+  orderItems OrderItem[]
 }
 
-model Guest {
+model Customer {
   id        Int      @id @default(autoincrement())
   name      String
   email     String
   phone     String
   address   String?
-  hasPet    Boolean?
-  hasLostPet Boolean?
   createdAt DateTime @default(now())
 
-  reservations Reservation[]
+  orders Order[]
 }
 
-model Reservation {
-  id               Int                @id @default(autoincrement())
-  reservationNumber String            @unique
-  puppyId          Int
-  guestId          Int?
-  guestName        String
-  guestEmail       String
-  guestPhone       String
-  guestProfession  String?
-  guestHomeAddress String?
-  paymentMethod    String             @default("deposit")
-  paymentLabel     String?
-  hasPet           Boolean?
-  hasLostPet       Boolean?
-  discountPercent  Float?
-  discountAmount   Float?
-  totalPrice       Float?
-  depositAmount    Float?
-  depositPaidAt    DateTime?
-  balanceAmount    Float?
-  balancePaidAt    DateTime?
-  deliveryMethod   DeliveryMethod     @default(pickup)
-  deliveryAddress  String?
-  status           ReservationStatus  @default(pending)
-  contractUrl      String?
-  notes            String?            @db.Text
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+model Order {
+  id              Int           @id @default(autoincrement())
+  orderNumber     String        @unique
+  customerId      Int?
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  customerAddress String?
+  deliveryMethod  DeliveryMethod @default(pickup)
+  deliveryAddress String?
+  paymentMethod   String         @default("transfer")
+  paymentStatus   String         @default("pending")
+  totalAmount     Float?
+  notes           String?        @db.Text
+  status          OrderStatus    @default(pending)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
 
-  puppy    Puppy          @relation(fields: [puppyId], references: [id])
-  guest    Guest?         @relation(fields: [guestId], references: [id])
-  tracking ReservationTracking[]
+  customer Customer?   @relation(fields: [customerId], references: [id])
+  items    OrderItem[]
+  tracking OrderTracking[]
 }
 
-model ReservationTracking {
-  id        Int                @id @default(autoincrement())
-  reservationId Int
-  status    ReservationStatus
-  comment   String?            @db.Text
-  createdAt DateTime           @default(now())
+model OrderItem {
+  id        Int   @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int   @default(1)
+  price     Float
 
-  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model OrderTracking {
+  id        Int         @id @default(autoincrement())
+  orderId   Int
+  status    OrderStatus
+  comment   String?     @db.Text
+  createdAt DateTime    @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 model AdminLog {
@@ -132,9 +141,11 @@ model AdminLog {
   createdAt DateTime @default(now())
 }
 
-model WaitlistEntry {
+model StockAlert {
   id        Int      @id @default(autoincrement())
-  breed     String
+  productId Int?
+  productName String?
+  brand     String?
   name      String
   email     String
   phone     String?

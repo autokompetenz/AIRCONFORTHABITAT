@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { adminAPI } from '../../services/api';
 import { formatEuro, formatDate } from '../../utils/helpers';
 import { Loader } from '../../components/UI';
+import { STATUS_LABELS } from '../../utils/helpers';
 
 export default function AdminDashboard() {
   const [data, setData] = useState(null);
@@ -16,20 +17,21 @@ export default function AdminDashboard() {
   if (loading) return <div style={{ padding: 40 }}><Loader text="Chargement du tableau de bord..." /></div>;
   if (!data) return null;
 
-  const { totalPuppies = 0, totalReservations = 0, pendingReservations = 0, totalRevenue = 0, recentReservations = [] } = data;
+  const { totalProducts = 0, totalOrders = 0, pendingOrders = 0, totalRevenue = 0, recentOrders = [] } = data;
+  const availableProducts = data?.availableProducts || 0;
 
   const statCards = [
-    { icon:'👥', label:'Chiots', value: totalPuppies, color:'#60A5FA', sub:'En catalogue' },
-    { icon:'📈', label:'Réservations', value: totalReservations, color:'#C084FC', sub:'Total réservations' },
+    { icon:'❄', label:'Produits', value: totalProducts, color:'#2E86C1', sub:'En catalogue' },
+    { icon:'📦', label:'Commandes', value: totalOrders, color:'#00B4D8', sub:'Total commandes' },
     { icon:'💵', label:'Chiffre d\'affaires', value: formatEuro(totalRevenue), color:'#C9762E', sub:'Hors annulées', wide: true },
-    { icon:'?', label:'En attente', value: pendingReservations, color: pendingReservations > 0 ? '#FFAA00' : '#22C55E', sub: pendingReservations > 0 ? 'Action requise' : 'Aucune en attente' },
-    { icon:'🐾', label:'Disponibles', value: data?.availablePuppies || 0, color:'#22C55E', sub:'À l\'adoption' },
+    { icon:'⏳', label:'En attente', value: pendingOrders, color: pendingOrders > 0 ? '#FFAA00' : '#22C55E', sub: pendingOrders > 0 ? 'Action requise' : 'Aucune en attente' },
+    { icon:'✅', label:'Disponibles', value: availableProducts, color:'#22C55E', sub:'En stock' },
   ];
 
   return (
     <div style={{ padding:'clamp(24px,5vw,48px) clamp(16px,4vw,44px) 60px', minHeight:'100vh', background:'var(--bg)' }}>
       <div style={{ marginBottom:36 }}>
-        <div className="section-eyebrow">Administration</div>
+        <div className="section-eyebrow">AIRCONFORTHABITAT</div>
         <h1 style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:'clamp(28px,4vw,48px)', color:'var(--text)', letterSpacing:'-0.02em' }}>
           Tableau de bord
         </h1>
@@ -55,8 +57,8 @@ export default function AdminDashboard() {
 
       <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:12, overflow:'hidden', boxShadow:'var(--shadow-sm)' }}>
         <div style={{ padding:'16px 20px', borderBottom:'1px solid var(--border)', display:'flex', alignItems:'center', justifyContent:'space-between', background:'var(--bg-card2)' }}>
-          <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.25em', textTransform:'uppercase', color:'var(--primary)' }}>Dernières réservations</p>
-          <Link to="/admin/reservations" style={{ fontSize:13, color:'var(--text-3)', textDecoration:'none', fontWeight:600 }}
+          <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.25em', textTransform:'uppercase', color:'var(--primary)' }}>Dernières commandes</p>
+          <Link to="/admin/orders" style={{ fontSize:13, color:'var(--text-3)', textDecoration:'none', fontWeight:600 }}
             onMouseOver={e => e.currentTarget.style.color = 'var(--primary)'}
             onMouseOut={e => e.currentTarget.style.color = 'var(--text-3)'}>
             Voir tout → 
@@ -66,38 +68,38 @@ export default function AdminDashboard() {
           <table style={{ width:'100%', borderCollapse:'collapse', fontSize:14 }}>
             <thead>
               <tr style={{ borderBottom:'1px solid var(--border)' }}>
-                {['N° Réservation','Client','Date','Montant','Statut',''].map(h => (
+                {['N° Commande','Client','Date','Montant','Statut',''].map(h => (
                   <th key={h} style={{ textAlign:'left', fontSize:11, fontWeight:800, letterSpacing:'0.16em', textTransform:'uppercase', color:'var(--text-3)', padding:'14px 20px', background:'var(--bg-card2)' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {(recentReservations || []).map(res => (
-                <tr key={res.id} style={{ borderBottom:'1px solid var(--border)' }}
+              {(recentOrders || []).map(order => (
+                <tr key={order.id} style={{ borderBottom:'1px solid var(--border)' }}
                   onMouseOver={e => e.currentTarget.style.background = 'var(--bg-card2)'}
                   onMouseOut={e => e.currentTarget.style.background = 'transparent'}>
                   <td style={{ padding:'14px 20px' }}>
-                    <span style={{ fontFamily:'monospace', color:'var(--primary)', fontSize:13, fontWeight:800, letterSpacing:'0.05em', background:'var(--primary-bg)', padding:'4px 10px', borderRadius:6, border:'1px solid var(--primary-border)' }}>{res.reservationNumber}</span>
+                    <span style={{ fontFamily:'monospace', color:'var(--primary)', fontSize:13, fontWeight:800, letterSpacing:'0.05em', background:'var(--primary-bg)', padding:'4px 10px', borderRadius:6, border:'1px solid var(--primary-border)' }}>{order.orderNumber}</span>
                   </td>
                   <td style={{ padding:'14px 20px' }}>
-                    <p style={{ fontSize:14, color:'var(--text)', fontWeight:700 }}>{res.guestName}</p>
-                    <p style={{ fontSize:12, color:'var(--text-3)', marginTop:3 }}>{res.guestEmail}</p>
+                    <p style={{ fontSize:14, color:'var(--text)', fontWeight:700 }}>{order.customerName}</p>
+                    <p style={{ fontSize:12, color:'var(--text-3)', marginTop:3 }}>{order.customerEmail}</p>
                   </td>
-                  <td style={{ padding:'14px 20px', color:'var(--text-2)', fontSize:13, fontWeight:500 }}>{formatDate(res.createdAt)}</td>
-                  <td style={{ padding:'14px 20px', fontWeight:800, color:'var(--text)', fontSize:16 }}>{formatEuro(res.puppy?.price || 0)}</td>
+                  <td style={{ padding:'14px 20px', color:'var(--text-2)', fontSize:13, fontWeight:500 }}>{formatDate(order.createdAt)}</td>
+                  <td style={{ padding:'14px 20px', fontWeight:800, color:'var(--text)', fontSize:16 }}>{formatEuro(order.total || 0)}</td>
                   <td style={{ padding:'14px 20px' }}>
-                    <span className={`badge badge-${res.status}`}>
+                    <span className={`badge badge-${order.status}`}>
                       <span style={{ width:6, height:6, borderRadius:'50%', background:'currentColor', display:'inline-block' }} />
-                      {res.status}
+                      {STATUS_LABELS[order.status] || order.status}
                     </span>
                   </td>
                   <td style={{ padding:'14px 20px' }}>
-                    <Link to={`/admin/reservations/${res.id}`} className="btn-primary" style={{ fontSize:12, padding:'10px 18px', letterSpacing:'0.05em' }}>Gérer</Link>
+                    <Link to={`/admin/orders/${order.id}`} className="btn-primary" style={{ fontSize:12, padding:'10px 18px', letterSpacing:'0.05em' }}>Gérer</Link>
                   </td>
                 </tr>
               ))}
-              {(!recentReservations || recentReservations.length === 0) && (
-                <tr><td colSpan={6} style={{ padding:'48px', textAlign:'center', color:'var(--text-3)' }}>Aucune réservation récente</td></tr>
+              {(!recentOrders || recentOrders.length === 0) && (
+                <tr><td colSpan={6} style={{ padding:'48px', textAlign:'center', color:'var(--text-3)' }}>Aucune commande récente</td></tr>
               )}
             </tbody>
           </table>

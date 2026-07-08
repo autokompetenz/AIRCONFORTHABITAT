@@ -6,36 +6,42 @@ const RESPONSES = {
   fr: {
     default:  "Merci pour votre message ! Nous vous répondons rapidement.\n📧 Nous contacter",
     horaires: "Nos horaires :\n🕗 Lun–Ven : 09h00 – 18h00\n🕘 Samedi : 10h00 – 16h00\n❌ Dimanche : Fermé",
-    prix:     "Nos chiots sont proposés à des prix justes, incluant pedigree, vaccins, puce et vermifuge.\n\n📧 Contactez-nous pour plus d'infos !",
-    rdv:      "Pour prendre rendez-vous afin de rencontrer un chiot :\n\n📧 Nous contacter",
-    adresse:  "📍 ANIMAL CONCEPT SRL\nRue Fût Voie 216\n4683 Oupeye, Belgique",
-    bonjour:  "Bonjour ! Bienvenue chez ANIMAL CONCEPT SRL 🐶\n\nComment puis-je vous aider ?\n• Horaires d'ouverture\n• Prendre rendez-vous\n• Tarifs\n• Notre adresse",
-    garantie: "Tous nos chiots partent avec :\n✅ Pedigree LOSH\n✅ Vaccins à jour\n✅ Puce électronique\n✅ Vermifuge\n✅ Carnet de santé",
+    prix:     "Nos climatiseurs et ventilateurs sont proposés aux meilleurs prix du marché, installation comprise.\n\n📧 Contactez-nous pour un devis personnalisé !",
+    rdv:      "Pour prendre rendez-vous pour un devis d'installation :\n\n📧 Nous contacter ou appelez-nous.",
+    adresse:  "📍 AIRCONFORTHABITAT\nLiège, Belgique",
+    bonjour:  "Bonjour ! Bienvenue chez AIRCONFORTHABITAT ❄️\n\nComment puis-je vous aider ?\n• Horaires d'ouverture\n• Devis d'installation\n• Tarifs\n• Garantie & SAV\n• Notre adresse",
+    garantie: "Nos produits sont couverts par :\n✅ Garantie constructeur 2 à 5 ans\n✅ Installation professionnelle\n✅ Service après-vente réactif\n✅ Pièces de rechange disponibles",
+    livraison: "Nous livrons et installons dans toute la Belgique :\n🚚 Livraison rapide\n🔧 Installation par nos techniciens\n📦 Retrait possible sur place",
+    entretien: "Nous proposons des contrats d'entretien annuels pour vos climatiseurs :\n✅ Nettoyage des filtres\n✅ Vérification du circuit frigorifique\n✅ Contrôle des raccordements",
   },
   nl: {
     default:  "Bedankt voor uw bericht! We antwoorden snel.\n📧 Neem contact op",
     horaires: "Openingstijden:\n🕗 Ma–Vr: 09:00–18:00\n🕘 Za: 10:00–16:00\n❌ Zo: Gesloten",
-    prix:     "Onze puppy's worden aangeboden tegen eerlijke prijzen, inclusief stamboom, vaccinaties, chip en ontworming.\n\n📧 Neem contact op voor meer info!",
-    rdv:      "Om een afspraak te maken om een puppy te ontmoeten:\n\n📧 Neem contact op",
-    adresse:  "📍 ANIMAL CONCEPT SRL\nRue Fût Voie 216\n4683 Oupeye, België",
-    bonjour:  "Hallo! Welkom bij ANIMAL CONCEPT SRL 🐶\n\nHoe kan ik u helpen?\n• Openingstijden\n• Afspraak maken\n• Prijzen\n• Adres",
-    garantie: "Al onze puppy's worden geleverd met:\n✅ Stamboom LOSH\n✅ Vaccinaties up-to-date\n✅ Microchip\n✅ Ontworming\n✅ Gezondheidsboekje",
+    prix:     "Onze airconditioners en ventilatoren worden aangeboden tegen de beste prijzen, inclusief installatie.\n\n📧 Neem contact op voor een persoonlijke offerte!",
+    rdv:      "Om een afspraak te maken voor een installatie-offerte:\n\n📧 Neem contact op of bel ons.",
+    adresse:  "📍 AIRCONFORTHABITAT\nLuik, België",
+    bonjour:  "Hallo! Welkom bij AIRCONFORTHABITAT ❄️\n\nHoe kan ik u helpen?\n• Openingstijden\n• Installatie-offerte\n• Prijzen\n• Garantie & service\n• Adres",
+    garantie: "Onze producten worden gedekt door:\n✅ Fabrieksgarantie 2 tot 5 jaar\n✅ Professionele installatie\n✅ Snelle after-sales service\n✅ Vervangingsonderdelen beschikbaar",
+    livraison: "Wij leveren en installeren in heel België:\n🚚 Snelle levering\n🔧 Installatie door onze technici\n📦 Afhalen mogelijk ter plaatse",
+    entretien: "Wij bieden jaarlijkse onderhoudscontracten voor uw airco's:\n✅ Reiniging van filters\n✅ Controle van het koelcircuit\n✅ Controle van aansluitingen",
   },
   en: {
     default:  "Thanks for your message! We'll reply shortly.\n📧 Contact us",
     horaires: "Opening hours:\n🕗 Mon–Fri: 09:00–18:00\n🕘 Sat: 10:00–16:00\n❌ Sun: Closed",
-    prix:     "Our puppies are offered at fair prices, including pedigree, vaccines, microchip and deworming.\n\n📧 Contact us for more info!",
-    rdv:      "To book an appointment to meet a puppy:\n\n📧 Contact us",
-    adresse:  "📍 ANIMAL CONCEPT SRL\nRue Fût Voie 216\n4683 Oupeye, Belgium",
-    bonjour:  "Hello! Welcome to ANIMAL CONCEPT SRL 🐶\n\nHow can I help you?\n• Opening hours\n• Book appointment\n• Pricing\n• Our address",
-    garantie: "All our puppies come with:\n✅ LOSH Pedigree\n✅ Up-to-date vaccines\n✅ Microchip\n✅ Deworming\n✅ Health record",
+    prix:     "Our air conditioners and fans are offered at the best market prices, installation included.\n\n📧 Contact us for a personalized quote!",
+    rdv:      "To book an appointment for an installation quote:\n\n📧 Contact us or call us.",
+    adresse:  "📍 AIRCONFORTHABITAT\nLiège, Belgium",
+    bonjour:  "Hello! Welcome to AIRCONFORTHABITAT ❄️\n\nHow can I help you?\n• Opening hours\n• Installation quote\n• Pricing\n• Warranty & service\n• Our address",
+    garantie: "Our products are covered by:\n✅ Manufacturer warranty 2 to 5 years\n✅ Professional installation\n✅ Responsive after-sales service\n✅ Spare parts available",
+    livraison: "We deliver and install throughout Belgium:\n🚚 Fast delivery\n🔧 Installation by our technicians\n📦 Pickup available on-site",
+    entretien: "We offer annual maintenance contracts for your AC units:\n✅ Filter cleaning\n✅ Refrigeration circuit check\n✅ Connection inspection",
   },
 };
 
 const QUICK_BUTTONS = {
-  fr: ['Horaires', 'Rendez-vous', 'Adresse', 'Tarifs'],
-  nl: ['Openingstijden', 'Afspraak', 'Adres', 'Prijzen'],
-  en: ['Opening hours', 'Appointment', 'Address', 'Pricing'],
+  fr: ['Horaires', 'Devis', 'Adresse', 'Tarifs'],
+  nl: ['Openingstijden', 'Offerte', 'Adres', 'Prijzen'],
+  en: ['Opening hours', 'Quote', 'Address', 'Pricing'],
 };
 
 function detect(msg, lang) {
@@ -44,9 +50,11 @@ function detect(msg, lang) {
   if (/hello|hallo|bonjour|hi|hoi/.test(m)) return R.bonjour;
   if (/heure|horaire|hour|open|tijd|openings/.test(m)) return R.horaires;
   if (/prix|price|cost|tarif|prijs|kosten/.test(m)) return R.prix;
-  if (/rendez|rdv|appoint|afspraak|afspra|boek/.test(m)) return R.rdv;
+  if (/rendez|rdv|appoint|afspraak|afspra|boek|devis|offerte|quote/.test(m)) return R.rdv;
   if (/adresse|address|adres|waar|where|lieu/.test(m)) return R.adresse;
-  if (/garantie|garant|warranty|gezond|vaccin|puce|chip/.test(m)) return R.garantie;
+  if (/garantie|garant|warranty|gezond|sav|service/.test(m)) return R.garantie;
+  if (/livraison|lever|delivery|bezorg/.test(m)) return R.livraison;
+  if (/entretien|mainten|onderhoud|maintenance/.test(m)) return R.entretien;
   return R.default;
 }
 
@@ -78,11 +86,11 @@ export default function Chatbot() {
   const footerBg   = isDark ? '#141414'                 : '#f8f8f8';
   const footerBord = isDark ? 'rgba(255,255,255,0.06)'  : 'rgba(0,0,0,0.08)';
   const dotBg      = isDark ? '#555'                    : '#bbb';
-  const quickBg    = isDark ? 'rgba(201,118,46,0.08)'    : 'rgba(201,118,46,0.06)';
-  const quickBd    = isDark ? 'rgba(201,118,46,0.2)'     : 'rgba(201,118,46,0.25)';
-  const quickText  = isDark ? 'rgba(255,255,255,0.7)'    : '#C9762E';
-  const quickHoverBg   = isDark ? 'rgba(201,118,46,0.18)' : 'rgba(201,118,46,0.14)';
-  const quickHoverText = '#C9762E';
+  const quickBg    = isDark ? 'rgba(46,134,193,0.08)'    : 'rgba(46,134,193,0.06)';
+  const quickBd    = isDark ? 'rgba(46,134,193,0.2)'     : 'rgba(46,134,193,0.25)';
+  const quickText  = isDark ? 'rgba(255,255,255,0.7)'    : '#2E86C1';
+  const quickHoverBg   = isDark ? 'rgba(46,134,193,0.18)' : 'rgba(46,134,193,0.14)';
+  const quickHoverText = '#2E86C1';
 
   useEffect(() => {
     const R2 = RESPONSES[lang] || RESPONSES.fr;
@@ -110,7 +118,7 @@ export default function Chatbot() {
   return (
     <>
       <button className="chat-btn" onClick={() => setOpen(o => !o)} aria-label="Chat">
-        <span style={{ fontSize: 26 }}>{open ? '✕' : '🐶'}</span>
+        <span style={{ fontSize: 26 }}>{open ? '✕' : '💬'}</span>
         {!open && notif && <div className="chat-notif">1</div>}
       </button>
 
@@ -122,11 +130,11 @@ export default function Chatbot() {
           boxShadow: isDark ? '0 20px 60px rgba(0,0,0,0.6)' : '0 20px 60px rgba(0,0,0,0.15)',
         }}
       >
-        <div style={{ background: 'linear-gradient(135deg, #A8652A, #C9762E)', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14, flexShrink: 0 }}>
-          <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>🐶</div>
+        <div style={{ background: 'linear-gradient(135deg, #1B6B9C, #2E86C1)', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14, flexShrink: 0 }}>
+          <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>❄️</div>
           <div style={{ flex: 1 }}>
             <div style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 800, fontSize: 15, color: '#fff', letterSpacing: '0.02em' }}>
-              ANIMAL CONCEPT SRL
+              AIRCONFORTHABITAT
             </div>
             <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.75)', display: 'flex', alignItems: 'center', gap: 6, marginTop: 2 }}>
               <span style={{ width: 7, height: 7, background: '#4ade80', borderRadius: '50%', display: 'inline-block' }} />
@@ -142,7 +150,7 @@ export default function Chatbot() {
               style={{
                 maxWidth: '88%', padding: '12px 16px', borderRadius: 12, fontSize: 14, lineHeight: 1.6,
                 whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontFamily: "'Outfit', sans-serif",
-                background: m.from === 'bot' ? msgBotBg : '#C9762E',
+                background: m.from === 'bot' ? msgBotBg : '#2E86C1',
                 color: m.from === 'bot' ? msgBotText : msgUserText,
                 alignSelf: m.from === 'bot' ? 'flex-start' : 'flex-end',
                 borderBottomLeftRadius: m.from === 'bot' ? 3 : 12,
@@ -185,7 +193,7 @@ export default function Chatbot() {
               borderRadius: 8, padding: '10px 14px', fontSize: 14, fontFamily: "'Outfit', sans-serif",
               outline: 'none', transition: 'border-color 0.2s',
             }}
-            onFocus={e => e.target.style.borderColor = '#C9762E'}
+            onFocus={e => e.target.style.borderColor = '#2E86C1'}
             onBlur={e => e.target.style.borderColor = inputBorder}
           />
           <style>{`
@@ -194,7 +202,7 @@ export default function Chatbot() {
           `}</style>
           <button onClick={() => send()} disabled={!input.trim()}
             style={{
-              background: input.trim() ? '#C9762E' : (isDark ? 'rgba(201,118,46,0.3)' : 'rgba(201,118,46,0.2)'),
+              background: input.trim() ? '#2E86C1' : (isDark ? 'rgba(46,134,193,0.3)' : 'rgba(46,134,193,0.2)'),
               border: 'none', borderRadius: 8, cursor: input.trim() ? 'pointer' : 'not-allowed',
               width: 42, height: 42, display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: '#fff', fontSize: 18, flexShrink: 0, transition: 'background 0.2s',

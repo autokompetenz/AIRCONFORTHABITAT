@@ -3,11 +3,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: { DEFAULT: '#C9762E', dark: '#A85F22', light: '#E0954C' },
-        secondary: { DEFAULT: '#E8B84A', dark: '#D49D2E' },
-        dark:   { DEFAULT: '#1A1410', 2: '#18181A', 3: '#222224' },
-        chrome: { DEFAULT: '#F0ECE6', dim: '#9A8A7A' },
-        surface:'#2A2A2D',
+        primary: { DEFAULT: '#2E86C1', dark: '#2471A3', light: '#5DADE2' },
+        secondary: { DEFAULT: '#00B4D8', dark: '#0096B4' },
+        dark:   { DEFAULT: '#0F1A2E', 2: '#141A22', 3: '#1A2433' },
+        chrome: { DEFAULT: '#E8EDF2', dim: '#8A9BAE' },
+        surface:'#1A2433',
       },
       fontFamily: {
         sans:  ['Nunito', 'Outfit', 'sans-serif'],

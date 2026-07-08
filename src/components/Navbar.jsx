@@ -103,18 +103,17 @@ export default function Navbar() {
             color: scrolled ? (isDark ? '#fff' : '#111') : isHero ? '#fff' : (isDark ? '#fff' : '#111'),
             letterSpacing: '0.05em', transition: 'color 0.3s',
           }}>
-            ANIMAL CONCEPT SRL
+            AIRCONFORTHABITAT
           </div>
           <div style={{ fontSize: 9, letterSpacing: '0.4em', color: 'var(--primary)', textTransform: 'uppercase', marginTop: 2 }}>
-            Oupeye · Belgique
+            Liège · Belgique
           </div>
         </Link>
 
         {!isMobile && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 28, position: 'relative', zIndex: 1 }}>
-            <NavLink to="/catalog"     label={t('nav_puppies', lang)} />
-            <NavLink to="/catalog"     label={t('nav_kennel', lang)} />
-
+            <NavLink to="/catalog"     label={t('nav_products', lang)} />
+            <NavLink to="/about"       label={t('nav_company', lang)} />
             <NavLink to="/track"       label={t('nav_track', lang)} />
           </div>
         )}
@@ -137,7 +136,7 @@ export default function Navbar() {
                 <>
                   <div style={{
                     width: 22, height: 22, borderRadius: '50%',
-                    background: 'linear-gradient(135deg,#A8652A,#C9762E)',
+                    background: 'linear-gradient(135deg,#1B6B9C,#2E86C1)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 10, fontWeight: 800, color: '#fff', flexShrink: 0,
                   }}>A</div>
@@ -179,8 +178,8 @@ export default function Navbar() {
                   {isMobile && (
                     <div style={{ marginBottom: 20 }}>
                       {[
-                        { to: '/catalog', icon: '🐶', label: t('nav_puppies', lang) },
-
+                        { to: '/catalog', icon: '❄️', label: t('nav_products', lang) },
+                        { to: '/about',   icon: '🏢', label: t('nav_company', lang) },
                         { to: '/track',   icon: '📍', label: t('nav_track', lang) },
                       ].map(({ to, icon, label }) => (
                         <Link key={to} to={to} onClick={() => setMenuOpen(false)}
@@ -197,7 +196,6 @@ export default function Navbar() {
                       ))}
                     </div>
                   )}
-
 
 
                   <div style={{ height: 1, background: menuBorder, margin: isMobile ? '8px 0' : 0 }} />
@@ -229,8 +227,8 @@ export default function Navbar() {
                           style={{
                             display: 'flex', alignItems: 'center', gap: 7,
                             padding: isMobile ? '10px 6px' : '8px 10px',
-                            background: l.code === lang ? 'rgba(201,118,46,0.1)' : 'transparent',
-                            border: `1px solid ${l.code === lang ? 'rgba(201,118,46,0.3)' : 'transparent'}`,
+                            background: l.code === lang ? 'rgba(46,134,193,0.1)' : 'transparent',
+                            border: `1px solid ${l.code === lang ? 'rgba(46,134,193,0.3)' : 'transparent'}`,
                             borderRadius: 6, cursor: 'pointer',
                             fontSize: isMobile ? 14 : 13,
                             color: l.code === lang ? 'var(--primary)' : menuText2,

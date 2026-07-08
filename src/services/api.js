@@ -7,42 +7,39 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('sp_admin_token');
+  const token = localStorage.getItem('ach_admin_token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
-export const puppyAPI = {
-  getAll:        (p)    => api.get('/puppies', { params: p }),
-  getById:       (id)   => api.get(`/puppies/${id}`),
-  getBreeds:     ()     => api.get('/puppies/breeds'),
+export const productAPI = {
+  getAll:        (p)    => api.get('/products', { params: p }),
+  getById:       (id)   => api.get(`/products/${id}`),
+  getTypes:      ()     => api.get('/products/types'),
+  getBrands:     ()     => api.get('/products/brands'),
 };
 
-export const reservationAPI = {
-  create:  (d) => api.post('/reservations', d),
-  track:   (num) => api.get(`/reservations/track/${num}`),
+export const orderAPI = {
+  create:  (d) => api.post('/orders', d),
+  track:   (num) => api.get(`/orders/track/${num}`),
 };
 
 export const adminAPI = {
   login:           (code) => api.post('/admin/login', { code }),
   stats:           ()     => api.get('/admin/stats'),
-  puppies:         ()     => api.get('/admin/puppies'),
-  getPuppyById:    (id)   => api.get(`/admin/puppies/${id}`),
-  createPuppy:     (fd)   => api.post('/admin/puppies', fd, { headers: { 'Content-Type': 'multipart/form-data' }, timeout: 120000 }),
-  updatePuppy:     (id,fd) => api.put(`/admin/puppies/${id}`, fd, { headers: { 'Content-Type': 'multipart/form-data' }, timeout: 120000 }),
-  togglePuppy:     (id)   => api.patch(`/admin/puppies/${id}/toggle`),
-  deletePuppy:     (id)   => api.delete(`/admin/puppies/${id}`),
-  reservations:    (p)    => api.get('/admin/reservations', { params: p }),
-  reservationById: (id)   => api.get(`/admin/reservations/${id}`),
-  updateReservation:(id,d) => api.patch(`/admin/reservations/${id}`, d),
-  deleteReservation:(id)  => api.delete(`/admin/reservations/${id}`),
-  replyToCustomer:(id,m)  => api.post(`/admin/reservations/${id}/reply`, m),
-  clients:         ()     => api.get('/admin/clients'),
-  waitlist:        ()     => api.get('/admin/waitlist'),
-};
-
-export const waitlistAPI = {
-  join: (d) => api.post('/waitlist', d),
+  products:        ()     => api.get('/admin/products'),
+  getProductById:  (id)   => api.get(`/admin/products/${id}`),
+  createProduct:   (fd)   => api.post('/admin/products', fd, { headers: { 'Content-Type': 'multipart/form-data' }, timeout: 120000 }),
+  updateProduct:   (id,fd) => api.put(`/admin/products/${id}`, fd, { headers: { 'Content-Type': 'multipart/form-data' }, timeout: 120000 }),
+  toggleProduct:   (id)   => api.patch(`/admin/products/${id}/toggle`),
+  deleteProduct:   (id)   => api.delete(`/admin/products/${id}`),
+  orders:          (p)    => api.get('/admin/orders', { params: p }),
+  orderById:       (id)   => api.get(`/admin/orders/${id}`),
+  updateOrder:     (id,d) => api.patch(`/admin/orders/${id}`, d),
+  deleteOrder:     (id)   => api.delete(`/admin/orders/${id}`),
+  replyToCustomer: (id,m) => api.post(`/admin/orders/${id}/reply`, m),
+  customers:       ()     => api.get('/admin/customers'),
+  stockAlerts:     ()     => api.get('/admin/stock-alerts'),
 };
 
 export default api;

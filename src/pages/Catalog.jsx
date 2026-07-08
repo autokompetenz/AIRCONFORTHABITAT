@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { productAPI } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import { Loader } from '../components/UI';
@@ -100,19 +100,39 @@ export default function Catalog() {
   );
 
   return (
-    <div style={{ minHeight: '100vh', background: '#fff' }}>
-      <div style={{ background: '#F5F5F5', borderBottom: '1px solid var(--border)', padding: isMobile ? '28px 4% 24px' : '40px 5% 32px' }}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      style={{ minHeight: '100vh', background: '#fff' }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        style={{ background: '#F5F5F5', borderBottom: '1px solid var(--border)', padding: isMobile ? '28px 4% 24px' : '40px 5% 32px' }}
+      >
         <div style={{ maxWidth: 1400, margin: '0 auto' }}>
-          <h1 style={{ fontWeight: 900, fontSize: 'clamp(24px,4vw,40px)', color: '#1A1A1A', marginBottom: 8 }}>
+          <motion.h1
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.35 }}
+            style={{ fontWeight: 900, fontSize: 'clamp(24px,4vw,40px)', color: '#1A1A1A', marginBottom: 8 }}
+          >
             {l === 'fr' ? 'Nos produits' : l === 'nl' ? 'Onze producten' : 'Our products'}
-          </h1>
-          <p style={{ fontSize: 14, color: '#999', maxWidth: 500 }}>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.35 }}
+            style={{ fontSize: 14, color: '#999', maxWidth: 500 }}
+          >
             {l === 'fr' ? 'Découvrez notre sélection de climatiseurs et ventilateurs pour votre confort.' :
               l === 'nl' ? 'Ontdek onze selectie airconditioners en ventilatoren voor uw comfort.' :
               'Discover our selection of air conditioners and fans for your comfort.'}
-          </p>
+          </motion.p>
         </div>
-      </div>
+      </motion.div>
 
       {isMobile && drawerOpen && (
         <div onClick={() => setDrawerOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 199 }} />
@@ -161,7 +181,12 @@ export default function Catalog() {
           )}
 
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.35 }}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}
+            >
               <p style={{ fontSize: 13, color: '#999' }}>
                 <span style={{ color: 'var(--primary)', fontWeight: 700 }}>{total}</span> {t('found', l)}
               </p>
@@ -170,19 +195,39 @@ export default function Catalog() {
                   ✕ {t('reset', l)}
                 </button>
               )}
-            </div>
+            </motion.div>
 
             {loading ? (
-              <div style={{ display: 'flex', justifyContent: 'center', padding: '60px 0' }}><Loader /></div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                style={{ display: 'flex', justifyContent: 'center', padding: '60px 0' }}
+              ><Loader /></motion.div>
             ) : products.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '60px 0' }}>
-                <Search size={36} color="#ccc" strokeWidth={1.5} style={{ marginBottom: 12 }} />
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25, duration: 0.35 }}
+                style={{ textAlign: 'center', padding: '60px 0' }}
+              >
+                <motion.div
+                  initial={{ scale: 0.8 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.3, duration: 0.3 }}
+                >
+                  <Search size={36} color="#ccc" strokeWidth={1.5} style={{ marginBottom: 12 }} />
+                </motion.div>
                 <h3 style={{ fontWeight: 700, fontSize: 18, color: '#1A1A1A', marginBottom: 8 }}>{t('no_results', l)}</h3>
                 <p style={{ fontSize: 13, color: '#999', marginBottom: 20 }}>
                   {l === 'fr' ? 'Essayez un autre type ou modifiez votre recherche.' : l === 'nl' ? 'Probeer een ander type of wijzig uw zoekopdracht.' : 'Try another type or change your search.'}
                 </p>
-                <button onClick={resetAll} className="btn-primary" style={{ fontSize: 12 }}>{t('reset', l)}</button>
-              </div>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={resetAll} className="btn-primary" style={{ fontSize: 12 }}
+                >{t('reset', l)}</motion.button>
+              </motion.div>
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill,minmax(230px,1fr))', gap: 12 }}>
                 <AnimatePresence>
@@ -193,6 +238,6 @@ export default function Catalog() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

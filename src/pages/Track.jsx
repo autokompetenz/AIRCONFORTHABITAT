@@ -50,34 +50,65 @@ export default function Track() {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', background: '#fff' }}>
-      <div style={{ background: '#F5F5F5', borderBottom: '1px solid var(--border)', padding: isMobile ? '28px 4% 24px' : '40px 5% 32px' }}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      style={{ minHeight: '100vh', background: '#fff' }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        style={{ background: '#F5F5F5', borderBottom: '1px solid var(--border)', padding: isMobile ? '28px 4% 24px' : '40px 5% 32px' }}
+      >
         <div style={{ maxWidth: 800, margin: '0 auto' }}>
-          <h1 style={{ fontWeight: 900, fontSize: 'clamp(24px,4vw,40px)', color: '#1A1A1A', marginBottom: 8 }}>
+          <motion.h1
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.35 }}
+            style={{ fontWeight: 900, fontSize: 'clamp(24px,4vw,40px)', color: '#1A1A1A', marginBottom: 8 }}
+          >
             {t('track_order', l)}
-          </h1>
-          <p style={{ fontSize: 14, color: '#999', maxWidth: 480 }}>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.35 }}
+            style={{ fontSize: 14, color: '#999', maxWidth: 480 }}
+          >
             {l === 'fr' ? 'Entrez votre numéro de commande pour suivre l\'état de votre livraison.' :
               l === 'nl' ? 'Voer uw bestelnummer in om de status van uw levering te volgen.' :
               'Enter your order number to track the status of your delivery.'}
-          </p>
+          </motion.p>
         </div>
-      </div>
+      </motion.div>
 
       <div style={{ maxWidth: 700, margin: '0 auto', padding: isMobile ? '20px 4%' : '32px 5%' }}>
-        <form onSubmit={handleSearch} style={{ display: 'flex', gap: 8, marginBottom: 28 }}>
+        <motion.form
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.35 }}
+          onSubmit={handleSearch}
+          style={{ display: 'flex', gap: 8, marginBottom: 28 }}
+        >
           <input value={searchNum} onChange={e => setSearchNum(e.target.value)}
             placeholder={t('track_ph', l)}
             style={{ flex: 1, border: '1px solid var(--border)', padding: '9px 12px', fontSize: 14, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
           <button type="submit" className="btn-primary" style={{ padding: '9px 16px', fontSize: 12, whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6 }}>
             <Search size={14} strokeWidth={2} /> {t('track_order', l)}
           </button>
-        </form>
+        </motion.form>
 
         {loading && (
-          <div style={{ textAlign: 'center', padding: 32 }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            style={{ textAlign: 'center', padding: 32 }}
+          >
             <div style={{ width: 28, height: 28, border: '2px solid #E5E5E5', borderTopColor: 'var(--primary)', animation: 'spin 0.8s linear infinite', margin: '0 auto' }} />
-          </div>
+          </motion.div>
         )}
 
         {!loading && searched && !order && (
@@ -183,6 +214,6 @@ export default function Track() {
           </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -18,12 +18,13 @@ export default function ProductCard({ product, index = 0 }) {
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -3 }}
       transition={{ delay: index * 0.04, duration: 0.35 }}
       onMouseOver={() => setHovered(true)}
       onMouseOut={() => setHovered(false)}
+      className="card-hover"
       style={{
         background: '#fff', border: '1px solid var(--border)',
-        transition: 'box-shadow 0.2s, border-color 0.2s',
         boxShadow: hovered ? 'var(--shadow-md)' : 'none',
         borderColor: hovered ? 'var(--border-2)' : 'var(--border)',
         display: 'flex', flexDirection: 'column',

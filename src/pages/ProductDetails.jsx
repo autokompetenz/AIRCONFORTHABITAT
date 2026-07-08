@@ -51,8 +51,18 @@ export default function ProductDetails() {
   return (
     <>
       <ProductSchema product={product} />
-      <div style={{ minHeight: '100vh', background: '#fff' }}>
-        <div style={{ padding: '12px 5%', borderBottom: '1px solid var(--border)', background: '#F5F5F5' }}>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
+        style={{ minHeight: '100vh', background: '#fff' }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          style={{ padding: '12px 5%', borderBottom: '1px solid var(--border)', background: '#F5F5F5' }}
+        >
           <p style={{ fontSize: 12, color: '#999' }}>
             <Link to="/" style={{ color: '#999', textDecoration: 'none' }}>{l === 'fr' ? 'Accueil' : l === 'nl' ? 'Home' : 'Home'}</Link>
             <span style={{ margin: '0 8px', color: '#ccc' }}>›</span>
@@ -60,10 +70,15 @@ export default function ProductDetails() {
             <span style={{ margin: '0 8px', color: '#ccc' }}>›</span>
             <span style={{ color: '#666' }}>{product.name}</span>
           </p>
-        </div>
+        </motion.div>
 
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '24px 4%' : '40px 5%' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 24 : 48 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.4 }}
+            style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 24 : 48 }}
+          >
             <div>
               <div style={{ border: '1px solid var(--border)', overflow: 'hidden', aspectRatio: '4/3', background: '#F5F5F5', position: 'relative' }}>
                 <img src={images[activeImg] || 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80'}
@@ -211,9 +226,9 @@ export default function ProductDetails() {
                 </div>
               )}
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

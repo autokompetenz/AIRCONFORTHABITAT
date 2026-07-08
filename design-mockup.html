@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIRCONFORTHABITAT — Direction créative</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #F5F0EB;
+    color: #2C2420;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* ===== blueprint grid background ===== */
+  .blueprint {
+    position: relative;
+  }
+  .blueprint::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(44,36,32,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(44,36,32,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #2C2420 0%, #3D322C 50%, #4A3B34 100%);
+  }
+
+  /* Decorative line pattern in hero */
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    width: 100%;
+    padding: 120px 0 80px;
+  }
+
+  @media (max-width: 768px) {
+    .hero-content { grid-template-columns: 1fr; gap: 40px; padding: 100px 0 60px; }
+  }
+
+  .hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 4px;
+    padding: 6px 12px;
+    margin-bottom: 24px;
+  }
+  .hero-label span {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+  .hero-label .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #E8B84B;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+    color: #fff;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .hero h1 span {
+    color: #E8B84B;
+    font-style: italic;
+  }
+  .hero p {
+    font-size: 1.0625rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+    margin-bottom: 36px;
+    max-width: 480px;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    letter-spacing: 0.02em;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    background: #E8B84B;
+    color: #2C2420;
+  }
+  .btn-primary:hover { background: #D4A83F; }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 13px 30px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+  }
+  .btn-outline:hover { border-color: #E8B84B; color: #E8B84B; }
+
+  /* Isometric product illustration */
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .iso-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 1;
+  }
+
+  /* Architectural drawing style */
+  .iso-drawing {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  /* Technical callout lines */
+  .callout {
+    position: absolute;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    font-family: 'Inter', sans-serif;
+  }
+  .callout::before {
+    content: '';
+    position: absolute;
+    background: rgba(232,184,75,0.3);
+  }
+
+  .callout-1 { top: 12%; left: -10%; }
+  .callout-1::before { top: 6px; left: calc(100% + 6px); width: 40px; height: 1px; }
+
+  .callout-2 { bottom: 25%; right: -8%; }
+  .callout-2::before { top: 6px; right: calc(100% + 6px); width: 30px; height: 1px; }
+
+  .callout-3 { bottom: 5%; left: 15%; }
+  .callout-3::before { bottom: calc(100% + 4px); left: 4px; width: 1px; height: 16px; }
+
+  /* ===== Stats bar ===== */
+  .stats-bar {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    background: rgba(0,0,0,0.3);
+    padding: 24px 0;
+  }
+  .stats-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: 2rem;
+    color: #E8B84B;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.6875rem;
+    color: rgba(255,255,255,0.35);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
+
+  /* ===== Sections ===== */
+  section { padding: 100px 0; }
+  @media (max-width: 768px) { section { padding: 60px 0; } }
+
+  .section-eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #C44536;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    color: #2C2420;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .section-sub {
+    font-size: 0.9375rem;
+    color: #8A7A72;
+    max-width: 520px;
+  }
+
+  /* ===== Cards ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid rgba(44,36,32,0.08);
+    border-radius: 8px;
+    padding: 32px 28px;
+    transition: all 0.25s ease;
+    position: relative;
+  }
+  .card:hover {
+    border-color: rgba(196,69,54,0.2);
+    box-shadow: 0 4px 24px rgba(44,36,32,0.06);
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    background: rgba(44,36,32,0.04);
+    border: 1px solid rgba(44,36,32,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .card-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: #C44536;
+    stroke-width: 1.5;
+    fill: none;
+  }
+
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: #2C2420;
+    margin-bottom: 10px;
+  }
+  .card p {
+    font-size: 0.875rem;
+    color: #8A7A72;
+    line-height: 1.65;
+  }
+
+  /* ===== Review cards ===== */
+  .review-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .review-card {
+    background: #fff;
+    border: 1px solid rgba(44,36,32,0.06);
+    border-radius: 8px;
+    padding: 28px 24px;
+  }
+
+  .stars {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 16px;
+  }
+  .stars svg {
+    width: 14px;
+    height: 14px;
+    fill: #E8B84B;
+    stroke: #E8B84B;
+    stroke-width: 1;
+  }
+  .stars .empty {
+    fill: none;
+    stroke: rgba(44,36,32,0.12);
+  }
+
+  .review-text {
+    font-size: 0.875rem;
+    color: #5A4E48;
+    line-height: 1.7;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  .review-author {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #2C2420;
+  }
+  .review-city {
+    font-size: 0.6875rem;
+    color: #A0938B;
+    margin-top: 2px;
+  }
+
+  /* ===== Divider ===== */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(44,36,32,0.08), transparent);
+    margin: 0;
+    border: none;
+  }
+
+  /* ===== Specs section ===== */
+  .specs {
+    background: #fff;
+    border: 1px solid rgba(44,36,32,0.06);
+    border-radius: 8px;
+    padding: 48px 40px;
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  @media (max-width: 768px) { .specs { grid-template-columns: 1fr; } }
+  .spec-item { text-align: center; }
+  .spec-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #C44536;
+  }
+  .spec-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #A0938B;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ===== Corner marks ===== */
+  .corner-marks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .corner-marks::before,
+  .corner-marks::after {
+    content: '';
+    position: absolute;
+    width: 16px; height: 16px;
+    border-color: rgba(44,36,32,0.12);
+    border-style: solid;
+  }
+  .corner-marks::before {
+    top: 8px; left: 8px;
+    border-width: 2px 0 0 2px;
+  }
+  .corner-marks::after {
+    bottom: 8px; right: 8px;
+    border-width: 0 2px 2px 0;
+  }
+
+  /* ===== Typography test ===== */
+  .type-test {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 32px;
+    background: #fff;
+    border: 1px solid rgba(44,36,32,0.06);
+    border-radius: 8px;
+  }
+  .type-test .playfair { font-family: 'Playfair Display', serif; }
+  .type-test .inter { font-family: 'Inter', sans-serif; }
+  .size-huge { font-size: 4rem; font-weight: 800; line-height: 1.0; }
+  .size-large { font-size: 2.5rem; font-weight: 800; line-height: 1.05; }
+  .size-medium { font-size: 1.25rem; font-weight: 700; }
+  .size-body { font-size: 1rem; }
+  .size-small { font-size: 0.8125rem; color: #8A7A72; }
+  .swatch { display: inline-block; width: 20px; height: 20px; border-radius: 4px; margin-right: 8px; vertical-align: middle; }
+
+  .tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 4px;
+  }
+  .tag-terracotta { background: #C44536; color: #fff; }
+  .tag-gold { background: #E8B84B; color: #2C2420; }
+  .tag-forest { background: #2B5F5D; color: #fff; }
+  .tag-warm { background: #F5F0EB; color: #2C2420; border: 1px solid rgba(44,36,32,0.1); }
+
+  h2.section-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2C2420;
+  }
+
+  .badge-new {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    background: #2B5F5D;
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero blueprint">
+  <div class="hero-bg"></div>
+  <div class="container" style="width:100%">
+    <div class="hero-content">
+      <div>
+        <div class="hero-label">
+          <div class="dot"></div>
+          <span>Artisan RGE · Vienne (38)</span>
+        </div>
+        <h1>Climatisez votre<br>intérieur avec <span>l'artisan</span></h1>
+        <p>Installation de climatiseurs, pompes à chaleur et ventilateurs dans toute la France. Devis gratuit, installation en 24h, garantie constructeur.</p>
+        <div class="btn-group">
+          <a href="#" class="btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            Voir les produits
+          </a>
+          <a href="#" class="btn-outline">Devis gratuit</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="iso-wrapper">
+          <!-- Isometric AC unit technical drawing style -->
+          <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+            <!-- Grid lines -->
+            <g stroke="rgba(255,255,255,0.06)" stroke-width="0.5">
+              <line x1="0" y1="100" x2="400" y2="100"/>
+              <line x1="0" y1="200" x2="400" y2="200"/>
+              <line x1="0" y1="300" x2="400" y2="300"/>
+              <line x1="100" y1="0" x2="100" y2="400"/>
+              <line x1="200" y1="0" x2="200" y2="400"/>
+              <line x1="300" y1="0" x2="300" y2="400"/>
+            </g>
+            <!-- Main unit body -->
+            <rect x="80" y="120" width="240" height="160" rx="4" stroke="#E8B84B" stroke-width="1.5" fill="rgba(232,184,75,0.05)"/>
+            <!-- Vent lines -->
+            <line x1="100" y1="160" x2="300" y2="160" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+            <line x1="100" y1="175" x2="300" y2="175" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+            <line x1="100" y1="190" x2="300" y2="190" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+            <!-- Display screen -->
+            <rect x="140" y="220" width="120" height="40" rx="2" stroke="rgba(232,184,75,0.3)" stroke-width="0.8" fill="rgba(0,0,0,0.2)"/>
+            <text x="200" y="245" text-anchor="middle" fill="rgba(232,184,75,0.6)" font-family="'Inter',sans-serif" font-size="10" font-weight="600">20°C</text>
+            <!-- Air flow arrows -->
+            <path d="M200 120 L200 80" stroke="#E8B84B" stroke-width="1" opacity="0.4"/>
+            <path d="M180 90 L200 70 L220 90" stroke="#E8B84B" stroke-width="1" fill="none" opacity="0.4"/>
+            <!-- Dimension lines -->
+            <line x1="80" y1="300" x2="320" y2="300" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+            <line x1="80" y1="295" x2="80" y2="305" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+            <line x1="320" y1="295" x2="320" y2="305" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+            <text x="200" y="314" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-family="'Inter',sans-serif" font-size="9">2400mm</text>
+            <!-- Callout labels -->
+            <text x="330" y="140" fill="rgba(255,255,255,0.3)" font-family="'Inter',sans-serif" font-size="8" font-weight="600">POMPE À CHALEUR</text>
+            <text x="330" y="152" fill="rgba(255,255,255,0.2)" font-family="'Inter',sans-serif" font-size="7">DAIKIN 4MXM-A</text>
+            <line x1="324" y1="145" x2="316" y2="180" stroke="rgba(232,184,75,0.3)" stroke-width="0.5"/>
+          </svg>
+
+          <div class="callout callout-1">Split mural · Puissance 3.5kW</div>
+          <div class="callout callout-2">COP 5.10 · Classe A+++</div>
+          <div class="callout callout-3">Installation incluse</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== STATS ==================== -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Années d'expérience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">1500+</div>
+        <div class="stat-label">Installations réalisées</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Clients satisfaits</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4.8</div>
+        <div class="stat-label">Note moyenne ★</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SERVICES ==================== -->
+<section class="blueprint" style="border-bottom: 1px solid rgba(44,36,32,0.06);">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-eyebrow">Notre expertise</div>
+      <h2 class="section-title">Votre confort, notre métier</h2>
+      <p class="section-sub" style="margin:0 auto">De la conception à l'installation, nous maîtrisons chaque étape de votre projet climatique.</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="corner-marks"></div>
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+        </div>
+        <h3>Climatiseurs fixes</h3>
+        <p>Installation de splits, multisplits et systèmes gainables. Marques Daikin, Mitsubishi, Hitachi.</p>
+      </div>
+
+      <div class="card">
+        <div class="corner-marks"></div>
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3>Solutions mobiles</h3>
+        <p>Climatiseurs monobloc et split mobile. Sans travaux, livré et installé chez vous en 24h.</p>
+      </div>
+
+      <div class="card">
+        <div class="corner-marks"></div>
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+        </div>
+        <h3>Ventilateurs</h3>
+        <p>Large choix : colonne, pied, mural, plafond, brumisateur. Silencieux et design.</p>
+      </div>
+
+      <div class="card">
+        <div class="corner-marks"></div>
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h3>Installation pro</h3>
+        <p>Pose par nos techniciens certifiés RGE et QualiPAC. Respect des normes en vigueur.</p>
+      </div>
+
+      <div class="card">
+        <div class="corner-marks"></div>
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>SAV &amp; Garantie</h3>
+        <p>Service après-vente réactif, entretien annuel et garantie constructeur incluse.</p>
+      </div>
+
+      <div class="card">
+        <div class="corner-marks"></div>
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <h3>Livraison France</h3>
+        <p>Livraison rapide et sécurisée dans toute la France. Expédition sous 24h.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== REVIEWS ==================== -->
+<section class="blueprint" style="border-bottom: 1px solid rgba(44,36,32,0.06);">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-eyebrow">Avis clients</div>
+      <h2 class="section-title">Ce que disent nos clients</h2>
+      <p class="section-sub" style="margin:0 auto">4.8/5 sur 500+ avis vérifiés</p>
+    </div>
+
+    <div class="review-grid" style="margin-top:48px">
+      <div class="review-card">
+        <div class="stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="review-text">"Installation rapide et professionnelle. Notre climatiseur Daikin fonctionne parfaitement. Température idéale dans toute la maison !"</p>
+        <p class="review-author">Sophie M.</p>
+        <p class="review-city">Arlon</p>
+      </div>
+
+      <div class="review-card">
+        <div class="stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="review-text">"Très satisfait du ventilateur. Silencieux et très efficace. Livraison rapide et soignée. Je recommande vivement."</p>
+        <p class="review-author">Thomas D.</p>
+        <p class="review-city">Luxembourg</p>
+      </div>
+
+      <div class="review-card">
+        <div class="stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="empty" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="review-text">"Bon contact avec l'équipe. La livraison a pris un peu de retard mais le produit est de qualité."</p>
+        <p class="review-author">Nathalie F.</p>
+        <p class="review-city">Vienne</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SPECS / SYSTEM PANEL ==================== -->
+<section>
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-eyebrow">Système design</div>
+      <h2 class="section-title">Palette &amp; typographie</h2>
+    </div>
+
+    <!-- Color swatches -->
+    <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:32px;justify-content:center">
+      <div><div style="width:80px;height:80px;border-radius:4px;background:#C44536;border:1px solid rgba(44,36,32,0.08);margin-bottom:6px;"></div><div style="font-size:11px;font-weight:600;color:#8A7A72;text-align:center">#C44536</div><div style="font-size:10px;color:#A0938B;text-align:center">Terracotta</div></div>
+      <div><div style="width:80px;height:80px;border-radius:4px;background:#E8B84B;border:1px solid rgba(44,36,32,0.08);margin-bottom:6px;"></div><div style="font-size:11px;font-weight:600;color:#8A7A72;text-align:center">#E8B84B</div><div style="font-size:10px;color:#A0938B;text-align:center">Ocre / Gold</div></div>
+      <div><div style="width:80px;height:80px;border-radius:4px;background:#2B5F5D;border:1px solid rgba(44,36,32,0.08);margin-bottom:6px;"></div><div style="font-size:11px;font-weight:600;color:#8A7A72;text-align:center">#2B5F5D</div><div style="font-size:10px;color:#A0938B;text-align:center">Forêt</div></div>
+      <div><div style="width:80px;height:80px;border-radius:4px;background:#2C2420;border:1px solid rgba(44,36,32,0.08);margin-bottom:6px;"></div><div style="font-size:11px;font-weight:600;color:#8A7A72;text-align:center">#2C2420</div><div style="font-size:10px;color:#A0938B;text-align:center">Texte</div></div>
+      <div><div style="width:80px;height:80px;border-radius:4px;background:#F5F0EB;border:1px solid rgba(44,36,32,0.12);margin-bottom:6px;"></div><div style="font-size:11px;font-weight:600;color:#8A7A72;text-align:center">#F5F0EB</div><div style="font-size:10px;color:#A0938B;text-align:center">Fond</div></div>
+    </div>
+
+    <!-- Typography -->
+    <div class="type-test">
+      <div><span class="playfair" style="font-size:11px;font-weight:700;color:#C44536;letter-spacing:0.2em;text-transform:uppercase">Playfair Display</span> <span style="font-size:11px;color:#8A7A72;margin-left:8px">— Headings</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:8px">
+        <div style="flex:1;min-width:200px">
+          <div class="playfair size-huge">ABCabc</div>
+          <div class="playfair size-large">Playfair Display 800</div>
+        </div>
+        <div style="flex:1;min-width:200px">
+          <div class="inter size-medium" style="margin-top:8px">Inter 700 — titres de carte</div>
+          <div class="inter size-body">Inter 400 — corps de texte. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+          <div class="inter size-small">Inter 600 13px — légendes et métadonnées</div>
+        </div>
+      </div>
+      <hr style="border:none;border-top:1px solid rgba(44,36,32,0.06);margin:16px 0">
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <span class="tag tag-terracotta">CTA primaire</span>
+        <span class="tag tag-gold">CTA secondaire</span>
+        <span class="tag tag-forest">Badge / Certif</span>
+        <span class="tag tag-warm">Fond section</span>
+      </div>
+    </div>
+
+    <!-- Technical specs -->
+    <div class="specs">
+      <div class="spec-item">
+        <div class="spec-value">Terracotta</div>
+        <div class="spec-label">Couleur primaire</div>
+        <div style="font-size:0.75rem;color:#A0938B;margin-top:8px">Chaude, technique, artisanale</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-value">Playfair + Inter</div>
+        <div class="spec-label">Typographie</div>
+        <div style="font-size:0.75rem;color:#A0938B;margin-top:8px">Serif premium + sans sobre</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-value">Trait technique</div>
+        <div class="spec-label">Style décoratif</div>
+        <div style="font-size:0.75rem;color:#A0938B;margin-top:8px">Plan d'architecte, traits de coupe</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -206,6 +206,17 @@ textarea.input-luxury { resize: vertical; min-height: 80px; }
 }
 @keyframes shimmer { 0% { background-position: -200% 0 } 100% { background-position: 200% 0 } }
 @keyframes spin { to { transform: rotate(360deg) } }
+@keyframes pulse-dot { 0%, 100% { opacity: 1 } 50% { opacity: 0.4 } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px) } to { opacity: 1; transform: translateY(0) } }
+
+.card-hover {
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s cubic-bezier(0.4,0,0.2,1), border-color 0.2s;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-border);
+}
 
 .admin-layout { position: relative; }
 .admin-main { margin-left: 268px; min-height: 100vh; }

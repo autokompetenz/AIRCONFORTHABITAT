@@ -182,6 +182,25 @@ export default function ProductDetails() {
               </div>
             )}
 
+            <div style={{ display: 'flex', gap: 16, marginBottom: 28, flexWrap: 'wrap' }}>
+              {product.warranty && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 18px', borderRadius: 10, background: C.card2, border: `1px solid ${C.border}` }}>
+                  <span style={{ fontSize: 22 }}>🛡️</span>
+                  <div>
+                    <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.text3, marginBottom: 2 }}>{t('warranty_label', l)}</p>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: C.text }}>{product.warranty}</p>
+                  </div>
+                </div>
+              )}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 18px', borderRadius: 10, background: C.card2, border: `1px solid ${C.border}` }}>
+                <span style={{ fontSize: 22 }}>🚚</span>
+                <div>
+                  <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.text3, marginBottom: 2 }}>{l === 'fr' ? 'Livraison' : l === 'nl' ? 'Levering' : 'Delivery'}</p>
+                  <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--primary)' }}>{l === 'fr' ? 'En 24h' : l === 'nl' ? 'Binnen 24u' : 'In 24h'}</p>
+                </div>
+              </div>
+            </div>
+
             {inStock && (
               <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 0, border: `1px solid ${C.border}`, borderRadius: 10, overflow: 'hidden', background: C.card2 }}>

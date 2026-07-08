@@ -28,7 +28,6 @@ export default function CartDrawer() {
         customerEmail: fd.get('email'),
         customerPhone: fd.get('phone'),
         customerAddress: fd.get('address'),
-        deliveryMethod: fd.get('deliveryMethod') || 'delivery',
         notes: fd.get('notes'),
       });
       clearCart();
@@ -154,14 +153,6 @@ export default function CartDrawer() {
                 <input name="email" type="email" required placeholder={t('email_label', l)} className="input-luxury" style={{ fontSize: 15, padding: '14px 16px' }} />
                 <input name="phone" type="tel" required placeholder={t('phone_label', l)} className="input-luxury" style={{ fontSize: 15, padding: '14px 16px' }} />
                 <input name="address" placeholder={t('address_ph', l)} className="input-luxury" style={{ fontSize: 15, padding: '14px 16px' }} />
-                <div style={{ display: 'flex', gap: 12 }}>
-                  {['delivery', 'pickup'].map(m => (
-                    <label key={m} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '12px', borderRadius: 10, background: 'var(--bg-card2)', border: '1px solid var(--border)', cursor: 'pointer', fontSize: 14, fontWeight: 600, color: 'var(--text-2)' }}>
-                      <input type="radio" name="deliveryMethod" value={m} defaultChecked={m === 'delivery'} style={{ accentColor: 'var(--primary)', width: 16, height: 16 }} />
-                      {m === 'delivery' ? t('delivery_delivery', l) : t('delivery_pickup', l)}
-                    </label>
-                  ))}
-                </div>
                 <textarea name="notes" rows={2} placeholder={t('notes_ph', l)} className="input-luxury" style={{ fontSize: 15, padding: '14px 16px', resize: 'none' }} />
 
                 <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>

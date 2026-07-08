@@ -210,7 +210,7 @@ app.get('/api/products/:id', async (req, res) => {
 // ─── Orders ───────────────────────────────────────────────────────────────
 app.post('/api/orders', async (req, res) => {
   try {
-    const { items, customerName, customerEmail, customerPhone, customerAddress, deliveryMethod, deliveryAddress, notes } = req.body;
+    const { items, customerName, customerEmail, customerPhone, customerAddress, notes } = req.body;
     if (!customerName || !customerEmail || !customerPhone) {
       return res.status(400).json({ error: 'Nom, email et téléphone requis' });
     }
@@ -258,7 +258,7 @@ app.post('/api/orders', async (req, res) => {
           customerId: customer.id,
           customerName, customerEmail, customerPhone,
           customerAddress: customerAddress || null,
-          deliveryMethod: deliveryMethod || 'pickup',
+          deliveryMethod: 'pickup',
           deliveryAddress: deliveryAddress || null,
           totalAmount,
           notes: notes || null,

@@ -67,6 +67,7 @@ export default function App() {
         <Route path="/product/:slug" element={<PublicRoute element={<ProductDetails />} />} />
         <Route path="/track" element={<PublicRoute element={<Track />} />} />
         <Route path="/track/:number" element={<PublicRoute element={<Track />} />} />
+        <Route path="/about" element={<PublicRoute element={<Legal />} />} />
         <Route path="/legal" element={<PublicRoute element={<Legal />} />} />
 
         <Route path="/admin/login" element={<AdminLogin />} />

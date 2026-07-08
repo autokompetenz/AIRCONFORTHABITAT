@@ -56,19 +56,6 @@ export default function ProductDetails() {
   const inStock = product.status === 'available';
   const typeLabel = getProductTypeLabel(product.type, l);
 
-  const techSpecs = [
-    product.btu && { icon: '🔥', label: t('btu_label', l), value: `${product.btu} BTU` },
-    product.surface && { icon: '📐', label: t('surface_label', l), value: `${product.surface} ${t('m2_unit', l)}` },
-    product.noiseLevel && { icon: '🔊', label: t('noise_label', l), value: `${product.noiseLevel} ${t('db_unit', l)}` },
-    product.energyClass && { icon: '⚡', label: t('energy_class', l), value: product.energyClass },
-    product.cop && { icon: '📊', label: t('cop_label', l), value: product.cop },
-    product.seer && { icon: '📊', label: 'SEER', value: product.seer },
-    product.scop && { icon: '📊', label: 'SCOP', value: product.scop },
-    product.dimensions && { icon: '📏', label: t('dimensions_label', l), value: product.dimensions },
-    product.weight && { icon: '⚖', label: t('weight_label', l), value: `${product.weight} kg` },
-    product.warranty && { icon: '🛡', label: t('warranty_label', l), value: product.warranty },
-  ].filter(Boolean);
-
   return (
     <div style={{ minHeight: '100vh', background: C.bg, paddingTop: 76 }}>
       <div style={{ padding: '18px 6%', borderBottom: `1px solid ${C.border}`, background: C.card2 }}>
@@ -270,37 +257,6 @@ export default function ProductDetails() {
             )}
           </div>
         </div>
-
-        {/* Technical specs */}
-        {techSpecs.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            style={{ marginTop: isMobile ? 48 : 72 }}>
-            <div style={{ marginBottom: isMobile ? 24 : 32 }}>
-              <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--primary)' }}>
-                {t('technical', l)}
-              </span>
-              <h2 style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 900, fontSize: isMobile ? 28 : 42, color: C.text, letterSpacing: '-0.02em', marginTop: 8 }}>
-                {t('features', l)}
-              </h2>
-            </div>
-
-            <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: isMobile ? 24 : 32, boxShadow: C.shadow }}>
-              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', gap: 16 }}>
-                {techSpecs.map((item, i) => (
-                  <div key={i} style={{ display: 'flex', gap: 16, padding: '20px', background: C.card2, borderRadius: 12 }}>
-                    <div style={{ width: 52, height: 52, borderRadius: 12, background: 'linear-gradient(135deg,rgba(46,134,193,0.15),rgba(46,134,193,0.05))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, flexShrink: 0 }}>
-                      {item.icon}
-                    </div>
-                    <div>
-                      <h5 style={{ fontSize: 15, fontWeight: 700, color: C.text, marginBottom: 6 }}>{item.label}</h5>
-                      <p style={{ fontSize: 14, fontWeight: 600, color: C.text2, lineHeight: 1.5 }}>{item.value}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
       </div>
     </div>
   );

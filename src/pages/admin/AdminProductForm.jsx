@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { adminAPI } from '../../services/api';
 import { useToastStore } from '../../store';
 import { useBreakpoint } from '../../hooks';
-import { PRODUCT_TYPES, BRANDS, ENERGY_CLASSES } from '../../utils/helpers';
+import { PRODUCT_TYPES, BRANDS } from '../../utils/helpers';
 
 const EMPTY = {
   name:'', type:'climatiseur_fixe', brand:'Daikin', model:'',
@@ -150,33 +150,7 @@ export default function AdminProductForm() {
           </div>
         </Section>
 
-        <Section title="Caractéristiques techniques">
-          <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr', gap:16 }}>
-            <Field label="BTU" field="btu" type="number" placeholder="9000" value={form.btu} onChange={set("btu")} />
-            <Field label="Surface (m²)" field="surface" type="number" placeholder="25" value={form.surface} onChange={set("surface")} />
-            <Field label="Niveau sonore (dB)" field="noiseLevel" placeholder="42" value={form.noiseLevel} onChange={set("noiseLevel")} />
-            <Field label="Classe énergétique" field="energyClass" opts={ENERGY_CLASSES} value={form.energyClass} onChange={set("energyClass")} />
-            <Field label="COP" field="cop" placeholder="4.5" value={form.cop} onChange={set("cop")} />
-            <Field label="SEER" field="seer" placeholder="6.1" value={form.seer} onChange={set("seer")} />
-            <Field label="SCOP" field="scop" placeholder="4.0" value={form.scop} onChange={set("scop")} />
-          </div>
-        </Section>
 
-        <Section title="Caractéristiques physiques">
-          <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap:16 }}>
-            <Field label="Couleur" field="color" placeholder="Blanc" value={form.color} onChange={set("color")} />
-            <Field label="Poids (kg)" field="weight" placeholder="12.5" value={form.weight} onChange={set("weight")} />
-            <Field label="Dimensions" field="dimensions" placeholder="80 x 30 x 25 cm" value={form.dimensions} onChange={set("dimensions")} />
-            <Field label="Garantie" field="warranty" placeholder="5 ans" value={form.warranty} onChange={set("warranty")} />
-          </div>
-        </Section>
-
-        <Section title="Stock">
-          <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap:16 }}>
-            <Field label="Quantité en stock" field="stock" type="number" placeholder="10" value={form.stock} onChange={set("stock")} />
-            <Field label="Statut" field="status" opts={['available', 'out_of_stock', 'discontinued']} value={form.status} onChange={set("status")} />
-          </div>
-        </Section>
 
         <Section title="Images">
           <input type="file" accept="image/*" multiple onChange={handleImageChange} style={{ display:'none' }} id="images-input" />

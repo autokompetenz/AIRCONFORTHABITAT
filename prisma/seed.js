@@ -508,7 +508,6 @@ async function main() {
         ...p,
         categoryId: catMap[p.type],
         price: p.price,
-        imageUrl: `https://images.unsplash.com/photo-${i % 2 === 0 ? '1585771720169-19a4b0b8f9b1?w=600&q=80' : '1621905231877-8c1a6f8e3b9a?w=600&q=80'}`,
       },
     });
   }

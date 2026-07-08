@@ -82,7 +82,7 @@ export default function AdminOrders() {
                       <p style={{ fontSize:12, color:'var(--text-3)', marginTop:3 }}>{order.customerEmail}</p>
                     </td>
                     <td style={{ padding:'14px 20px', color:'var(--text-2)', fontSize:13 }}>{formatDate(order.createdAt)}</td>
-                    <td style={{ padding:'14px 20px', fontWeight:800, color:'var(--text)', fontSize:16 }}>{formatEuro(order.total || 0)}</td>
+                    <td style={{ padding:'14px 20px', fontWeight:800, color:'var(--text)', fontSize:16 }}>{formatEuro(order.totalAmount || 0)}</td>
                     <td style={{ padding:'14px 20px' }}>
                       <span className={`badge badge-${order.status}`}><span style={{ width:6, height:6, borderRadius:'50%', background:'currentColor', display:'inline-block' }} /> {STATUS_LABELS[order.status] || order.status}</span>
                     </td>

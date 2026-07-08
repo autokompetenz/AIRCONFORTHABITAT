@@ -102,7 +102,7 @@ export default function Track() {
                     {l==='fr'?'Commande':l==='nl'?'Bestelling':l==='en'?'Order':'Commande'}
                   </p>
                   <p style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 800, fontSize: 20, color: 'var(--text)' }}>
-                    {order.number}
+                    {order.orderNumber}
                   </p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
@@ -110,26 +110,26 @@ export default function Track() {
                     {t('total', l)}
                   </p>
                   <p style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 900, fontSize: 22, color: 'var(--primary)' }}>
-                    {formatEuro(order.total || 0)}
+                    {formatEuro(order.totalAmount || 0)}
                   </p>
                 </div>
               </div>
 
-              {order.product && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: 14, background: 'var(--bg-card2)', borderRadius: 10, marginBottom: 16 }}>
-                  <img src={order.product.imageUrl || 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=100&q=70'}
-                    alt={order.product.name} style={{ width: 60, height: 60, borderRadius: 10, objectFit: 'cover' }} />
+              {order.items?.length > 0 && order.items.map((item, idx) => (
+                <div key={item.id || idx} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: 14, background: 'var(--bg-card2)', borderRadius: 10, marginBottom: 10 }}>
+                  <img src={item.product?.imageUrl || 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=100&q=70'}
+                    alt={item.product?.name} style={{ width: 60, height: 60, borderRadius: 10, objectFit: 'cover' }} />
                   <div>
-                    <p style={{ fontWeight: 700, fontSize: 16, color: 'var(--text)' }}>{order.product.name}</p>
-                    <p style={{ fontSize: 13, color: 'var(--text-3)' }}>{order.product.brand} · {order.quantity || 1}x</p>
+                    <p style={{ fontWeight: 700, fontSize: 16, color: 'var(--text)' }}>{item.product?.name}</p>
+                    <p style={{ fontSize: 13, color: 'var(--text-3)' }}>{item.product?.brand} · {item.quantity || 1}x</p>
                   </div>
                 </div>
-              )}
+              ))}
 
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
                 <div>
                   <p style={{ fontSize: 11, color: 'var(--text-3)' }}>{l==='fr'?'Client':l==='nl'?'Klant':l==='en'?'Client':'Client'}</p>
-                  <p style={{ fontWeight: 700, color: 'var(--text)' }}>{order.guestName}</p>
+                  <p style={{ fontWeight: 700, color: 'var(--text)' }}>{order.customerName}</p>
                 </div>
                 <div>
                   <p style={{ fontSize: 11, color: 'var(--text-3)' }}>{l==='fr'?'Date':l==='nl'?'Datum':l==='en'?'Date':'Date'}</p>

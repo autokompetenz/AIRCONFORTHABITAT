@@ -95,7 +95,6 @@ export default function AdminOrderDetail() {
               <InfoRow label="Email" value={order.customerEmail} />
               <InfoRow label="Téléphone" value={order.customerPhone} />
               <InfoRow label="Adresse" value={order.customerAddress} />
-              <InfoRow label="Ville" value={order.customerCity} />
               <InfoRow label="Date de commande" value={formatDate(order.createdAt)} />
             </div>
             {order.notes && (
@@ -111,14 +110,14 @@ export default function AdminOrderDetail() {
               <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--primary)', marginBottom:18 }}>Articles commandés</p>
               {order.items.map((item, idx) => (
                 <div key={item.id || idx} style={{ display:'flex', gap:14, alignItems:'center', flexWrap:'wrap', padding: idx > 0 ? '12px 0 0 0' : 0, borderTop: idx > 0 ? '1px solid var(--border)' : 'none', marginTop: idx > 0 ? 12 : 0 }}>
-                  {item.image ? (
-                    <img src={item.image} alt={item.name} style={{ width:80, height:60, objectFit:'cover', borderRadius:8, flexShrink:0, border:'1px solid var(--border)' }} />
+                  {item.product?.imageUrl ? (
+                    <img src={item.product.imageUrl} alt={item.product.name} style={{ width:80, height:60, objectFit:'cover', borderRadius:8, flexShrink:0, border:'1px solid var(--border)' }} />
                   ) : (
                     <div style={{ width:80, height:60, borderRadius:8, background:'var(--bg-card2)', border:'1px solid var(--border)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:24, flexShrink:0 }}>❄</div>
                   )}
                   <div style={{ flex:1, minWidth:160 }}>
-                    <p style={{ fontWeight:700, color:'var(--text)', fontSize:15 }}>{item.name}</p>
-                    <p style={{ fontSize:13, color:'var(--text-3)', marginTop:2 }}>{item.brand} — {item.model}</p>
+                    <p style={{ fontWeight:700, color:'var(--text)', fontSize:15 }}>{item.product?.name}</p>
+                    <p style={{ fontSize:13, color:'var(--text-3)', marginTop:2 }}>{item.product?.brand} — {item.product?.model}</p>
                     {item.quantity > 1 && <p style={{ fontSize:12, color:'var(--text-2)', marginTop:2 }}>Qty: {item.quantity}</p>}
                   </div>
                   <p style={{ fontFamily:"'Outfit',sans-serif", fontWeight:800, fontSize:17, color:'var(--primary)', flexShrink:0 }}>{formatEuro(item.price)}</p>
@@ -126,7 +125,7 @@ export default function AdminOrderDetail() {
               ))}
               <div style={{ marginTop:16, paddingTop:16, borderTop:'1px solid var(--border)', textAlign:'right' }}>
                 <p style={{ fontSize:11, color:'var(--text-3)', marginBottom:4 }}>Total</p>
-                <p style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:24, color:'var(--primary)' }}>{formatEuro(order.total)}</p>
+                <p style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:24, color:'var(--primary)' }}>{formatEuro(order.totalAmount)}</p>
               </div>
             </div>
           )}

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { adminAPI } from '../../services/api';
 import { useToastStore } from '../../store';
 import { useBreakpoint } from '../../hooks';
-import { PRODUCT_TYPES, BRANDS } from '../../utils/helpers';
+import { PRODUCT_TYPES } from '../../utils/helpers';
 
 const EMPTY = {
   name:'', type:'climatiseur_fixe', brand:'Daikin', model:'',
@@ -135,7 +135,7 @@ export default function AdminProductForm() {
           <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap:16, marginBottom:16 }}>
             <Field label="Nom *" field="name" placeholder="Climatiseur Inverter 9000 BTU" value={form.name} onChange={set("name")} />
             <Field label="Type *" field="type" opts={PRODUCT_TYPES} value={form.type} onChange={set("type")} />
-            <Field label="Marque *" field="brand" opts={BRANDS} value={form.brand} onChange={set("brand")} />
+            <Field label="Marque *" field="brand" placeholder="Daikin, Mitsubishi, Dyson..." value={form.brand} onChange={set("brand")} />
             <Field label="Modèle" field="model" placeholder="FTXM-R" value={form.model} onChange={set("model")} />
           </div>
           <Field label="Description" field="description" rows={4} placeholder="Description détaillée du produit..." value={form.description} onChange={set("description")} />

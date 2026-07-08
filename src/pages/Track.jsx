@@ -94,7 +94,7 @@ export default function Track() {
         >
           <input value={searchNum} onChange={e => setSearchNum(e.target.value)}
             placeholder={t('track_ph', l)}
-            style={{ flex: 1, border: '1px solid var(--border)', padding: '9px 12px', fontSize: 14, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
+            style={{ flex: '1 1 auto', minWidth: 0, border: '1px solid var(--border)', padding: '9px 12px', fontSize: 14, fontFamily: 'Inter, sans-serif', outline: 'none' }} />
           <button type="submit" className="btn-primary" style={{ padding: '9px 16px', fontSize: 12, whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6 }}>
             <Search size={14} strokeWidth={2} /> {t('track_order', l)}
           </button>
@@ -132,7 +132,7 @@ export default function Track() {
                   <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#999', marginBottom: 2 }}>
                     {l === 'fr' ? 'Commande' : l === 'nl' ? 'Bestelling' : 'Order'}
                   </p>
-                  <p style={{ fontWeight: 800, fontSize: 16, color: '#1A1A1A' }}>
+                  <p style={{ fontWeight: 800, fontSize: 16, color: '#1A1A1A', wordBreak: 'break-all' }}>
                     {order.orderNumber}
                   </p>
                 </div>
@@ -151,7 +151,7 @@ export default function Track() {
                   <img src={item.product?.imageUrl || 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=100&q=70'}
                     alt={item.product?.name} style={{ width: 48, height: 48, objectFit: 'cover' }} />
                   <div>
-                    <p style={{ fontWeight: 600, fontSize: 13, color: '#1A1A1A' }}>{item.product?.name}</p>
+                    <p style={{ fontWeight: 600, fontSize: 13, color: '#1A1A1A', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '60vw' }}>{item.product?.name}</p>
                     <p style={{ fontSize: 11, color: '#999' }}>{item.product?.brand} · {item.quantity || 1}x</p>
                   </div>
                 </div>
@@ -197,7 +197,7 @@ export default function Track() {
                       )}
                     </div>
                     <div style={{ paddingTop: 4 }}>
-                      <p style={{ fontSize: 13, fontWeight: isCurrent ? 700 : 500, color: isActive ? '#1A1A1A' : '#999' }}>
+                      <p style={{ fontSize: 13, fontWeight: isCurrent ? 700 : 500, color: isActive ? '#1A1A1A' : '#999', wordBreak: 'break-word' }}>
                         {step.label}
                       </p>
                     </div>

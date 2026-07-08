@@ -8,14 +8,15 @@ const SECTIONS = {
     {
       id: 'identite',
       title: 'Identité de la société',
-      content: `AIRCONFORTHABITAT SRL
-Liège, Belgique
-TVA : BE1234.567.890
-Registre BCE : 1234.567.890
-
-Dirigeants : — (voir registre BCE)
-Forme juridique : Société à responsabilité limitée (SRL)
-Activité NACEBEL : 43.220 (Installation de systèmes de climatisation)
+      content: `AIRCONFORTHABITAT
+Vienne, France
+SIREN : 851 996 991
+SIRET : 851 996 991 00010
+TVA : FR51851996991
+RCS : 851 996 991 R.C.S. Vienne
+Forme juridique : Entrepreneur individuel
+Code APE : 43.22B (Travaux d'installation d'équipements thermiques et de climatisation)
+Qualité : Artisan
 
 Contact : nous contacter par email
 Hébergeur : Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA`,
@@ -26,7 +27,7 @@ Hébergeur : Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA`,
       sections: [
         {
           sub: '1. Responsable du traitement',
-          text: 'Le responsable du traitement des données est AIRCONFORTHABITAT SRL, Liège, Belgique. Pour toute question concernant vos données, contactez-nous par email.',
+          text: 'Le responsable du traitement des données est AIRCONFORTHABITAT, Vienne, France. Pour toute question concernant vos données, contactez-nous par email.',
         },
         {
           sub: '2. Données collectées',
@@ -46,11 +47,11 @@ Hébergeur : Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA`,
         },
         {
           sub: '6. Destinataires des données',
-          text: 'Vos données ne sont jamais cédées à des tiers. Elles sont accessibles uniquement à l\'équipe d\'AIRCONFORTHABITAT SRL. Les données de paiement sont traitées via notre prestataire bancaire sécurisé.',
+          text: 'Vos données ne sont jamais cédées à des tiers. Elles sont accessibles uniquement à l\'équipe d\'AIRCONFORTHABITAT. Les données de paiement sont traitées via notre prestataire bancaire sécurisé.',
         },
         {
           sub: '7. Transferts hors UE',
-          text: 'Nos serveurs sont hébergés en Europe (Belgique/UE). Aucun transfert de données hors de l\'Espace Économique Européen n\'est effectué.',
+          text: 'Nos serveurs sont hébergés en Europe (France/UE). Aucun transfert de données hors de l\'Espace Économique Européen n\'est effectué.',
         },
         {
           sub: '8. Vos droits',
@@ -62,7 +63,7 @@ Hébergeur : Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA`,
         },
         {
           sub: '10. Réclamation',
-          text: 'Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de l\'Autorité de protection des données belge : Rue de la Presse 35, 1000 Bruxelles — contact@apd-gba.be — +32 (0)2 274 48 00.',
+          text: 'Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de l\'Autorité de protection des données française : 3 place de Fontenoy, 75007 Paris.',
         },
       ],
     },
@@ -72,23 +73,23 @@ Hébergeur : Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA`,
       sections: [
         {
           sub: '1. Objet',
-          text: 'Les présentes CGV régissent la vente de climatiseurs, ventilateurs et accessoires par AIRCONFORTHABITAT SRL, société basée à Liège, Belgique. Elles s\'appliquent à toute commande effectuée via le site airconforthabitat.com.',
+          text: 'Les présentes CGV régissent la vente de climatiseurs, ventilateurs et accessoires par AIRCONFORTHABITAT, société basée à Vienne, France. Elles s\'appliquent à toute commande effectuée via le site airconforthabitat.com.',
         },
         {
           sub: '2. Commande',
-          text: 'La commande est effectuée via le formulaire en ligne. Elle est confirmée après validation par AIRCONFORTHABITAT SRL. Un numéro de commande unique est communiqué par email et permet le suivi en ligne.',
+          text: 'La commande est effectuée via le formulaire en ligne. Elle est confirmée après validation par AIRCONFORTHABITAT. Un numéro de commande unique est communiqué par email et permet le suivi en ligne.',
         },
         {
           sub: '3. Prix et modalités de paiement',
-          text: 'Les prix sont indiqués en euros (€), TVA comprise au taux en vigueur (21%). Le paiement est exigible à la commande, par virement bancaire ou par carte de crédit via notre prestataire sécurisé.',
+          text: 'Les prix sont indiqués en euros (€), TVA comprise au taux en vigueur (20%). Le paiement est exigible à la commande, par virement bancaire ou par carte de crédit via notre prestataire sécurisé.',
         },
         {
           sub: '4. Livraison',
-          text: 'La livraison est effectuée à l\'adresse indiquée par le client, dans toute la Belgique et le Grand-Duché de Luxembourg. Les délais de livraison sont communiqués avant validation de la commande. En cas de retard, le client en est informé dans les plus brefs délais.',
+          text: 'La livraison est effectuée à l\'adresse indiquée par le client, dans toute la France. Les délais de livraison sont communiqués avant validation de la commande. En cas de retard, le client en est informé dans les plus brefs délais.',
         },
         {
           sub: '5. Délai de rétractation',
-          text: 'Conformément à la législation belge, le client dispose d\'un délai de 14 jours à compter de la réception des produits pour exercer son droit de rétractation, sans motif. Les produits doivent être retournés dans leur emballage d\'origine, complets et en parfait état. Les frais de retour sont à la charge du client.',
+          text: 'Conformément à la législation française, le client dispose d\'un délai de 14 jours à compter de la réception des produits pour exercer son droit de rétractation, sans motif. Les produits doivent être retournés dans leur emballage d\'origine, complets et en parfait état. Les frais de retour sont à la charge du client.',
         },
         {
           sub: '6. Garantie',
@@ -104,7 +105,7 @@ Hébergeur : Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA`,
         },
         {
           sub: '9. Litiges',
-          text: 'Tout litige relève du droit belge et de la compétence exclusive des tribunaux de l\'arrondissement de Liège (Belgique). En cas de litige, une solution amiable sera recherchée avant toute action judiciaire.',
+          text: 'Tout litige relève du droit français et de la compétence exclusive des tribunaux de Vienne (France). En cas de litige, une solution amiable sera recherchée avant toute action judiciaire.',
         },
         {
           sub: '10. Données personnelles',
@@ -117,14 +118,15 @@ Hébergeur : Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA`,
     {
       id: 'identite',
       title: 'Identiteit van het bedrijf',
-      content: `AIRCONFORTHABITAT SRL
-Luik, België
-BTW : BE1234.567.890
-KBO-register : 1234.567.890
-
-Bestuurders : — (zie KBO-register)
-Rechtsvorm : Besloten vennootschap (BV)
-NACEBEL-activiteit : 43.220 (Installatie van airconditioningsystemen)
+      content: `AIRCONFORTHABITAT
+Vienne, Frankrijk
+SIREN : 851 996 991
+SIRET : 851 996 991 00010
+BTW : FR51851996991
+RCS : 851 996 991 R.C.S. Vienne
+Rechtsvorm : Entrepreneur individuel
+APE-code : 43.22B (Installatie van thermische en airconditioningapparatuur)
+Kwaliteit : Ambachtsman
 
 Contact : neem contact op per e-mail
 Hosting : Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, VS`,
@@ -133,31 +135,31 @@ Hosting : Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, VS`,
       id: 'privacy',
       title: 'Privacybeleid (AVG)',
       sections: [
-        { sub: '1. Verwerkingsverantwoordelijke', text: 'De verwerkingsverantwoordelijke is AIRCONFORTHABITAT SRL, Luik, België. Neem per e-mail contact met ons op voor vragen over uw gegevens.' },
+        { sub: '1. Verwerkingsverantwoordelijke', text: 'De verwerkingsverantwoordelijke is AIRCONFORTHABITAT, Vienne, Frankrijk. Neem per e-mail contact met ons op voor vragen over uw gegevens.' },
         { sub: '2. Verzamelde gegevens', text: 'We verzamelen alleen de gegevens die nodig zijn voor bestellingen: naam, e-mailadres, telefoonnummer, leveringsadres en eventuele notities die u vrijwillig verstrekt. We verzamelen geen gevoelige gegevens.' },
         { sub: '3. Doeleinden van verwerking', text: 'Uw gegevens worden gebruikt voor: (a) het beheer en de opvolging van uw bestelling; (b) communicatie over uw aankoop en levering; (c) naleving van wettelijke en fiscale verplichtingen (facturatie).' },
         { sub: '4. Rechtsgrond', text: 'De verwerking is gebaseerd op de uitvoering van een overeenkomst (bestelling) en wettelijke verplichtingen. Toestemming wordt gevraagd voor niet-essentiële cookies via onze banner.' },
         { sub: '5. Bewaartermijn', text: 'Uw gegevens worden bewaard tijdens de contractuele relatie en vervolgens 5 jaar gearchiveerd voor fiscale en wettelijke verplichtingen.' },
-        { sub: '6. Ontvangers van gegevens', text: 'Uw gegevens worden nooit aan derden verstrekt. Ze zijn alleen toegankelijk voor het AIRCONFORTHABITAT SRL-team. Betalingsgegevens worden verwerkt via onze beveiligde bankpartner.' },
-        { sub: '7. Doorgifte buiten EU', text: 'Onze servers worden gehost in Europa (België/EU). Er vindt geen doorgifte van gegevens buiten de Europese Economische Ruimte plaats.' },
+        { sub: '6. Ontvangers van gegevens', text: 'Uw gegevens worden nooit aan derden verstrekt. Ze zijn alleen toegankelijk voor het AIRCONFORTHABITAT-team. Betalingsgegevens worden verwerkt via onze beveiligde bankpartner.' },
+        { sub: '7. Doorgifte buiten EU', text: 'Onze servers worden gehost in Europa (Frankrijk/EU). Er vindt geen doorgifte van gegevens buiten de Europese Economische Ruimte plaats.' },
         { sub: '8. Uw rechten', text: 'Overeenkomstig de AVG heeft u recht op toegang, rectificatie, wissen, beperking, overdraagbaarheid en bezwaar. Neem per e-mail contact met ons op om deze rechten uit te oefenen. We reageren binnen maximaal 30 dagen.' },
         { sub: '9. Cookies', text: 'Onze site gebruikt alleen technische cookies die nodig zijn voor de werking (sessie, admin-authenticatie). Er worden geen tracking- of advertentiecookies gebruikt. Een banner informeert u bij uw eerste bezoek.' },
-        { sub: '10. Klacht', text: 'Als u van mening bent dat uw rechten niet worden gerespecteerd, kunt u een klacht indienen bij de Belgische Gegevensbeschermingsautoriteit: Drukpersstraat 35, 1000 Brussel — contact@apd-gba.be — +32 (0)2 274 48 00.' },
+        { sub: '10. Klacht', text: 'Als u van mening bent dat uw rechten niet worden gerespecteerd, kunt u een klacht indienen bij de CNIL (Commission Nationale de l\u2019Informatique et des Libert\u00e9s): 3 place de Fontenoy, 75007 Paris.' },
       ],
     },
     {
       id: 'terms',
       title: 'Algemene Verkoopvoorwaarden',
       sections: [
-        { sub: '1. Toepasselijkheid', text: 'Deze voorwaarden regelen de verkoop van airconditioners, ventilatoren en accessoires door AIRCONFORTHABITAT SRL, gevestigd in Luik, België. Ze zijn van toepassing op elke bestelling via airconforthabitat.com.' },
-        { sub: '2. Bestelling', text: 'De bestelling wordt geplaatst via het online formulier. Ze wordt bevestigd na goedkeuring door AIRCONFORTHABITAT SRL. Een uniek bestelnummer wordt per e-mail verstrekt voor online opvolging.' },
-        { sub: '3. Prijs en betaling', text: 'Prijzen zijn in euro (€), inclusief BTW tegen het geldende tarief (21%). Betaling is verschuldigd bij bestelling, per overschrijving of creditcard via onze beveiligde partner.' },
-        { sub: '4. Levering', text: 'Levering vindt plaats op het door de klant opgegeven adres, in heel België en Luxemburg. Levertijden worden gecommuniceerd vóór orderbevestiging. Bij vertraging wordt de klant zo snel mogelijk geïnformeerd.' },
-        { sub: '5. Herroepingsrecht', text: 'Overeenkomstig de Belgische wetgeving heeft de klant 14 dagen na ontvangst van de producten om zonder opgave van redenen de koop te herroepen. Producten moeten worden teruggezonden in originele verpakking, volledig en in perfecte staat. Retourkosten zijn voor de klant.' },
+        { sub: '1. Toepasselijkheid', text: 'Deze voorwaarden regelen de verkoop van airconditioners, ventilatoren en accessoires door AIRCONFORTHABITAT, gevestigd in Vienne, Frankrijk. Ze zijn van toepassing op elke bestelling via airconforthabitat.com.' },
+        { sub: '2. Bestelling', text: 'De bestelling wordt geplaatst via het online formulier. Ze wordt bevestigd na goedkeuring door AIRCONFORTHABITAT. Een uniek bestelnummer wordt per e-mail verstrekt voor online opvolging.' },
+        { sub: '3. Prijs en betaling', text: 'Prijzen zijn in euro (€), inclusief BTW tegen het geldende tarief (20%). Betaling is verschuldigd bij bestelling, per overschrijving of creditcard via onze beveiligde partner.' },
+        { sub: '4. Levering', text: 'Levering vindt plaats op het door de klant opgegeven adres, in heel Frankrijk. Levertijden worden gecommuniceerd vóór orderbevestiging. Bij vertraging wordt de klant zo snel mogelijk geïnformeerd.' },
+        { sub: '5. Herroepingsrecht', text: 'Overeenkomstig de Franse wetgeving heeft de klant 14 dagen na ontvangst van de producten om zonder opgave van redenen de koop te herroepen. Producten moeten worden teruggezonden in originele verpakking, volledig en in perfecte staat. Retourkosten zijn voor de klant.' },
         { sub: '6. Garantie', text: 'Al onze producten vallen onder de wettelijke conformiteitsgarantie van 2 jaar. Aanvullende fabrieksgaranties kunnen gelden per merk. Installatie door erkende technici wordt aanbevolen om de garantie te behouden.' },
         { sub: '7. Installatie', text: 'Installatiediensten worden uitgevoerd door onze gecertificeerde technici. Een gratis offerte wordt opgesteld vóór elke interventie. De voorwaarden worden gespecificeerd in de offerte.' },
         { sub: '8. After-sales service', text: 'Onze after-sales service is per e-mail bereikbaar voor vragen over gebruik, onderhoud of service van uw apparaten. Technische interventie kan binnen 48 werkuren worden georganiseerd.' },
-        { sub: '9. Geschillen', text: 'Geschillen vallen onder het Belgisch recht en de exclusieve bevoegdheid van de rechtbanken van het arrondissement Luik (België). Bij een geschil wordt eerst een minnelijke schikking gezocht.' },
+        { sub: '9. Geschillen', text: 'Geschillen vallen onder het Frans recht en de exclusieve bevoegdheid van de rechtbanken van Vienne (Frankrijk). Bij een geschil wordt eerst een minnelijke schikking gezocht.' },
         { sub: '10. Privacy', text: 'Zie ons Privacybeleid hierboven voor de verwerking van uw persoonsgegevens.' },
       ],
     },
@@ -166,14 +168,15 @@ Hosting : Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, VS`,
     {
       id: 'identite',
       title: 'Company Identity',
-      content: `AIRCONFORTHABITAT SRL
-Liège, Belgium
-VAT : BE1234.567.890
-BCE Register : 1234.567.890
-
-Directors : — (see BCE register)
-Legal form : Private Limited Liability Company
-NACEBEL activity : 43.220 (Installation of air conditioning systems)
+      content: `AIRCONFORTHABITAT
+Vienne, France
+SIREN : 851 996 991
+SIRET : 851 996 991 00010
+VAT : FR51851996991
+RCS : 851 996 991 R.C.S. Vienne
+Legal form : Entrepreneur individuel (Sole trader)
+APE code : 43.22B (Installation of thermal and air conditioning equipment)
+Status : Artisan
 
 Contact : contact us by email
 Hosting : Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA`,
@@ -182,31 +185,31 @@ Hosting : Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA`,
       id: 'privacy',
       title: 'Privacy Policy (GDPR)',
       sections: [
-        { sub: '1. Data Controller', text: 'The data controller is AIRCONFORTHABITAT SRL, Liège, Belgium. For any questions regarding your data, contact us by email.' },
+        { sub: '1. Data Controller', text: 'The data controller is AIRCONFORTHABITAT, Vienne, France. For any questions regarding your data, contact us by email.' },
         { sub: '2. Data Collected', text: 'We only collect data necessary for order management: name, email address, phone number, delivery address, and any notes you voluntarily provide. We do not collect any sensitive data.' },
         { sub: '3. Purposes of Processing', text: 'Your data is used for: (a) managing and tracking your order; (b) communication regarding your purchase and delivery; (c) compliance with our legal and tax obligations (invoicing).' },
         { sub: '4. Legal Basis', text: 'Processing is based on contract execution (order) and legal obligations. Consent is obtained for non-essential cookies via our banner.' },
         { sub: '5. Retention Period', text: 'Your data is kept for the duration of the contractual relationship, then archived for 5 years for tax and legal obligations.' },
-        { sub: '6. Data Recipients', text: 'Your data is never shared with third parties. It is only accessible to the AIRCONFORTHABITAT SRL team. Payment data is processed through our secure banking partner.' },
-        { sub: '7. International Transfers', text: 'Our servers are hosted in Europe (Belgium/EU). No data transfer outside the European Economic Area occurs.' },
+        { sub: '6. Data Recipients', text: 'Your data is never shared with third parties. It is only accessible to the AIRCONFORTHABITAT team. Payment data is processed through our secure banking partner.' },
+        { sub: '7. International Transfers', text: 'Our servers are hosted in Europe (France/EU). No data transfer outside the European Economic Area occurs.' },
         { sub: '8. Your Rights', text: 'Under GDPR, you have the right to access, rectify, erase, restrict, port, and object. To exercise these rights, email us. We respond within 30 days maximum.' },
         { sub: '9. Cookies', text: 'Our site only uses technical cookies necessary for operation (session, admin authentication). No tracking or advertising cookies are used. A banner informs you on your first visit.' },
-        { sub: '10. Complaint', text: 'If you believe your rights are not respected, you can file a complaint with the Belgian Data Protection Authority: Rue de la Presse 35, 1000 Brussels — contact@apd-gba.be — +32 (0)2 274 48 00.' },
+        { sub: '10. Complaint', text: 'If you believe your rights are not respected, you can file a complaint with the CNIL (French Data Protection Authority): 3 place de Fontenoy, 75007 Paris.' },
       ],
     },
     {
       id: 'terms',
       title: 'Terms and Conditions of Sale',
       sections: [
-        { sub: '1. Scope', text: 'These terms govern the sale of air conditioners, fans and accessories by AIRCONFORTHABITAT SRL, based in Liège, Belgium. They apply to any order placed via airconforthabitat.com.' },
-        { sub: '2. Order', text: 'Orders are placed via the online form. They are confirmed after validation by AIRCONFORTHABITAT SRL. A unique order number is provided by email for online tracking.' },
-        { sub: '3. Price and Payment', text: 'Prices are in euros (€), VAT included at the applicable rate (21%). Payment is due upon ordering, by bank transfer or credit card via our secure payment provider.' },
-        { sub: '4. Delivery', text: 'Delivery is made to the address indicated by the customer, throughout Belgium and Luxembourg. Delivery times are communicated before order confirmation. In case of delay, the customer is informed as soon as possible.' },
-        { sub: '5. Withdrawal Right', text: 'Under Belgian law, the customer has 14 days from receipt of products to exercise the right of withdrawal without giving any reason. Products must be returned in original packaging, complete and in perfect condition. Return costs are borne by the customer.' },
+        { sub: '1. Scope', text: 'These terms govern the sale of air conditioners, fans and accessories by AIRCONFORTHABITAT, based in Vienne, France. They apply to any order placed via airconforthabitat.com.' },
+        { sub: '2. Order', text: 'Orders are placed via the online form. They are confirmed after validation by AIRCONFORTHABITAT. A unique order number is provided by email for online tracking.' },
+        { sub: '3. Price and Payment', text: 'Prices are in euros (€), VAT included at the applicable rate (20%). Payment is due upon ordering, by bank transfer or credit card via our secure payment provider.' },
+        { sub: '4. Delivery', text: 'Delivery is made to the address indicated by the customer, throughout France. Delivery times are communicated before order confirmation. In case of delay, the customer is informed as soon as possible.' },
+        { sub: '5. Withdrawal Right', text: 'Under French law, the customer has 14 days from receipt of products to exercise the right of withdrawal without giving any reason. Products must be returned in original packaging, complete and in perfect condition. Return costs are borne by the customer.' },
         { sub: '6. Warranty', text: 'All our products benefit from the legal 2-year conformity warranty. Additional manufacturer warranties may apply depending on the brand. Installation by our certified technicians is recommended to maintain warranty coverage.' },
         { sub: '7. Installation', text: 'Installation services are carried out by our certified technicians. A free quote is provided before any intervention. Terms of intervention are detailed in the quote.' },
         { sub: '8. After-Sales Service', text: 'Our after-sales service is reachable by email for any questions regarding use, maintenance or servicing of your appliances. Technical intervention can be arranged within 48 business hours.' },
-        { sub: '9. Disputes', text: 'Any dispute falls under Belgian law and the exclusive jurisdiction of the courts of the Liège district (Belgium). An amicable solution will be sought before any legal action.' },
+        { sub: '9. Disputes', text: 'Any dispute falls under French law and the exclusive jurisdiction of the courts of Vienne (France). An amicable solution will be sought before any legal action.' },
         { sub: '10. Privacy', text: 'See our Privacy Policy above regarding the processing of your personal data.' },
       ],
     },

@@ -107,7 +107,7 @@ export default function Navbar() {
             AIRCONFORTHABITAT
           </div>
           <div style={{ fontSize: 9, letterSpacing: '0.4em', color: 'var(--primary)', textTransform: 'uppercase', marginTop: 2 }}>
-            Liège · Belgique
+            Vienne · France
           </div>
         </Link>
 

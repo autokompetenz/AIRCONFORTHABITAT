@@ -56,11 +56,11 @@ export default function Footer() {
               AIRCONFORTHABITAT
             </div>
             <div style={{ fontSize: 10, letterSpacing: '0.4em', color: 'var(--primary)', textTransform: 'uppercase', marginTop: 3 }}>
-              Liège &middot; Belgique
+               Vienne &middot; France
             </div>
           </Link>
           <p style={{ fontSize: 13, color: text2, lineHeight: 1.7, marginTop: 16, maxWidth: 300 }}>
-            {lang === 'fr' ? 'Spécialiste en climatisation, ventilation et pompes à chaleur — vente, installation et service après-vente en Belgique.' : lang === 'en' ? 'Specialist in air conditioning, ventilation and heat pumps — sales, installation and after-sales service in Belgium.' : 'Specialist in airconditioning, ventilatie en warmtepompen — verkoop, installatie en after-sales service in België.'}
+            {lang === 'fr' ? 'Spécialiste en climatisation, ventilation et pompes à chaleur — vente, installation et service après-vente en France.' : lang === 'en' ? 'Specialist in air conditioning, ventilation and heat pumps — sales, installation and after-sales service in France.' : 'Specialist in airconditioning, ventilatie en warmtepompen — verkoop, installatie en after-sales service in Frankrijk.'}
           </p>
         </div>
 
@@ -99,7 +99,7 @@ export default function Footer() {
               onMouseOut={e => e.currentTarget.style.background = '#2E86C1'}>
               ✉ {t('contact_label', lang)}
             </a>
-            <span>Liège, Belgique</span>
+            <span>Vienne, France</span>
             <Link to="/legal" style={linkStyle}>{t('cookies_label', lang)}</Link>
           </div>
         </div>

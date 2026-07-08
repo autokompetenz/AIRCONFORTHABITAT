@@ -214,12 +214,11 @@ export default function ProductDetails() {
                     setOrdering(true);
                     const data = Object.fromEntries(fd);
                     const res = await orderAPI.create({
-                      productId: product.id,
-                      quantity: parseInt(data.quantity) || 1,
-                      guestName: data.name,
-                      guestEmail: data.email,
-                      guestPhone: data.phone,
-                      address: data.address,
+                      items: [{ productId: product.id, quantity: parseInt(data.quantity) || 1 }],
+                      customerName: data.name,
+                      customerEmail: data.email,
+                      customerPhone: data.phone,
+                      customerAddress: data.address,
                       deliveryMethod: data.deliveryMethod,
                       notes: data.notes,
                     });

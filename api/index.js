@@ -197,10 +197,9 @@ app.get('/api/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const productId = Number(id);
-    if (isNaN(productId) || productId <= 0) {
-      return res.status(400).json({ error: 'ID invalide' });
-    }
-    const product = await prisma.product.findUnique({ where: { id: productId }, include: { category: true } });
+    const product = isNaN(productId) || productId <= 0
+      ? await prisma.product.findUnique({ where: { slug: id }, include: { category: true } })
+      : await prisma.product.findUnique({ where: { id: productId }, include: { category: true } });
     if (!product) return res.status(404).json({ error: 'Produit non trouvé' });
     res.json({ product });
   } catch (error) {

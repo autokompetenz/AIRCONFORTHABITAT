@@ -21,7 +21,7 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true);
   const [activeImg, setActiveImg] = useState(0);
   const [qty, setQty] = useState(1);
-  const [openSections, setOpenSections] = useState({ description: true, technical: true });
+  const [openSections, setOpenSections] = useState({ description: false, technical: false });
   const { addItem, openCart } = useCartStore();
 
   const toggleSection = (key) => setOpenSections(prev => ({ ...prev, [key]: !prev[key] }));
@@ -197,12 +197,12 @@ export default function ProductDetails() {
                     <div style={{ padding: '0 20px 18px', display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                       {product.technicalDescription.split('•').filter(Boolean).map((item, idx) => (
                         <span key={idx} style={{
-                          fontSize: 13, fontWeight: 600, color: 'var(--primary)',
-                          background: 'rgba(46,134,193,0.08)',
-                          border: '1px solid rgba(46,134,193,0.2)',
-                          padding: '6px 14px', borderRadius: 9999,
+                          fontSize: 14, fontWeight: 600, color: C.text,
+                          padding: '6px 0',
+                          borderBottom: '1px solid ' + C.border,
+                          width: '100%',
                         }}>
-                          {item.trim()}
+                          • {item.trim()}
                         </span>
                       ))}
                     </div>

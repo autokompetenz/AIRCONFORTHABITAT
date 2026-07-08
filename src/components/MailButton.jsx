@@ -23,7 +23,7 @@ export default function MailButton() {
         <rect x="2" y="4" width="20" height="16" rx="2" />
         <path d="M22 4L12 13L2 4" />
       </svg>
-      <span style={{ fontSize: 14, fontWeight: 700, color: isDark ? '#e8e8e8' : '#1A1410', fontFamily: "'Outfit',sans-serif", letterSpacing: '0.02em' }}>Nous contacter</span>
+      <span style={{ fontSize: 14, fontWeight: 700, color: isDark ? '#e8e8e8' : '#1A1410', fontFamily: "'Inter',sans-serif", letterSpacing: '0.02em' }}>Nous contacter</span>
     </a>
   );
 }

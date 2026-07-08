@@ -79,7 +79,7 @@ export default function AdminProducts() {
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 20, marginBottom: 32 }}>
         <div>
           <div className="section-eyebrow">Inventaire</div>
-          <h1 style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 900, fontSize: 'clamp(28px,4vw,48px)', color: 'var(--text)', letterSpacing: '-0.02em' }}>
+          <h1 style={{ fontFamily: "'Inter',sans-serif", fontWeight: 900, fontSize: 'clamp(28px,4vw,48px)', color: 'var(--text)', letterSpacing: '-0.02em' }}>
             Produits <span style={{ color: 'var(--text-3)', fontSize: '0.55em', fontWeight: 600 }}>({products.length})</span>
           </h1>
         </div>
@@ -159,11 +159,11 @@ export default function AdminProducts() {
                           Modifier
                         </Link>
                         <button type="button" onClick={() => handleToggle(product)}
-                          className="admin-table-btn" style={{ fontSize: 13, color: product.isActive ? '#DC2626' : '#22C55E', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Outfit',sans-serif", fontWeight: 700 }}>
+                          className="admin-table-btn" style={{ fontSize: 13, color: product.isActive ? '#DC2626' : '#22C55E', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Inter',sans-serif", fontWeight: 700 }}>
                           {product.isActive ? 'Désactiver' : 'Activer'}
                         </button>
                         <button type="button" onClick={() => handleDelete(product)}
-                          className="admin-table-btn-danger" style={{ fontSize: 13, color: '#991B1B', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Outfit',sans-serif", fontWeight: 800 }}>
+                          className="admin-table-btn-danger" style={{ fontSize: 13, color: '#991B1B', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Inter',sans-serif", fontWeight: 800 }}>
                           Supprimer
                         </button>
                       </div>

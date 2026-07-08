@@ -45,13 +45,13 @@ export default function AdminOrders() {
     <div style={{ padding:'clamp(24px,5vw,48px) clamp(16px,4vw,44px) 60px', minHeight:'100vh', background:'var(--bg)' }}>
       <div style={{ marginBottom:28 }}>
         <div className="section-eyebrow">Gestion</div>
-        <h1 style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:'clamp(28px,4vw,48px)', color:'var(--text)', letterSpacing:'-0.02em' }}>Commandes</h1>
+        <h1 style={{ fontFamily:"'Inter',sans-serif", fontWeight:900, fontSize:'clamp(28px,4vw,48px)', color:'var(--text)', letterSpacing:'-0.02em' }}>Commandes</h1>
       </div>
 
       <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginBottom:24 }}>
         {tabs.map(({ id, label }) => (
           <button key={id} type="button" onClick={() => { setActiveTab(id); fetch(id); }}
-            style={{ padding:'9px 16px', borderRadius:8, fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:"'Outfit',sans-serif", transition:'all 0.2s', border:`1px solid ${activeTab===id ? 'var(--primary)' : 'var(--border)'}`, background: activeTab===id ? 'var(--primary-bg)' : 'var(--bg-card)', color: activeTab===id ? 'var(--primary)' : 'var(--text-2)', boxShadow: activeTab===id ? 'none' : 'var(--shadow-sm)' }}>
+            style={{ padding:'9px 16px', borderRadius:8, fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:"'Inter',sans-serif", transition:'all 0.2s', border:`1px solid ${activeTab===id ? 'var(--primary)' : 'var(--border)'}`, background: activeTab===id ? 'var(--primary-bg)' : 'var(--bg-card)', color: activeTab===id ? 'var(--primary)' : 'var(--text-2)', boxShadow: activeTab===id ? 'none' : 'var(--shadow-sm)' }}>
             {label}
             {id && countFor(id) > 0 && <span style={{ marginLeft:8, background: activeTab===id ? 'rgba(46,134,193,0.2)' : 'var(--bg-card2)', padding:'2px 7px', borderRadius:8, fontSize:11, border: activeTab===id ? '1px solid var(--primary-border)' : '1px solid var(--border)' }}>{countFor(id)}</span>}
           </button>
@@ -89,7 +89,7 @@ export default function AdminOrders() {
                     <td style={{ padding:'14px 20px' }}>
                       <div style={{ display:'flex', gap:8, alignItems:'center' }}>
                         <Link to={`/admin/orders/${order.id}`} className="btn-primary" style={{ fontSize:12, padding:'10px 18px' }}>Gérer →</Link>
-                        <button onClick={e => handleDelete(e, order.id)} style={{ background:'none', border:'1px solid rgba(239,68,68,0.3)', borderRadius:6, color:'#DC2626', fontSize:13, fontWeight:700, padding:'10px 12px', cursor:'pointer', fontFamily:"'Outfit',sans-serif", transition:'background 0.2s' }}
+                        <button onClick={e => handleDelete(e, order.id)} style={{ background:'none', border:'1px solid rgba(239,68,68,0.3)', borderRadius:6, color:'#DC2626', fontSize:13, fontWeight:700, padding:'10px 12px', cursor:'pointer', fontFamily:"'Inter',sans-serif", transition:'background 0.2s' }}
                           onMouseOver={e => e.currentTarget.style.background = 'rgba(239,68,68,0.08)'}
                           onMouseOut={e => e.currentTarget.style.background = 'none'}>🗑</button>
                       </div>

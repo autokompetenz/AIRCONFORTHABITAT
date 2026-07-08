@@ -3,10 +3,12 @@ import { useBreakpoint } from '../hooks';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { productAPI } from '../services/api';
-import { useCartStore, useToastStore, useLangStore, useThemeStore } from '../store';
+import { useCartStore, useToastStore, useLangStore } from '../store';
 import { formatEuro, getProductTypeLabel } from '../utils/helpers';
 import { Loader } from '../components/UI';
 import { t } from '../utils/i18n';
+import { ProductSchema } from '../components/SchemaOrg';
+import { Shield, Truck, ShoppingCart, ChevronDown, Star } from 'lucide-react';
 
 export default function ProductDetails() {
   const { slug } = useParams();
@@ -14,8 +16,6 @@ export default function ProductDetails() {
   const navigate = useNavigate();
   const { addToast } = useToastStore();
   const { lang } = useLangStore();
-  const { theme } = useThemeStore();
-  const isDark = theme === 'dark';
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,18 +29,6 @@ export default function ProductDetails() {
   const { isMobile } = useBreakpoint();
   const l = lang || 'fr';
 
-  const C = {
-    bg:      isDark ? '#0a0a0a'               : 'var(--bg)',
-    card:    isDark ? '#141414'               : 'var(--bg-card)',
-    card2:   isDark ? '#1a1a1a'               : 'var(--bg-card2)',
-    border:  isDark ? 'rgba(255,255,255,0.08)': 'var(--border)',
-    text:    isDark ? '#ffffff'               : 'var(--text)',
-    text2:   isDark ? 'rgba(255,255,255,0.65)': 'var(--text-2)',
-    text3:   isDark ? 'rgba(255,255,255,0.35)': 'var(--text-3)',
-    primary: 'var(--primary)',
-    shadow:  isDark ? '0 4px 24px rgba(0,0,0,0.4)' : 'var(--shadow-sm)',
-  };
-
   useEffect(() => {
     setLoading(true);
     productAPI.getById(id)
@@ -49,7 +37,7 @@ export default function ProductDetails() {
   }, [id]);
 
   if (loading) return (
-    <div style={{ paddingTop: 100, background: C.bg, minHeight: '100vh' }}>
+    <div style={{ paddingTop: 80, background: '#fff', minHeight: '100vh' }}>
       <Loader text="Chargement..." />
     </div>
   );
@@ -57,207 +45,175 @@ export default function ProductDetails() {
 
   const images = [product.imageUrl, product.imageUrl2, product.imageUrl3, product.imageUrl4, product.imageUrl5].filter(Boolean);
   const inStock = product.status === 'available';
-  const typeLabel = getProductTypeLabel(product.type, l);
+  const isOnSale = product.salePrice && product.salePrice < product.price;
+  const discountPct = isOnSale ? Math.round((1 - product.salePrice / product.price) * 100) : 0;
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bg, paddingTop: 76 }}>
-      <div style={{ padding: '18px 6%', borderBottom: `1px solid ${C.border}`, background: C.card2 }}>
-        <p style={{ fontSize: 13, color: C.text3 }}>
-          <Link to="/" style={{ color: C.text3, textDecoration: 'none', transition: 'color 0.2s' }}
-            onMouseOver={e => e.target.style.color = 'var(--primary)'}
-            onMouseOut={e => e.target.style.color = C.text3}>
-            {l==='fr'?'Accueil':l==='nl'?'Home':l==='en'?'Home':'Accueil'}
-          </Link>
-          <span style={{ margin: '0 10px', opacity: 0.3 }}>▸</span>
-          <Link to="/catalog" style={{ color: C.text3, textDecoration: 'none', transition: 'color 0.2s' }}
-            onMouseOver={e => e.target.style.color = 'var(--primary)'}
-            onMouseOut={e => e.target.style.color = C.text3}>
-            {l==='fr'?'Catalogue':l==='nl'?'Catalogus':l==='en'?'Catalog':'Catalogue'}
-          </Link>
-          <span style={{ margin: '0 10px', opacity: 0.3 }}>▸</span>
-          <span style={{ color: C.text2 }}>{product.name}</span>
-        </p>
-      </div>
+    <>
+      <ProductSchema product={product} />
+      <div style={{ minHeight: '100vh', background: '#fff' }}>
+        <div style={{ padding: '12px 5%', borderBottom: '1px solid var(--border)', background: '#F5F5F5' }}>
+          <p style={{ fontSize: 12, color: '#999' }}>
+            <Link to="/" style={{ color: '#999', textDecoration: 'none' }}>{l === 'fr' ? 'Accueil' : l === 'nl' ? 'Home' : 'Home'}</Link>
+            <span style={{ margin: '0 8px', color: '#ccc' }}>›</span>
+            <Link to="/catalog" style={{ color: '#999', textDecoration: 'none' }}>{l === 'fr' ? 'Catalogue' : l === 'nl' ? 'Catalogus' : 'Catalog'}</Link>
+            <span style={{ margin: '0 8px', color: '#ccc' }}>›</span>
+            <span style={{ color: '#666' }}>{product.name}</span>
+          </p>
+        </div>
 
-      <div style={{ maxWidth: 1300, margin: '0 auto', padding: isMobile ? '28px 4%' : '52px 6%' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 32 : 64 }}>
-          <div>
-            <motion.div key={activeImg} initial={{ opacity: 0.7, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}
-              style={{ position: 'relative', borderRadius: 14, overflow: 'hidden', aspectRatio: '4/3', background: C.card, boxShadow: C.shadow }}>
-              <img src={images[activeImg] || 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80'}
-                alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '24px 4%' : '40px 5%' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 24 : 48 }}>
+            <div>
+              <div style={{ border: '1px solid var(--border)', overflow: 'hidden', aspectRatio: '4/3', background: '#F5F5F5', position: 'relative' }}>
+                <img src={images[activeImg] || 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80'}
+                  alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                {isOnSale && (
+                  <span style={{ position: 'absolute', top: 8, left: 8, background: '#CC0000', color: '#fff', fontSize: 11, fontWeight: 800, padding: '3px 10px' }}>
+                    -{discountPct}%
+                  </span>
+                )}
+              </div>
               {images.length > 1 && (
-                <div style={{ position: 'absolute', bottom: 14, right: 14, background: 'rgba(0,0,0,0.7)', color: '#fff', fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 20, backdropFilter: 'blur(4px)' }}>
-                  {activeImg + 1} / {images.length}
+                <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.min(images.length, 5)}, 1fr)`, gap: 8, marginTop: 10 }}>
+                  {images.map((img, i) => (
+                    <button key={i} onClick={() => setActiveImg(i)}
+                      style={{
+                        aspectRatio: '4/3', border: `2px solid ${activeImg === i ? 'var(--primary)' : '#E5E5E5'}`,
+                        opacity: activeImg === i ? 1 : 0.6, cursor: 'pointer', padding: 0, background: '#F5F5F5', overflow: 'hidden',
+                      }}>
+                      <img src={img} alt={`Vue ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </button>
+                  ))}
                 </div>
               )}
-            </motion.div>
-            {images.length > 1 && (
-              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(4, 1fr)' : 'repeat(5, 1fr)', gap: 10, marginTop: 16 }}>
-                {images.map((img, i) => (
-                  <button key={i} onClick={() => setActiveImg(i)}
-                    style={{ aspectRatio: '4/3', borderRadius: 10, overflow: 'hidden', border: `2.5px solid ${activeImg === i ? 'var(--primary)' : C.border}`, opacity: activeImg === i ? 1 : 0.6, cursor: 'pointer', transition: 'all 0.25s ease', padding: 0, background: C.card, transform: activeImg === i ? 'scale(1.02)' : 'scale(1)' }}
-                    onMouseOver={e => { if (activeImg !== i) { e.currentTarget.style.opacity='0.9'; e.currentTarget.style.transform='scale(1.05)'; e.currentTarget.style.borderColor='rgba(46,134,193,0.4)'; }}}
-                    onMouseOut={e => { if (activeImg !== i) { e.currentTarget.style.opacity='0.6'; e.currentTarget.style.transform='scale(1)'; e.currentTarget.style.borderColor=C.border; }}}>
-                    <img src={img} alt={`Vue ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div>
-            <div style={{ marginBottom: 6 }}>
-              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--primary)' }}>
-                {typeLabel}
-                {product.brand && <span style={{fontSize:10,fontWeight:600,color:C.text3,marginLeft:8,letterSpacing:'0.1em'}}>{product.brand}</span>}
-              </span>
             </div>
-            <h1 style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 900, fontSize: isMobile ? 36 : 52, color: C.text, letterSpacing: '-0.02em', lineHeight: 1, marginBottom: 8 }}>
-              {product.name}
-            </h1>
-            {product.model && (
-              <p style={{ fontSize: 14, color: C.text3, marginBottom: 20 }}>
-                {l==='fr'?'Modèle':l==='nl'?'Model':l==='en'?'Model':'Modèle'} : {product.model}
-              </p>
-            )}
 
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 8 }}>
-              {product.salePrice ? (
-                <>
-                  <span style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 900, fontSize: 40, color: '#DC2626', letterSpacing: '-0.02em' }}>
-                    {formatEuro(product.salePrice)}
-                  </span>
-                  <span style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 700, fontSize: 22, color: C.text3, textDecoration: 'line-through', letterSpacing: '-0.02em' }}>
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--primary)', marginBottom: 4 }}>
+                {getProductTypeLabel(product.type, l).toUpperCase()}
+              </p>
+              <h1 style={{ fontWeight: 800, fontSize: isMobile ? 22 : 28, color: '#1A1A1A', marginBottom: 4 }}>
+                {product.name}
+              </h1>
+              <p style={{ fontSize: 13, color: '#999', marginBottom: 16 }}>
+                {product.brand}{product.model ? ` · ${product.model}` : ''}
+              </p>
+
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 4 }}>
+                {isOnSale ? (
+                  <>
+                    <span style={{ fontWeight: 900, fontSize: 28, color: '#CC0000', letterSpacing: '-0.02em' }}>
+                      {formatEuro(product.salePrice)}
+                    </span>
+                    <span style={{ fontWeight: 600, fontSize: 16, color: '#999', textDecoration: 'line-through' }}>
+                      {formatEuro(product.price)}
+                    </span>
+                    <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#CC0000', padding: '2px 8px' }}>
+                      -{discountPct}%
+                    </span>
+                  </>
+                ) : product.price ? (
+                  <span style={{ fontWeight: 900, fontSize: 28, color: '#1A1A1A', letterSpacing: '-0.02em' }}>
                     {formatEuro(product.price)}
                   </span>
-                  <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', background: '#DC2626', padding: '2px 8px', borderRadius: 4, letterSpacing: '0.05em' }}>
-                    SALE
+                ) : null}
+              </div>
+
+              <div style={{ marginBottom: 16 }}>
+                {inStock ? (
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: '#2E7D32' }}>
+                    ● {t('in_stock', l)}
                   </span>
-                </>
-              ) : product.price ? (
-                <span style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 900, fontSize: 40, color: C.text, letterSpacing: '-0.02em' }}>
-                  {formatEuro(product.price)}
-                </span>
-              ) : null}
-            </div>
+                ) : (
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: '#999' }}>
+                    ● {t('out_of_stock', l)}
+                  </span>
+                )}
+              </div>
 
-            <div style={{ marginBottom: 24 }}>
-              {inStock ? (
-                <span className="badge badge-available" style={{ background:'rgba(16,185,129,0.12)', color:'#059669', border:'1px solid rgba(16,185,129,0.25)', display:'inline-flex', alignItems:'center', gap:6, padding:'5px 14px', borderRadius:'9999px', fontSize:12, fontWeight:800 }}>
-                  ● {t('in_stock', l)}
-                </span>
-              ) : (
-                <span className="badge badge-out-of-stock" style={{ background:'rgba(239,68,68,0.12)', color:'#DC2626', border:'1px solid rgba(239,68,68,0.25)', display:'inline-flex', alignItems:'center', gap:6, padding:'5px 14px', borderRadius:'9999px', fontSize:12, fontWeight:800 }}>
-                  ● {t('out_of_stock', l)}
-                </span>
-              )}
-            </div>
-
-            {product.description && (() => {
-              const isOpen = openSections.description;
-              return (
-                <div style={{ marginBottom: 16, border: `1px solid ${C.border}`, borderRadius: 12, overflow: 'hidden', background: C.card2 }}>
+              {/* Accordion Description */}
+              {product.description && (
+                <div style={{ marginBottom: 8, border: '1px solid var(--border)' }}>
                   <button onClick={() => toggleSection('description')} style={{
-                    width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '16px 20px',
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
-                    fontFamily: "'Outfit', sans-serif", fontSize: isMobile ? 15 : 17, fontWeight: 800,
-                    color: C.text, letterSpacing: '-0.01em',
+                    width: '100%', background: '#F5F5F5', border: 'none', cursor: 'pointer',
+                    padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    fontFamily: 'Inter, sans-serif', fontSize: 13, fontWeight: 700, color: '#1A1A1A', textAlign: 'left',
                   }}>
                     <span>{t('about_product', l)}</span>
-                    <motion.span animate={{ rotate: isOpen ? 180 : 0 }} style={{ fontSize: 14, color: C.text3, flexShrink: 0 }}>▾</motion.span>
+                    <ChevronDown size={16} color="#999" style={{ transform: openSections.description ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
                   </button>
-                  <motion.div
-                    initial={false} animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
-                    style={{ overflow: 'hidden' }} transition={{ duration: 0.25, ease: 'easeInOut' }}>
-                    <div style={{ padding: '0 20px 18px' }}>
-                      <p style={{ fontSize: 15, color: C.text2, lineHeight: 1.75, margin: 0 }}>{product.description}</p>
+                  {openSections.description && (
+                    <div style={{ padding: '12px 16px', fontSize: 13, color: '#666', lineHeight: 1.6 }}>
+                      <p>{product.description}</p>
                     </div>
-                  </motion.div>
-                </div>
-              );
-            })()}
-
-            {product.technicalDescription && (() => {
-              const isOpen = openSections.technical;
-              return (
-                <div style={{ marginBottom: 28, border: `1px solid ${C.border}`, borderRadius: 12, overflow: 'hidden', background: C.card2 }}>
-                  <button onClick={() => toggleSection('technical')} style={{
-                    width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '16px 20px',
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
-                    fontFamily: "'Outfit', sans-serif", fontSize: isMobile ? 15 : 17, fontWeight: 800,
-                    color: C.text, letterSpacing: '-0.01em',
-                  }}>
-                    <span>{t('technical_desc', l)}</span>
-                    <motion.span animate={{ rotate: isOpen ? 180 : 0 }} style={{ fontSize: 14, color: C.text3, flexShrink: 0 }}>▾</motion.span>
-                  </button>
-                  <motion.div
-                    initial={false} animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
-                    style={{ overflow: 'hidden' }} transition={{ duration: 0.25, ease: 'easeInOut' }}>
-                    <div style={{ padding: '0 20px 18px', display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                      {product.technicalDescription.split('•').filter(Boolean).map((item, idx) => (
-                        <span key={idx} style={{
-                          fontSize: 14, fontWeight: 600, color: C.text,
-                          padding: '6px 0',
-                          borderBottom: '1px solid ' + C.border,
-                          width: '100%',
-                        }}>
-                          • {item.trim()}
-                        </span>
-                      ))}
-                    </div>
-                  </motion.div>
-                </div>
-              );
-            })()}
-
-            <div style={{ display: 'flex', gap: 16, marginBottom: 28, flexWrap: 'wrap' }}>
-              {product.warranty && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 18px', borderRadius: 10, background: C.card2, border: `1px solid ${C.border}` }}>
-                  <span style={{ fontSize: 22 }}>🛡️</span>
-                  <div>
-                    <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.text3, marginBottom: 2 }}>{t('warranty_label', l)}</p>
-                    <p style={{ fontSize: 15, fontWeight: 700, color: C.text }}>{product.warranty}</p>
-                  </div>
+                  )}
                 </div>
               )}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 18px', borderRadius: 10, background: C.card2, border: `1px solid ${C.border}` }}>
-                <span style={{ fontSize: 22 }}>🚚</span>
-                <div>
-                  <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.text3, marginBottom: 2 }}>{l === 'fr' ? 'Livraison' : l === 'nl' ? 'Levering' : 'Delivery'}</p>
-                  <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--primary)' }}>{l === 'fr' ? 'En 24h' : l === 'nl' ? 'Binnen 24u' : 'In 24h'}</p>
-                </div>
-              </div>
-            </div>
 
-            {inStock && (
-              <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 0, border: `1px solid ${C.border}`, borderRadius: 10, overflow: 'hidden', background: C.card2 }}>
-                  <button onClick={() => setQty(Math.max(1, qty - 1))}
-                    style={{ width: 44, height: 48, border: 'none', background: 'none', cursor: 'pointer', fontSize: 20, color: C.text2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
-                  <span style={{ minWidth: 40, textAlign: 'center', fontSize: 18, fontWeight: 800, color: C.text, fontFamily: "'Outfit',sans-serif" }}>{qty}</span>
-                  <button onClick={() => setQty(qty + 1)}
-                    style={{ width: 44, height: 48, border: 'none', background: 'none', cursor: 'pointer', fontSize: 20, color: C.text2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
+              {/* Accordion Technical */}
+              {product.technicalDescription && (
+                <div style={{ marginBottom: 16, border: '1px solid var(--border)' }}>
+                  <button onClick={() => toggleSection('technical')} style={{
+                    width: '100%', background: '#F5F5F5', border: 'none', cursor: 'pointer',
+                    padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    fontFamily: 'Inter, sans-serif', fontSize: 13, fontWeight: 700, color: '#1A1A1A', textAlign: 'left',
+                  }}>
+                    <span>{t('technical_desc', l)}</span>
+                    <ChevronDown size={16} color="#999" style={{ transform: openSections.technical ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+                  </button>
+                  {openSections.technical && (
+                    <div style={{ padding: '12px 16px' }}>
+                      {product.technicalDescription.split('•').filter(Boolean).map((item, idx) => (
+                        <p key={idx} style={{ fontSize: 12, color: '#666', padding: '4px 0', borderBottom: '1px solid #E5E5E5' }}>
+                          • {item.trim()}
+                        </p>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <button onClick={() => { addItem(product, qty); setQty(1); openCart(); }}
-                  style={{
-                    flex: 1, padding: isMobile ? '14px' : '16px', borderRadius: 10,
-                    fontFamily: "'Outfit',sans-serif", fontSize: isMobile?13:14, fontWeight:800,
-                    letterSpacing: '0.08em', textTransform: 'uppercase', border: 'none',
-                    cursor: 'pointer', transition: 'all 0.3s ease',
-                    background: 'linear-gradient(135deg,var(--primary),var(--primary-dark))',
-                    color: '#fff', boxShadow: '0 4px 16px rgba(46,134,193,0.3)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                  }}
-                  onMouseOver={e => { e.currentTarget.style.background='linear-gradient(135deg,var(--primary-dark),#1A5A82)'; e.currentTarget.style.transform='scale(1.02)'; }}
-                  onMouseOut={e => { e.currentTarget.style.background='linear-gradient(135deg,var(--primary),var(--primary-dark))'; e.currentTarget.style.transform='scale(1)'; }}>
-                  🛒 {t('add_to_cart', l)}
-                </button>
+              )}
+
+              <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
+                {product.warranty && (
+                  <div style={{ border: '1px solid var(--border)', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <Shield size={18} color="var(--primary)" strokeWidth={1.5} />
+                    <div>
+                      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#999', marginBottom: 1 }}>{t('warranty_label', l)}</p>
+                      <p style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{product.warranty}</p>
+                    </div>
+                  </div>
+                )}
+                <div style={{ border: '1px solid var(--border)', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <Truck size={18} color="var(--primary)" strokeWidth={1.5} />
+                  <div>
+                    <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#999', marginBottom: 1 }}>{l === 'fr' ? 'Livraison' : l === 'nl' ? 'Levering' : 'Delivery'}</p>
+                    <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--primary)' }}>{l === 'fr' ? 'En 24h' : l === 'nl' ? 'Binnen 24u' : 'In 24h'}</p>
+                  </div>
+                </div>
               </div>
-            )}
+
+              {inStock && (
+                <div style={{ display: 'flex', gap: 10, alignItems: 'stretch' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border)' }}>
+                    <button onClick={() => setQty(Math.max(1, qty - 1))}
+                      style={{ width: 40, height: 42, border: 'none', background: 'none', cursor: 'pointer', fontSize: 18, color: '#666', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif' }}>−</button>
+                    <span style={{ minWidth: 36, textAlign: 'center', fontSize: 14, fontWeight: 800, color: '#1A1A1A' }}>{qty}</span>
+                    <button onClick={() => setQty(qty + 1)}
+                      style={{ width: 40, height: 42, border: 'none', background: 'none', cursor: 'pointer', fontSize: 18, color: '#666', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif' }}>+</button>
+                  </div>
+                  <button onClick={() => { addItem(product, qty); setQty(1); openCart(); }}
+                    className="btn-primary"
+                    style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontSize: 13, padding: '11px 20px' }}>
+                    <ShoppingCart size={16} strokeWidth={2} />
+                    {t('add_to_cart', l)}
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

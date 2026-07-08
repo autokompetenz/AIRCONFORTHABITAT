@@ -1,5 +1,6 @@
 ﻿import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { useThemeStore, useLangStore } from './store';
 import Toast from './components/Toast';
@@ -8,7 +9,7 @@ import Footer from './components/Footer';
 import ClientBottomNav from './components/ClientBottomNav';
 import MailButton from './components/MailButton';
 import CartDrawer from './components/CartDrawer';
-
+import { LocalBusinessSchema } from './components/SchemaOrg';
 
 import Home from './pages/Home';
 import Catalog from './pages/Catalog';
@@ -35,6 +36,7 @@ function ScrollToTop() {
 function PublicLayout({ children }) {
   return (
     <>
+      <LocalBusinessSchema />
       <Navbar />
       <CartDrawer />
       {children}
@@ -46,42 +48,62 @@ function PublicLayout({ children }) {
   );
 }
 
-function PublicRoute({ element }) {
-  return <PublicLayout>{element}</PublicLayout>;
+function AnimatedPage({ children }) {
+  return (
+    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.25, ease: 'easeInOut' }}>
+      {children}
+    </motion.div>
+  );
 }
 
-export default function App() {
-  const { theme } = useThemeStore();
+function PublicRoute({ element }) {
+  return <PublicLayout><AnimatedPage>{element}</AnimatedPage></PublicLayout>;
+}
+
+function AppContent() {
   const { lang } = useLangStore();
+  const location = useLocation();
 
   useEffect(() => {
     document.documentElement.lang = lang || 'fr';
   }, [lang]);
 
   return (
-    <BrowserRouter>
+    <>
       <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<PublicRoute element={<Home />} />} />
-        <Route path="/catalog" element={<PublicRoute element={<Catalog />} />} />
-        <Route path="/product/:slug" element={<PublicRoute element={<ProductDetails />} />} />
-        <Route path="/track" element={<PublicRoute element={<Track />} />} />
-        <Route path="/track/:number" element={<PublicRoute element={<Track />} />} />
-        <Route path="/about" element={<PublicRoute element={<Legal />} />} />
-        <Route path="/legal" element={<PublicRoute element={<Legal />} />} />
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<PublicRoute element={<Home />} />} />
+          <Route path="/catalog" element={<PublicRoute element={<Catalog />} />} />
+          <Route path="/product/:slug" element={<PublicRoute element={<ProductDetails />} />} />
+          <Route path="/track" element={<PublicRoute element={<Track />} />} />
+          <Route path="/track/:number" element={<PublicRoute element={<Track />} />} />
+          <Route path="/about" element={<PublicRoute element={<Legal />} />} />
+          <Route path="/legal" element={<PublicRoute element={<Legal />} />} />
 
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          <Route path="products" element={<AdminProducts />} />
-          <Route path="products/new" element={<AdminProductForm />} />
-          <Route path="products/:id/edit" element={<AdminProductForm />} />
-          <Route path="orders" element={<AdminOrders />} />
-          <Route path="orders/:id" element={<AdminOrderDetail />} />
-          <Route path="customers" element={<AdminCustomers />} />
-          <Route path="stock-alerts" element={<AdminStockAlerts />} />
-        </Route>
-      </Routes>
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="products/new" element={<AdminProductForm />} />
+            <Route path="products/:id/edit" element={<AdminProductForm />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="orders/:id" element={<AdminOrderDetail />} />
+            <Route path="customers" element={<AdminCustomers />} />
+            <Route path="stock-alerts" element={<AdminStockAlerts />} />
+          </Route>
+        </Routes>
+      </AnimatePresence>
+    </>
+  );
+}
+
+export default function App() {
+  const { theme } = useThemeStore();
+
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }

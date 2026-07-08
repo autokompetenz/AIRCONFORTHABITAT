@@ -40,7 +40,7 @@ export default function AdminStockAlerts() {
     <div style={{ padding: 'clamp(24px,5vw,48px) clamp(16px,4vw,44px) 60px', minHeight: '100vh', background: 'var(--bg)' }}>
       <div style={{ marginBottom: 32 }}>
         <div className="section-eyebrow">Marketing</div>
-        <h1 style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 900, fontSize: 'clamp(28px,4vw,48px)', color: 'var(--text)', letterSpacing: '-0.02em' }}>
+        <h1 style={{ fontFamily: "'Inter',sans-serif", fontWeight: 900, fontSize: 'clamp(28px,4vw,48px)', color: 'var(--text)', letterSpacing: '-0.02em' }}>
           Alertes stock <span style={{ color: 'var(--text-3)', fontSize: '0.55em', fontWeight: 600 }}>({entries.length})</span>
         </h1>
       </div>
@@ -88,12 +88,12 @@ export default function AdminStockAlerts() {
                       <div style={{ display:'flex', gap:8, alignItems:'center' }}>
                         {!entry.notified && (
                           <button type="button" onClick={() => handleNotified(entry)}
-                            className="admin-table-btn" style={{ fontSize: 13, color: '#22C55E', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Outfit',sans-serif", fontWeight: 700 }}>
+                            className="admin-table-btn" style={{ fontSize: 13, color: '#22C55E', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Inter',sans-serif", fontWeight: 700 }}>
                             ✓ Notifié
                           </button>
                         )}
                         <button type="button" onClick={() => handleDelete(entry)}
-                          className="admin-table-btn-danger" style={{ fontSize: 13, color: '#991B1B', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Outfit',sans-serif", fontWeight: 800 }}>
+                          className="admin-table-btn-danger" style={{ fontSize: 13, color: '#991B1B', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Inter',sans-serif", fontWeight: 800 }}>
                           Supprimer
                         </button>
                       </div>

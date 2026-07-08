@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom';
 import { useLangStore, useThemeStore } from '../store';
 import { t } from '../utils/i18n';
 import { useBreakpoint } from '../hooks';
+import { Mail, MapPin, Shield, Award, Wrench } from 'lucide-react';
+
+const CONTACT_EMAIL = 'contact@airconforthabitat.fr';
 
 export default function Footer() {
   const { lang } = useLangStore();
@@ -9,120 +12,102 @@ export default function Footer() {
   const { isMobile } = useBreakpoint();
   const isDark = theme === 'dark';
 
-  const bg = isDark ? '#0f0f0f' : '#F0ECE6';
-  const cardBg = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.6)';
-  const text = isDark ? 'rgba(255,255,255,0.75)' : '#444';
-  const text2 = isDark ? 'rgba(255,255,255,0.45)' : '#777';
-  const border = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
-  const F = "'Outfit',sans-serif";
+  const bg = '#1A1A1A';
+  const text = '#999';
+  const text2 = '#666';
+  const border = '#333';
 
   const linkStyle = {
-    fontSize: isMobile ? 14 : 13,
-    fontWeight: 500,
-    color: text,
-    textDecoration: 'none',
-    transition: 'color 0.2s',
-    cursor: 'pointer',
-  };
-
-  const colTitle = {
-    fontSize: 11,
-    fontWeight: 800,
-    letterSpacing: '0.2em',
-    textTransform: 'uppercase',
-    color: text2,
-    marginBottom: isMobile ? 12 : 16,
-    fontFamily: F,
+    fontSize: '0.75rem', fontWeight: 500, color: text,
+    textDecoration: 'none', display: 'block', padding: '3px 0',
   };
 
   return (
-    <footer style={{
-      background: bg,
-      borderTop: `1px solid ${border}`,
-      padding: isMobile ? '40px 5% 100px' : '60px 5% 40px',
-      transition: 'background 0.3s',
-    }}>
-      <div style={{
-        maxWidth: 1200,
-        margin: '0 auto',
-        display: 'grid',
-        gridTemplateColumns: isMobile ? '1fr' : '2fr 1fr 1fr 1fr',
-        gap: isMobile ? 32 : 48,
-      }}>
-        {/* Brand */}
-        <div>
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <div style={{ fontFamily: F, fontSize: 18, fontWeight: 900, color: isDark ? '#fff' : '#111', letterSpacing: '0.05em' }}>
-              AIRCONFORTHABITAT
+    <footer style={{ background: bg, borderTop: '1px solid #333', color: text }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '32px 5% 80px' : '40px 5%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '2fr 1fr 1fr 1fr', gap: isMobile ? 20 : 40 }}>
+          <div>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <div style={{ fontSize: 16, fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>
+                AIRCONFORT<span style={{ color: 'var(--primary)' }}>HABITAT</span>
+              </div>
+              <div style={{ fontSize: 10, letterSpacing: '0.3em', color: 'var(--primary)', textTransform: 'uppercase', marginTop: 2 }}>
+                Vienne · France
+              </div>
+            </Link>
+            <p style={{ fontSize: 12, color: text, lineHeight: 1.6, marginTop: 12, maxWidth: 280 }}>
+              {lang === 'fr' ? 'Spécialiste en climatisation, ventilation et pompes à chaleur — vente, installation et SAV en France.' : lang === 'en' ? 'Specialist in air conditioning, ventilation and heat pumps — sales, installation and after-sales in France.' : 'Specialist in airconditioning, ventilatie en warmtepompen — verkoop, installatie en after-sales in Frankrijk.'}
+            </p>
+            <div style={{ marginTop: 8, fontSize: 11, color: text2, lineHeight: 1.6 }}>
+              <div>RCS Vienne 851 996 991 · SIRET 851 996 991 00010</div>
+              <div>APE 43.22B · TVA FR51851996991</div>
             </div>
-            <div style={{ fontSize: 10, letterSpacing: '0.4em', color: 'var(--primary)', textTransform: 'uppercase', marginTop: 3 }}>
-               Vienne &middot; France
-            </div>
-          </Link>
-          <p style={{ fontSize: 13, color: text2, lineHeight: 1.7, marginTop: 16, maxWidth: 300 }}>
-            {lang === 'fr' ? 'Spécialiste en climatisation, ventilation et pompes à chaleur — vente, installation et service après-vente en France.' : lang === 'en' ? 'Specialist in air conditioning, ventilation and heat pumps — sales, installation and after-sales service in France.' : 'Specialist in airconditioning, ventilatie en warmtepompen — verkoop, installatie en after-sales service in Frankrijk.'}
-          </p>
-        </div>
+          </div>
 
-        {/* Navigation */}
-        <div>
-          <div style={colTitle}>{t('nav_products', lang)}</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 10 : 8 }}>
+          <div>
+            <h4 style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: text2, marginBottom: 10 }}>
+              {t('nav_products', lang)}
+            </h4>
             <Link to="/catalog" style={linkStyle}>{t('nav_products', lang)}</Link>
             <Link to="/about" style={linkStyle}>{t('nav_company', lang)}</Link>
-            <Link to="/track"   style={linkStyle}>{t('nav_track', lang)}</Link>
+            <Link to="/track" style={linkStyle}>{t('nav_track', lang)}</Link>
           </div>
-        </div>
 
-        {/* Legal */}
-        <div>
-          <div style={colTitle}>{t('legal_mentions', lang)}</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 10 : 8 }}>
+          <div>
+            <h4 style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: text2, marginBottom: 10 }}>
+              {t('legal_mentions', lang)}
+            </h4>
             <Link to="/legal#identite" style={linkStyle}>{t('legal_mentions', lang)}</Link>
             <Link to="/legal#privacy" style={linkStyle}>{t('privacy', lang)}</Link>
-            <Link to="/legal#terms"   style={linkStyle}>{t('terms', lang)}</Link>
+            <Link to="/legal#terms" style={linkStyle}>{t('terms', lang)}</Link>
           </div>
-        </div>
 
-        {/* Contact */}
-        <div>
-          <div style={colTitle}>{t('contact_label', lang)}</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 10 : 8, fontSize: 13, color: text }}>
-            <a href="mailto:contact@animalconceptsrl.com" style={{
-              fontSize: isMobile ? 14 : 13, fontWeight: 700, color: '#fff',
-              background: '#2E86C1', textDecoration: 'none', padding: '10px 20px',
-              borderRadius: 8, textAlign: 'center', display: 'inline-block',
-              fontFamily: "'Outfit',sans-serif", letterSpacing: '0.04em',
-              transition: 'background 0.2s',
-            }}
-              onMouseOver={e => e.currentTarget.style.background = '#1B6B9C'}
-              onMouseOut={e => e.currentTarget.style.background = '#2E86C1'}>
-              ✉ {t('contact_label', lang)}
+          <div>
+            <h4 style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: text2, marginBottom: 10 }}>
+              {t('contact_label', lang)}
+            </h4>
+            <a href={`mailto:${CONTACT_EMAIL}`} style={{
+              fontSize: 12, fontWeight: 700, color: '#fff', background: 'var(--primary)',
+              textDecoration: 'none', padding: '8px 16px', display: 'inline-flex',
+              alignItems: 'center', gap: 6, marginBottom: 8,
+            }}>
+              <Mail size={14} strokeWidth={2} />
+              {t('contact_label', lang)}
             </a>
-            <span>Vienne, France</span>
-            <Link to="/legal" style={linkStyle}>{t('cookies_label', lang)}</Link>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: text, padding: '3px 0' }}>
+              <MapPin size={13} strokeWidth={1.5} /> Vienne, France
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Bottom bar */}
-      <div style={{
-        maxWidth: 1200,
-        margin: '32px auto 0',
-        paddingTop: 24,
-        borderTop: `1px solid ${border}`,
-        display: 'flex',
-        flexDirection: isMobile ? 'column' : 'row',
-        alignItems: isMobile ? 'flex-start' : 'center',
-        justifyContent: 'space-between',
-        gap: isMobile ? 12 : 0,
-        fontSize: 12,
-        color: text2,
-      }}>
-        <span>
-          &copy; {new Date().getFullYear()} AIRCONFORTHABITAT — {t('copyright', lang)}
-        </span>
-        <span>{t('made_in', lang)}</span>
+        <div style={{ borderTop: '1px solid #333', padding: '16px 0', marginTop: 24, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Award size={16} color="var(--primary)" strokeWidth={1.8} />
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#ccc' }}>RGE</div>
+              <div style={{ fontSize: 10, color: text2 }}>Reconnu Garant de l'Environnement</div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Shield size={16} color="var(--primary)" strokeWidth={1.8} />
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#ccc' }}>QualiPAC</div>
+              <div style={{ fontSize: 10, color: text2 }}>Certification PAC</div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Wrench size={16} color="var(--primary)" strokeWidth={1.8} />
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#ccc' }}>Artisan RGE</div>
+              <div style={{ fontSize: 10, color: text2 }}>Certifié</div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ borderTop: '1px solid #333', paddingTop: 14, marginTop: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8, fontSize: 11, color: text2 }}>
+          <span>&copy; {new Date().getFullYear()} AIRCONFORTHABITAT — {t('copyright', lang)}</span>
+          <span>{t('made_in', lang)}</span>
+        </div>
       </div>
     </footer>
   );

@@ -133,7 +133,7 @@ export default function Chatbot() {
         <div style={{ background: 'linear-gradient(135deg, #1B6B9C, #2E86C1)', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14, flexShrink: 0 }}>
           <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>❄️</div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 800, fontSize: 15, color: '#fff', letterSpacing: '0.02em' }}>
+            <div style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800, fontSize: 15, color: '#fff', letterSpacing: '0.02em' }}>
               AIRCONFORTHABITAT
             </div>
             <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.75)', display: 'flex', alignItems: 'center', gap: 6, marginTop: 2 }}>
@@ -149,7 +149,7 @@ export default function Chatbot() {
             <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
               style={{
                 maxWidth: '88%', padding: '12px 16px', borderRadius: 12, fontSize: 14, lineHeight: 1.6,
-                whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontFamily: "'Outfit', sans-serif",
+                whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontFamily: "'Inter', sans-serif",
                 background: m.from === 'bot' ? msgBotBg : '#2E86C1',
                 color: m.from === 'bot' ? msgBotText : msgUserText,
                 alignSelf: m.from === 'bot' ? 'flex-start' : 'flex-end',
@@ -175,7 +175,7 @@ export default function Chatbot() {
                 style={{
                   background: quickBg, border: `1px solid ${quickBd}`, color: quickText,
                   fontSize: 12, fontWeight: 600, padding: '6px 12px', borderRadius: 20,
-                  cursor: 'pointer', fontFamily: "'Outfit', sans-serif", transition: 'all 0.2s',
+                  cursor: 'pointer', fontFamily: "'Inter', sans-serif", transition: 'all 0.2s',
                 }}
                 onMouseOver={e => { e.currentTarget.style.background = quickHoverBg; e.currentTarget.style.color = quickHoverText; }}
                 onMouseOut={e => { e.currentTarget.style.background = quickBg; e.currentTarget.style.color = quickText; }}>
@@ -190,7 +190,7 @@ export default function Chatbot() {
             placeholder={placeholders[lang] || placeholders.fr}
             style={{
               flex: 1, background: inputBg, border: `1px solid ${inputBorder}`, color: inputText,
-              borderRadius: 8, padding: '10px 14px', fontSize: 14, fontFamily: "'Outfit', sans-serif",
+              borderRadius: 8, padding: '10px 14px', fontSize: 14, fontFamily: "'Inter', sans-serif",
               outline: 'none', transition: 'border-color 0.2s',
             }}
             onFocus={e => e.target.style.borderColor = '#2E86C1'}

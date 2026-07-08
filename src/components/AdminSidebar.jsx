@@ -31,7 +31,7 @@ export default function AdminSidebar({ mobileOpen = false, onClose }) {
     }}>
       <div style={{ padding: '20px 18px', borderBottom: '1px solid var(--border)' }}>
         <NavLink to="/admin" onClick={closeIfMobile} style={{ textDecoration: 'none' }}>
-          <div style={{ fontFamily: "'Outfit',sans-serif", fontSize: 15, fontWeight: 900, color: 'var(--text)', letterSpacing: '0.02em' }}>
+          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 15, fontWeight: 900, color: 'var(--text)', letterSpacing: '0.02em' }}>
             AIRCON<span style={{ color: 'var(--primary)' }}>FORTHABITAT</span>
           </div>
           <div style={{ fontSize: 9, letterSpacing: '0.28em', color: 'var(--text-3)', textTransform: 'uppercase', marginTop: 6, fontWeight: 700 }}>
@@ -46,7 +46,7 @@ export default function AdminSidebar({ mobileOpen = false, onClose }) {
             width: 52, height: 52, borderRadius: '50%',
             background: 'linear-gradient(135deg,#2E86C1,#00B4D8)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: "'Outfit',sans-serif", fontWeight: 900, fontSize: 17,
+            fontFamily: "'Inter',sans-serif", fontWeight: 900, fontSize: 17,
             color: '#fff', margin: '0 auto 12px',
             boxShadow: '0 6px 18px rgba(46,134,193,0.28)',
           }}>A</div>
@@ -76,7 +76,7 @@ export default function AdminSidebar({ mobileOpen = false, onClose }) {
             padding: '11px 14px', borderRadius: 8, fontSize: 14,
             color: 'var(--text-2)', background: 'var(--bg-card)',
             border: '1px solid var(--border)', cursor: 'pointer',
-            fontFamily: "'Outfit',sans-serif", fontWeight: 600, textAlign: 'left',
+            fontFamily: "'Inter',sans-serif", fontWeight: 600, textAlign: 'left',
             marginBottom: 8, transition: 'border-color 0.2s, color 0.2s',
           }}
           onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary)'; }}
@@ -90,7 +90,7 @@ export default function AdminSidebar({ mobileOpen = false, onClose }) {
             width: '100%', display: 'flex', alignItems: 'center', gap: 12,
             padding: '11px 14px', borderRadius: 8, fontSize: 14, color: '#DC2626',
             background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.18)',
-            cursor: 'pointer', fontFamily: "'Outfit',sans-serif", fontWeight: 700,
+            cursor: 'pointer', fontFamily: "'Inter',sans-serif", fontWeight: 700,
             textAlign: 'left', marginBottom: 6, transition: 'background 0.2s',
           }}
           onMouseOver={e => e.currentTarget.style.background = 'rgba(239,68,68,0.1)'}

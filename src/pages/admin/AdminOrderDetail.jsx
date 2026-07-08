@@ -76,7 +76,7 @@ export default function AdminOrderDetail() {
       <div style={{ display:'flex', alignItems:'center', gap:20, marginBottom:32, flexWrap:'wrap' }}>
         <div>
           <div className="section-eyebrow">Commande</div>
-          <h1 style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:'clamp(26px,3.5vw,40px)', color:'var(--primary)', letterSpacing:'-0.02em' }}>
+          <h1 style={{ fontFamily:"'Inter',sans-serif", fontWeight:900, fontSize:'clamp(26px,3.5vw,40px)', color:'var(--primary)', letterSpacing:'-0.02em' }}>
             {order.orderNumber}
           </h1>
         </div>
@@ -120,12 +120,12 @@ export default function AdminOrderDetail() {
                     <p style={{ fontSize:13, color:'var(--text-3)', marginTop:2 }}>{item.product?.brand} — {item.product?.model}</p>
                     {item.quantity > 1 && <p style={{ fontSize:12, color:'var(--text-2)', marginTop:2 }}>Qty: {item.quantity}</p>}
                   </div>
-                  <p style={{ fontFamily:"'Outfit',sans-serif", fontWeight:800, fontSize:17, color:'var(--primary)', flexShrink:0 }}>{formatEuro(item.price)}</p>
+                  <p style={{ fontFamily:"'Inter',sans-serif", fontWeight:800, fontSize:17, color:'var(--primary)', flexShrink:0 }}>{formatEuro(item.price)}</p>
                 </div>
               ))}
               <div style={{ marginTop:16, paddingTop:16, borderTop:'1px solid var(--border)', textAlign:'right' }}>
                 <p style={{ fontSize:11, color:'var(--text-3)', marginBottom:4 }}>Total</p>
-                <p style={{ fontFamily:"'Outfit',sans-serif", fontWeight:900, fontSize:24, color:'var(--primary)' }}>{formatEuro(order.totalAmount)}</p>
+                <p style={{ fontFamily:"'Inter',sans-serif", fontWeight:900, fontSize:24, color:'var(--primary)' }}>{formatEuro(order.totalAmount)}</p>
               </div>
             </div>
           )}
@@ -187,11 +187,11 @@ export default function AdminOrderDetail() {
             <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--primary)', marginBottom:18 }}>Répondre au client</p>
             <div style={{ display:'flex', gap:10, marginBottom:16 }}>
               <a href={`mailto:${order.customerEmail}?subject=${encodeURIComponent('AIRCONFORTHABITAT — Suivi commande ' + order.orderNumber)}`}
-                style={{ flex:1, textAlign:'center', padding:'12px 14px', fontSize:13, fontWeight:700, color:'#fff', background:'var(--primary)', borderRadius:8, textDecoration:'none', fontFamily:"'Outfit',sans-serif" }}>
+                style={{ flex:1, textAlign:'center', padding:'12px 14px', fontSize:13, fontWeight:700, color:'#fff', background:'var(--primary)', borderRadius:8, textDecoration:'none', fontFamily:"'Inter',sans-serif" }}>
                 📧 Email
               </a>
               <a href={`tel:${order.customerPhone}`}
-                style={{ flex:1, textAlign:'center', padding:'12px 14px', fontSize:13, fontWeight:700, color:'var(--text)', background:'var(--bg-card2)', border:'1px solid var(--border)', borderRadius:8, textDecoration:'none', fontFamily:"'Outfit',sans-serif" }}>
+                style={{ flex:1, textAlign:'center', padding:'12px 14px', fontSize:13, fontWeight:700, color:'var(--text)', background:'var(--bg-card2)', border:'1px solid var(--border)', borderRadius:8, textDecoration:'none', fontFamily:"'Inter',sans-serif" }}>
                 📞 Appeler
               </a>
             </div>

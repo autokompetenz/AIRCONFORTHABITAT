@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCartStore, useToastStore, useLangStore } from '../store';
 import { formatEuro } from '../utils/helpers';
 import { t } from '../utils/i18n';
 import { useBreakpoint } from '../hooks';
-import { orderAPI } from '../services/api';
 import { ShoppingCart, X, Minus, Plus } from 'lucide-react';
 
 export default function CartDrawer() {
@@ -16,32 +14,6 @@ export default function CartDrawer() {
   const { isMobile } = useBreakpoint();
   const l = lang || 'fr';
   const total = items.reduce((s, i) => s + i.price * i.quantity, 0);
-
-  const [showModal, setShowModal] = useState(false);
-  const [ordering, setOrdering] = useState(false);
-
-  const handleOrder = async (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    setOrdering(true);
-    try {
-      const res = await orderAPI.create({
-        items: items.map(i => ({ productId: i.id, quantity: i.quantity })),
-        customerName: fd.get('name'),
-        customerEmail: fd.get('email'),
-        customerPhone: fd.get('phone'),
-        customerAddress: fd.get('address'),
-        notes: fd.get('notes'),
-      });
-      clearCart();
-      addToast(t('order_confirm', l), 'success');
-      setShowModal(false);
-      closeCart();
-      navigate(`/track/${res.data.orderNumber}`);
-    } catch (err) {
-      addToast(err.response?.data?.error || 'Erreur', 'error');
-    } finally { setOrdering(false); }
-  };
 
   return (
     <>
@@ -121,7 +93,7 @@ export default function CartDrawer() {
                     <span style={{ fontSize: 13, color: '#666' }}>{l === 'fr' ? 'Total' : l === 'nl' ? 'Totaal' : 'Total'}</span>
                     <span style={{ fontWeight: 900, fontSize: 24, color: '#1A1A1A', letterSpacing: '-0.02em' }}>{formatEuro(total)}</span>
                   </div>
-                  <button onClick={() => { closeCart(); setShowModal(true); }} className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '14px', fontSize: 13, gap: 8 }}>
+                  <button onClick={() => { closeCart(); navigate('/order'); }} className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '14px', fontSize: 13, gap: 8 }}>
                     <ShoppingCart size={16} strokeWidth={2} /> {l === 'fr' ? 'Commander' : l === 'nl' ? 'Bestellen' : 'Order'}
                   </button>
                   <button onClick={() => { clearCart(); addToast(t('cart_cleared', l), 'info'); }} style={{ width: '100%', marginTop: 8, background: 'none', border: 'none', fontSize: 12, color: '#999', cursor: 'pointer', padding: 6 }}>
@@ -131,52 +103,6 @@ export default function CartDrawer() {
               )}
             </motion.aside>
           </>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {showModal && (
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            onClick={() => setShowModal(false)}
-            style={{
-              position: 'fixed', inset: 0, zIndex: 3000, background: 'rgba(0,0,0,0.6)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
-            }}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-              onClick={e => e.stopPropagation()}
-              style={{
-                width: '100%', maxWidth: 460, maxHeight: '90vh', overflow: 'auto',
-                background: '#fff', padding: isMobile ? '20px 16px' : '24px 28px',
-              }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-                <h3 style={{ fontWeight: 700, fontSize: 18, color: '#1A1A1A' }}>
-                  {l === 'fr' ? 'Commander' : l === 'nl' ? 'Bestellen' : 'Order'}
-                </h3>
-                <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#666', padding: 0 }}>
-                  <X size={20} strokeWidth={1.5} />
-                </button>
-              </div>
-
-              <form id="order-form" onSubmit={handleOrder} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <input name="name" required placeholder={t('name_label', l)} className="input-luxury" style={{ fontSize: 14, padding: '10px 14px' }} />
-                <input name="email" type="email" required placeholder={t('email_label', l)} className="input-luxury" style={{ fontSize: 14, padding: '10px 14px' }} />
-                <input name="phone" type="tel" required placeholder={t('phone_label', l)} className="input-luxury" style={{ fontSize: 14, padding: '10px 14px' }} />
-                <input name="address" placeholder={t('address_ph', l)} className="input-luxury" style={{ fontSize: 14, padding: '10px 14px' }} />
-                <textarea name="notes" rows={2} placeholder={t('notes_ph', l)} className="input-luxury" style={{ fontSize: 14, padding: '10px 14px', resize: 'none' }} />
-
-                <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
-                  <button type="button" onClick={() => setShowModal(false)} className="btn-secondary" style={{ flex: 1, fontSize: 13, padding: '12px' }}>
-                    {l === 'fr' ? 'Annuler' : l === 'nl' ? 'Annuleren' : 'Cancel'}
-                  </button>
-                  <button type="submit" disabled={ordering} className="btn-primary" style={{ flex: 2, justifyContent: 'center', fontSize: 13, padding: '12px', gap: 8 }}>
-                    {ordering ? '...' : <><ShoppingCart size={16} strokeWidth={2} /> {t('confirm_order', l)}</>}
-                  </button>
-                </div>
-              </form>
-            </motion.div>
-          </motion.div>
         )}
       </AnimatePresence>
     </>

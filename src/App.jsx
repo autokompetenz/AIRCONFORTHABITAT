@@ -14,6 +14,7 @@ import Home from './pages/Home';
 import Catalog from './pages/Catalog';
 import ProductDetails from './pages/ProductDetails';
 import Track from './pages/Track';
+import OrderForm from './pages/OrderForm';
 import Legal from './pages/Legal';
 
 import AdminLogin from './pages/admin/AdminLogin';
@@ -76,6 +77,7 @@ function AppContent() {
           <Route path="/product/:slug" element={<PublicRoute element={<ProductDetails />} />} />
           <Route path="/track" element={<PublicRoute element={<Track />} />} />
           <Route path="/track/:number" element={<PublicRoute element={<Track />} />} />
+          <Route path="/order" element={<PublicRoute element={<OrderForm />} />} />
           <Route path="/about" element={<PublicRoute element={<Legal />} />} />
           <Route path="/legal" element={<PublicRoute element={<Legal />} />} />
 

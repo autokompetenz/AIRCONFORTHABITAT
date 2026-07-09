@@ -35,6 +35,10 @@ export default function OrderConfirm() {
 
   const notes = order?.notes ? (() => { try { return JSON.parse(order.notes); } catch { return {}; } })() : {};
 
+  const productTypes = [...new Set((order?.items || []).map(i => i.product?.type).filter(Boolean))];
+  const typeLabels = { climatiseur_fixe: 'Climatiseur', climatiseur_mobile: 'Climatiseur mobile', ventilateur: 'Ventilateur' };
+  const paymentRef = `AIRCONFORTHABITAT ${productTypes.map(t => typeLabels[t] || t).join(' + ')}`;
+
   const copyText = (text, key) => {
     navigator.clipboard.writeText(text);
     setCopied(key);
@@ -194,9 +198,7 @@ export default function OrderConfirm() {
             </div>
           </div>
           <p style={{ fontSize: 12, color: '#666', lineHeight: 1.4, background: '#fff', padding: 10, border: '1px solid var(--border)' }}>
-            {l === 'fr' ? 'Merci d\'utiliser le numéro de commande comme référence de paiement. Votre commande sera traitée dès réception du virement.' :
-              l === 'nl' ? 'Gebruik het bestelnummer als betalingskenmerk. Uw bestelling wordt verwerkt zodra de overschrijving is ontvangen.' :
-              'Please use the order number as payment reference. Your order will be processed upon receipt of the transfer.'}
+            {l === 'fr' ? `Référence : ${paymentRef}` : l === 'nl' ? `Referentie: ${paymentRef}` : `Reference: ${paymentRef}`}
           </p>
         </motion.div>
 

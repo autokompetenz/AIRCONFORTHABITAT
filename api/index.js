@@ -314,7 +314,13 @@ app.get('/api/orders/track/:orderNumber', async (req, res) => {
       },
     });
     if (!order) return res.status(404).json({ error: 'Commande non trouvée' });
-    res.json({ order });
+    res.json({
+      order,
+      payment: {
+        iban: process.env.ORDER_IBAN || 'BE68 1234 5678 9012',
+        bic: process.env.ORDER_BIC || 'GEBABEBB',
+      },
+    });
   } catch (e) {
     res.status(500).json({ error: 'Erreur serveur' });
   }

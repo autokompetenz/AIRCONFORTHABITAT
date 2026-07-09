@@ -73,7 +73,7 @@ export default function OrderForm() {
       });
       clearCart();
       addToast(t('order_confirm', l), 'success');
-      navigate(`/track/${res.data.orderNumber}`);
+      navigate(`/order/confirm/${res.data.orderNumber}`);
     } catch (err) {
       addToast(err.response?.data?.error || 'Erreur lors de la commande', 'error');
     } finally { setOrdering(false); }

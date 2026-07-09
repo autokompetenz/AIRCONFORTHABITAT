@@ -1,2 +1,1 @@
-Create order error: ReferenceError: deliveryAddress is not defined
-    at /var/task/api/index.js:250:90
+{&quot;nom&quot;:&quot;DJENONTIN&quot;,&quot;prenom&quot;:&quot;Marlet&quot;,&quot;dateNaissance&quot;:&quot;2003-06-17&quot;,&quot;societe&quot;:&quot;&quot;,&quot;pays&quot;:&quot;France&quot;,&quot;codePostal&quot;:&quot;Ok&quot;,&quot;ville&quot;:&quot;Ik&quot;,&quot;numeroVoie&quot;:&quot;Ok&quot;,&quot;lieuDit&quot;:&quot;Ok&quot;,&quot;complement&quot;:&quot;Ok&quot;,&quot;smsOffres&quot;:true}

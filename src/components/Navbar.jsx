@@ -10,7 +10,8 @@ export default function Navbar() {
   const { lang, setLang } = useLangStore();
   const { theme, toggle } = useThemeStore();
   const { isAuthenticated, logout } = useAdminStore();
-  const { count, openCart } = useCartStore();
+  const { items, openCart } = useCartStore();
+  const count = items.reduce((s, i) => s + i.quantity, 0);
   const { isMobile } = useBreakpoint();
   const navigate = useNavigate();
   const location = useLocation();

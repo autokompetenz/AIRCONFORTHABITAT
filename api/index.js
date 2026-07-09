@@ -210,7 +210,7 @@ app.get('/api/products/:id', async (req, res) => {
 // ─── Orders ───────────────────────────────────────────────────────────────
 app.post('/api/orders', async (req, res) => {
   try {
-    const { items, customerName, customerEmail, customerPhone, customerAddress, notes } = req.body;
+    const { items, customerName, customerEmail, customerPhone, customerAddress, deliveryAddress, notes } = req.body;
     if (!customerName || !customerEmail || !customerPhone) {
       return res.status(400).json({ error: 'Nom, email et téléphone requis' });
     }

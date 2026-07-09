@@ -1,6 +1,2 @@
-Create product error: Error: Upload 400: {"statusCode":"403","error":"Unauthorized","message":"new row violates row-level security policy"}
-    at /var/task/api/index.js:61:15
-    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
-    at async Promise.all (index 1)
-    at async uploadFiles (/var/task/api/index.js:46:19)
-    at async /var/task/api/index.js:394:34
+Create order error: ReferenceError: deliveryAddress is not defined
+    at /var/task/api/index.js:250:90

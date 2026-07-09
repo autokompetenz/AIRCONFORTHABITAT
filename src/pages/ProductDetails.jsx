@@ -61,7 +61,7 @@ export default function ProductDetails() {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          style={{ padding: '12px 5%', borderBottom: '1px solid var(--border)', background: '#F5F5F5' }}
+          style={{ padding: isMobile ? '12px 4%' : '12px 5%', borderBottom: '1px solid var(--border)', background: '#F5F5F5' }}
         >
           <p style={{ fontSize: 12, color: '#999' }}>
             <Link to="/" style={{ color: '#999', textDecoration: 'none' }}>{l === 'fr' ? 'Accueil' : l === 'nl' ? 'Home' : 'Home'}</Link>

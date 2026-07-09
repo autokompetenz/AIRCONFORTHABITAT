@@ -108,7 +108,7 @@ export default function Home() {
         style={{
           position: 'relative',
           background: '#1A1A1A', color: '#fff',
-          padding: isMobile ? '50px 5% 40px' : '80px 5% 60px',
+          padding: isMobile ? '50px 4% 40px' : '80px 5% 60px',
           overflow: 'hidden',
         }}>
         <div style={{
@@ -210,7 +210,7 @@ export default function Home() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.35 }}
-        style={{ background: '#F5F5F5', borderBottom: '1px solid #E5E5E5', padding: '12px 5%' }}
+        style={{ background: '#F5F5F5', borderBottom: '1px solid #E5E5E5', padding: isMobile ? '12px 4%' : '12px 5%' }}
       >
         <form onSubmit={handleTrack} style={{ maxWidth: 600, margin: '0 auto', display: 'flex', gap: 6 }}>
           <input value={trackNum} onChange={e => setTrackNum(e.target.value)}
@@ -227,7 +227,7 @@ export default function Home() {
       </motion.div>
 
       {loading ? (
-        <section style={{ padding: '40px 5%', textAlign: 'center' }}>
+        <section style={{ padding: isMobile ? '32px 4%' : '40px 5%', textAlign: 'center' }}>
           <div style={{ width: 32, height: 32, border: '2px solid #E5E5E5', borderTopColor: 'var(--primary)', animation: 'spin 0.8s linear infinite', margin: '0 auto' }} />
         </section>
       ) : featured.length > 0 && (
@@ -236,7 +236,7 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          style={{ padding: '40px 5%', borderBottom: '1px solid #E5E5E5' }}
+          style={{ padding: isMobile ? '32px 4%' : '40px 5%', borderBottom: '1px solid #E5E5E5' }}
         >
           <motion.h2
             initial={{ opacity: 0, y: 12 }}
@@ -311,7 +311,7 @@ export default function Home() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.4 }}
-        style={{ padding: '40px 5%' }}
+        style={{ padding: isMobile ? '32px 4%' : '40px 5%' }}
       >
         <motion.div
           initial={{ opacity: 0, y: 12 }}

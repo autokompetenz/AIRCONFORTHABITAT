@@ -85,7 +85,7 @@ export default function CartDrawer() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     {items.map(item => (
                       <div key={item.id} style={{ display: 'flex', gap: 12, alignItems: 'center', padding: '12px', border: '1px solid var(--border)', background: '#F5F5F5' }}>
-                        <img src={item.imageUrl || ''} alt={item.name} style={{ width: 48, height: 48, objectFit: 'cover', flexShrink: 0 }} />
+                        <img src={item.imageUrl || ''} alt={item.name} style={{ width: isMobile ? 40 : 48, height: isMobile ? 40 : 48, objectFit: 'cover', flexShrink: 0 }} />
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <Link to={`/product/${item.slug || item.id}`} onClick={closeCart} style={{ textDecoration: 'none' }}>
                             <p style={{ fontWeight: 600, fontSize: 13, color: '#1A1A1A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</p>
@@ -148,7 +148,7 @@ export default function CartDrawer() {
               onClick={e => e.stopPropagation()}
               style={{
                 width: '100%', maxWidth: 460, maxHeight: '90vh', overflow: 'auto',
-                background: '#fff', padding: '24px 28px',
+                background: '#fff', padding: isMobile ? '20px 16px' : '24px 28px',
               }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
                 <h3 style={{ fontWeight: 700, fontSize: 18, color: '#1A1A1A' }}>

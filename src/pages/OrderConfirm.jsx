@@ -172,35 +172,7 @@ export default function OrderConfirm() {
           ))}
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-          style={{ border: '2px solid var(--primary)', padding: isMobile ? 16 : 24, marginBottom: 24, background: '#F0F7FF' }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--primary)', marginBottom: 14, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-            {l === 'fr' ? 'Paiement par virement bancaire' : l === 'nl' ? 'Betaling via bankoverschrijving' : 'Payment by bank transfer'}
-          </p>
-          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 12, marginBottom: 12 }}>
-            <div style={{ background: '#fff', padding: '10px 14px', border: '1px solid var(--border)' }}>
-              <span style={{ fontSize: 10, fontWeight: 700, color: '#999', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'block', marginBottom: 2 }}>IBAN</span>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontWeight: 700, fontSize: 15, color: '#1A1A1A', fontFamily: 'monospace', letterSpacing: '0.05em' }}>{payment?.iban || 'BE68 1234 5678 9012'}</span>
-                <button onClick={() => copyText(payment?.iban || '', 'iban')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: copied === 'iban' ? '#2E7D32' : '#999', padding: 2, display: 'flex', flexShrink: 0 }}>
-                  <Copy size={14} strokeWidth={1.5} />
-                </button>
-              </div>
-            </div>
-            <div style={{ background: '#fff', padding: '10px 14px', border: '1px solid var(--border)' }}>
-              <span style={{ fontSize: 10, fontWeight: 700, color: '#999', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'block', marginBottom: 2 }}>BIC</span>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontWeight: 700, fontSize: 15, color: '#1A1A1A', fontFamily: 'monospace' }}>{payment?.bic || 'GEBABEBB'}</span>
-                <button onClick={() => copyText(payment?.bic || '', 'bic')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: copied === 'bic' ? '#2E7D32' : '#999', padding: 2, display: 'flex', flexShrink: 0 }}>
-                  <Copy size={14} strokeWidth={1.5} />
-                </button>
-              </div>
-            </div>
-          </div>
-          <p style={{ fontSize: 12, color: '#666', lineHeight: 1.4, background: '#fff', padding: 10, border: '1px solid var(--border)' }}>
-            {l === 'fr' ? `Référence : ${paymentRef}` : l === 'nl' ? `Referentie: ${paymentRef}` : `Reference: ${paymentRef}`}
-          </p>
-        </motion.div>
+
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
           style={{ textAlign: 'center' }}>

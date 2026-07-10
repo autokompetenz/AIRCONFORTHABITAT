@@ -202,9 +202,9 @@ export default function OrderForm() {
               <input type="checkbox" checked={smsOk} onChange={e => setSmsOk(e.target.checked)}
                 style={{ marginTop: 2, width: 18, height: 18, cursor: 'pointer', accentColor: 'var(--primary)' }} />
               <span style={{ fontSize: 13, color: '#666', lineHeight: 1.4, fontWeight: 500 }}>
-                {l === 'fr' ? 'Je souhaite recevoir par sms les offres commerciales de AIRCONFORTHABITAT (sur produit et service)' :
-                  l === 'nl' ? 'Ik wil via sms commerciële aanbiedingen ontvangen van AIRCONFORTHABITAT (over producten en diensten)' :
-                  'I wish to receive by sms commercial offers from AIRCONFORTHABITAT (on products and services)'}
+                {l === 'fr' ? 'Je souhaite recevoir par sms les offres commerciales de AIR ECO CLIM (sur produit et service)' :
+                  l === 'nl' ? 'Ik wil via sms commerciële aanbiedingen ontvangen van AIR ECO CLIM (over producten en diensten)' :
+                  'I wish to receive by sms commercial offers from AIR ECO CLIM (on products and services)'}
               </span>
             </label>
           </div>

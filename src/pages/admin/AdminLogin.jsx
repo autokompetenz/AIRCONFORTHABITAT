@@ -29,7 +29,7 @@ export default function AdminLogin() {
       <form onSubmit={handleSubmit} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: 40, maxWidth: 400, width: '100%', boxShadow: 'var(--shadow-md)' }}>
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <div style={{ fontSize: 48, marginBottom: 12, filter: 'drop-shadow(0 4px 12px rgba(46,134,193,0.3))' }}>❄</div>
-          <h1 style={{ fontFamily: "'Inter',sans-serif", fontWeight: 900, fontSize: 24, color: 'var(--text)' }}>AIRCONFORTHABITAT</h1>
+          <h1 style={{ fontFamily: "'Inter',sans-serif", fontWeight: 900, fontSize: 24, color: 'var(--text)' }}>AIR ECO CLIM</h1>
           <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--primary)', marginTop: 4 }}>Administration</p>
           <p style={{ fontSize: 14, color: 'var(--text-3)', marginTop: 8 }}>Entrez le code d'accès pour administrer le site.</p>
         </div>

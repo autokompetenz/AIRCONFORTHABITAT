@@ -37,7 +37,7 @@ export default function OrderConfirm() {
 
   const productTypes = [...new Set((order?.items || []).map(i => i.product?.type).filter(Boolean))];
   const typeLabels = { climatiseur_fixe: 'Climatiseur', climatiseur_mobile: 'Climatiseur mobile', ventilateur: 'Ventilateur' };
-  const paymentRef = `AIRCONFORTHABITAT ${productTypes.map(t => typeLabels[t] || t).join(' + ')}`;
+  const paymentRef = `AIR ECO CLIM ${productTypes.map(t => typeLabels[t] || t).join(' + ')}`;
 
   const copyText = (text, key) => {
     navigator.clipboard.writeText(text);

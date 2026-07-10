@@ -45,7 +45,7 @@ const SERVICES = [
 const REVIEWS = [
   { stars:5, text:{fr:'Installation rapide et professionnelle. Notre climatiseur Daikin fonctionne parfaitement.', nl:'Snelle en professionele installatie. Onze Daikin airco werkt perfect.', en:'Fast and professional installation. Our Daikin AC works perfectly.'}, author:'Sophie M.', city:'Arlon' },
   { stars:5, text:{fr:'Très satisfait du ventilateur. Silencieux, efficace, livraison rapide. Je recommande.', nl:'Zeer tevreden met de ventilator. Stil, efficiënt, snelle levering.', en:'Very satisfied with the fan. Quiet, effective, fast delivery.'}, author:'Thomas D.', city:'Luxembourg' },
-  { stars:4, text:{fr:'Bon contact avec l\'équipe. Produit de qualité, installation parfaite. Légers délais.', nl:'Goed contact met het team. Kwaliteitsproduct, perfecte installatie.', en:'Good contact with the team. Quality product, perfect installation.'}, author:'Nathalie F.', city:'Vienne' },
+  { stars:4, text:{fr:'Bon contact avec l\'équipe. Produit de qualité, installation parfaite. Légers délais.', nl:'Goed contact met het team. Kwaliteitsproduct, perfecte installatie.', en:'Good contact with the team. Quality product, perfect installation.'}, author:'Nathalie F.', city:'Grenoble' },
 ];
 
 function CookieBanner({ lang }) {
@@ -136,7 +136,7 @@ export default function Home() {
                 padding: '4px 12px',
                 marginBottom: 14,
               }}>
-                Artisan RGE QualiPAC · Vienne (38)
+                Artisan RGE · Brié-et-Angonnes (38)
               </div>
             </motion.div>
             <motion.h1

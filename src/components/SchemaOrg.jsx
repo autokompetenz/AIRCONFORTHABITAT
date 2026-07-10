@@ -10,16 +10,16 @@ export function LocalBusinessSchema() {
     script.textContent = JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'LocalBusiness',
-      name: 'AIRCONFORTHABITAT',
-      url: 'https://airconforthabitat.fr',
+      name: 'AIR ECO CLIM',
+      url: 'https://airecoclim.com',
       image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
       telephone: '+33-6-00-00-00-00',
-      email: 'contact@airconforthabitat.fr',
+      email: 'contact@airecoclim.com',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: '2 Place Saint-Maurice',
-        addressLocality: 'Vienne',
-        postalCode: '38200',
+        streetAddress: '288 Chemin du Cavin',
+        addressLocality: 'Brié-et-Angonnes',
+        postalCode: '38320',
         addressCountry: 'FR',
       },
       openingHoursSpecification: [

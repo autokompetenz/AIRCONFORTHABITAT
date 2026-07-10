@@ -186,7 +186,7 @@ export default function AdminOrderDetail() {
           <div style={cardStyle}>
             <p style={{ fontSize:11, fontWeight:800, letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--primary)', marginBottom:18 }}>Répondre au client</p>
             <div style={{ display:'flex', gap:10, marginBottom:16 }}>
-              <a href={`mailto:${order.customerEmail}?subject=${encodeURIComponent('AIRCONFORTHABITAT — Suivi commande ' + order.orderNumber)}`}
+              <a href={`mailto:${order.customerEmail}?subject=${encodeURIComponent('AIR ECO CLIM — Suivi commande ' + order.orderNumber)}`}
                 style={{ flex:1, textAlign:'center', padding:'12px 14px', fontSize:13, fontWeight:700, color:'#fff', background:'var(--primary)', borderRadius:8, textDecoration:'none', fontFamily:"'Inter',sans-serif" }}>
                 📧 Email
               </a>

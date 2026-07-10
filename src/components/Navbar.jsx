@@ -64,7 +64,7 @@ export default function Navbar() {
         padding: '4px 4%', display: 'flex', justifyContent: 'space-between',
         fontFamily: 'Inter, sans-serif',
       }}>
-        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Artisan RGE · Vienne (38) · Livraison France</span>
+        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Artisan RGE · Brié-et-Angonnes (38) · Livraison France</span>
         <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
           {!isMobile && <Link to="/track" style={{ color: darkText, textDecoration: 'none', fontWeight: 500 }}>{t('nav_track', lang)}</Link>}
           <span style={{ fontWeight: 600, color: '#fff' }}>{lang.toUpperCase()}</span>
@@ -82,10 +82,10 @@ export default function Navbar() {
             fontFamily: 'Inter, sans-serif', fontSize: isMobile ? 14 : 18, fontWeight: 900,
             color: isDark ? '#fff' : '#1A1A1A', letterSpacing: '-0.02em',
           }}>
-            AIRCONFORT<span style={{ color: 'var(--primary)' }}>HABITAT</span>
+            AIR ECO<span style={{ color: 'var(--primary)' }}> CLIM</span>
           </div>
           <div style={{ fontSize: 9, letterSpacing: '0.35em', color: 'var(--primary)', textTransform: 'uppercase', marginTop: 1 }}>
-            Vienne · France
+            Brié-et-Angonnes · France
           </div>
         </Link>
 

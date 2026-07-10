@@ -8,8 +8,8 @@ const RESPONSES = {
     horaires: "Nos horaires :\n🕗 Lun–Ven : 09h00 – 18h00\n🕘 Samedi : 10h00 – 16h00\n❌ Dimanche : Fermé",
     prix:     "Nos climatiseurs et ventilateurs sont proposés aux meilleurs prix du marché, installation comprise.\n\n📧 Contactez-nous pour un devis personnalisé !",
     rdv:      "Pour prendre rendez-vous pour un devis d'installation :\n\n📧 Nous contacter ou appelez-nous.",
-    adresse:  "📍 AIRCONFORTHABITAT\nVienne, France",
-    bonjour:  "Bonjour ! Bienvenue chez AIRCONFORTHABITAT ❄️\n\nComment puis-je vous aider ?\n• Horaires d'ouverture\n• Devis d'installation\n• Tarifs\n• Garantie & SAV\n• Notre adresse",
+    adresse:  "📍 AIR ECO CLIM\nBrié-et-Angonnes, France",
+    bonjour:  "Bonjour ! Bienvenue chez AIR ECO CLIM ❄️\n\nComment puis-je vous aider ?\n• Horaires d'ouverture\n• Devis d'installation\n• Tarifs\n• Garantie & SAV\n• Notre adresse",
     garantie: "Nos produits sont couverts par :\n✅ Garantie constructeur 2 à 5 ans\n✅ Installation professionnelle\n✅ Service après-vente réactif\n✅ Pièces de rechange disponibles",
     livraison: "Nous livrons et installons dans toute la France :\n🚚 Livraison rapide\n🔧 Installation par nos techniciens\n📦 Retrait possible sur place",
     entretien: "Nous proposons des contrats d'entretien annuels pour vos climatiseurs :\n✅ Nettoyage des filtres\n✅ Vérification du circuit frigorifique\n✅ Contrôle des raccordements",
@@ -19,8 +19,8 @@ const RESPONSES = {
     horaires: "Openingstijden:\n🕗 Ma–Vr: 09:00–18:00\n🕘 Za: 10:00–16:00\n❌ Zo: Gesloten",
     prix:     "Onze airconditioners en ventilatoren worden aangeboden tegen de beste prijzen, inclusief installatie.\n\n📧 Neem contact op voor een persoonlijke offerte!",
     rdv:      "Om een afspraak te maken voor een installatie-offerte:\n\n📧 Neem contact op of bel ons.",
-    adresse:  "📍 AIRCONFORTHABITAT\nVienne, Frankrijk",
-    bonjour:  "Hallo! Welkom bij AIRCONFORTHABITAT ❄️\n\nHoe kan ik u helpen?\n• Openingstijden\n• Installatie-offerte\n• Prijzen\n• Garantie & service\n• Adres",
+    adresse:  "📍 AIR ECO CLIM\nBrié-et-Angonnes, Frankrijk",
+    bonjour:  "Hallo! Welkom bij AIR ECO CLIM ❄️\n\nHoe kan ik u helpen?\n• Openingstijden\n• Installatie-offerte\n• Prijzen\n• Garantie & service\n• Adres",
     garantie: "Onze producten worden gedekt door:\n✅ Fabrieksgarantie 2 tot 5 jaar\n✅ Professionele installatie\n✅ Snelle after-sales service\n✅ Vervangingsonderdelen beschikbaar",
     livraison: "Wij leveren en installeren in heel Frankrijk:\n🚚 Snelle levering\n🔧 Installatie door onze technici\n📦 Afhalen mogelijk ter plaatse",
     entretien: "Wij bieden jaarlijkse onderhoudscontracten voor uw airco's:\n✅ Reiniging van filters\n✅ Controle van het koelcircuit\n✅ Controle van aansluitingen",
@@ -30,8 +30,8 @@ const RESPONSES = {
     horaires: "Opening hours:\n🕗 Mon–Fri: 09:00–18:00\n🕘 Sat: 10:00–16:00\n❌ Sun: Closed",
     prix:     "Our air conditioners and fans are offered at the best market prices, installation included.\n\n📧 Contact us for a personalized quote!",
     rdv:      "To book an appointment for an installation quote:\n\n📧 Contact us or call us.",
-    adresse:  "📍 AIRCONFORTHABITAT\nVienne, France",
-    bonjour:  "Hello! Welcome to AIRCONFORTHABITAT ❄️\n\nHow can I help you?\n• Opening hours\n• Installation quote\n• Pricing\n• Warranty & service\n• Our address",
+    adresse:  "📍 AIR ECO CLIM\nBrié-et-Angonnes, France",
+    bonjour:  "Hello! Welcome to AIR ECO CLIM ❄️\n\nHow can I help you?\n• Opening hours\n• Installation quote\n• Pricing\n• Warranty & service\n• Our address",
     garantie: "Our products are covered by:\n✅ Manufacturer warranty 2 to 5 years\n✅ Professional installation\n✅ Responsive after-sales service\n✅ Spare parts available",
     livraison: "We deliver and install throughout France:\n🚚 Fast delivery\n🔧 Installation by our technicians\n📦 Pickup available on-site",
     entretien: "We offer annual maintenance contracts for your AC units:\n✅ Filter cleaning\n✅ Refrigeration circuit check\n✅ Connection inspection",
@@ -134,7 +134,7 @@ export default function Chatbot() {
           <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>❄️</div>
           <div style={{ flex: 1 }}>
             <div style={{ fontFamily: "'Inter', sans-serif", fontWeight: 800, fontSize: 15, color: '#fff', letterSpacing: '0.02em' }}>
-              AIRCONFORTHABITAT
+              AIR ECO CLIM
             </div>
             <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.75)', display: 'flex', alignItems: 'center', gap: 6, marginTop: 2 }}>
               <span style={{ width: 7, height: 7, background: '#4ade80', borderRadius: '50%', display: 'inline-block' }} />

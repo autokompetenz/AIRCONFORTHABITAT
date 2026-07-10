@@ -4,7 +4,7 @@ import { t } from '../utils/i18n';
 import { useBreakpoint } from '../hooks';
 import { Mail, MapPin, Shield, Award, Wrench } from 'lucide-react';
 
-const CONTACT_EMAIL = 'contact@airconforthabitat.fr';
+const CONTACT_EMAIL = 'contact@airecoclim.com';
 
 export default function Footer() {
   const { lang } = useLangStore();
@@ -29,18 +29,18 @@ export default function Footer() {
           <div>
             <Link to="/" style={{ textDecoration: 'none' }}>
               <div style={{ fontSize: 16, fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>
-                AIRCONFORT<span style={{ color: 'var(--primary)' }}>HABITAT</span>
+                AIR ECO<span style={{ color: 'var(--primary)' }}> CLIM</span>
               </div>
               <div style={{ fontSize: 10, letterSpacing: '0.3em', color: 'var(--primary)', textTransform: 'uppercase', marginTop: 2 }}>
-                Vienne · France
+                Brié-et-Angonnes · France
               </div>
             </Link>
             <p style={{ fontSize: 12, color: text, lineHeight: 1.6, marginTop: 12, maxWidth: 280 }}>
-              {lang === 'fr' ? 'Spécialiste en climatisation, ventilation et pompes à chaleur — vente, installation et SAV en France.' : lang === 'en' ? 'Specialist in air conditioning, ventilation and heat pumps — sales, installation and after-sales in France.' : 'Specialist in airconditioning, ventilatie en warmtepompen — verkoop, installatie en after-sales in Frankrijk.'}
+              {lang === 'fr' ? 'Installation de climatisation, pompes à chaleur et chauffage — vente, installation et SAV en France.' : lang === 'en' ? 'Installation of air conditioning, heat pumps and heating — sales, installation and after-sales in France.' : 'Installatie van airconditioning, warmtepompen en verwarming — verkoop, installatie en after-sales in Frankrijk.'}
             </p>
             <div style={{ marginTop: 8, fontSize: 11, color: text2, lineHeight: 1.6 }}>
-              <div>RCS Vienne 851 996 991 · SIRET 851 996 991 00010</div>
-              <div>APE 43.22B · TVA FR51851996991</div>
+              <div>RCS Grenoble 844 859 413 · SIRET 844 859 413 00024</div>
+              <div>APE 43.22B · TVA FR67844859413</div>
             </div>
           </div>
 
@@ -74,9 +74,9 @@ export default function Footer() {
               <Mail size={14} strokeWidth={2} />
               {t('contact_label', lang)}
             </a>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: text, padding: '3px 0' }}>
-              <MapPin size={13} strokeWidth={1.5} /> Vienne, France
-            </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: text, padding: '3px 0' }}>
+                <MapPin size={13} strokeWidth={1.5} /> Brié-et-Angonnes, France
+              </div>
           </div>
         </div>
 
@@ -105,7 +105,7 @@ export default function Footer() {
         </div>
 
         <div style={{ borderTop: '1px solid #333', paddingTop: 14, marginTop: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8, fontSize: 11, color: text2 }}>
-          <span>&copy; {new Date().getFullYear()} AIRCONFORTHABITAT — {t('copyright', lang)}</span>
+          <span>&copy; {new Date().getFullYear()} AIR ECO CLIM — {t('copyright', lang)}</span>
           <span>{t('made_in', lang)}</span>
         </div>
       </div>

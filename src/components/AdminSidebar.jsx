@@ -32,7 +32,7 @@ export default function AdminSidebar({ mobileOpen = false, onClose }) {
       <div style={{ padding: '20px 18px', borderBottom: '1px solid var(--border)' }}>
         <NavLink to="/admin" onClick={closeIfMobile} style={{ textDecoration: 'none' }}>
           <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 15, fontWeight: 900, color: 'var(--text)', letterSpacing: '0.02em' }}>
-            AIRCON<span style={{ color: 'var(--primary)' }}>FORTHABITAT</span>
+            AIR ECO<span style={{ color: 'var(--primary)' }}> CLIM</span>
           </div>
           <div style={{ fontSize: 9, letterSpacing: '0.28em', color: 'var(--text-3)', textTransform: 'uppercase', marginTop: 6, fontWeight: 700 }}>
             Administration
@@ -51,7 +51,7 @@ export default function AdminSidebar({ mobileOpen = false, onClose }) {
             boxShadow: '0 6px 18px rgba(46,134,193,0.28)',
           }}>A</div>
           <p style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', letterSpacing: '0.01em' }}>Administrateur</p>
-          <p style={{ fontSize: 11, color: 'var(--primary)', marginTop: 4, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>AIRCONFORTHABITAT</p>
+          <p style={{ fontSize: 11, color: 'var(--primary)', marginTop: 4, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>AIR ECO CLIM</p>
         </div>
 
         <nav style={{ background: 'var(--bg-card2)', border: '1px solid var(--border)', borderRadius: 12, padding: 6, boxShadow: 'var(--shadow-sm)' }}>

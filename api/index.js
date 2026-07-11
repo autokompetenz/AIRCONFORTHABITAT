@@ -327,7 +327,7 @@ app.get('/api/orders/track/:orderNumber', async (req, res) => {
 });
 
 // ─── Upload payment proof ─────────────────────────────────────────────────
-app.post('/api/orders/upload-payment-proof/:orderNumber', async (req, res) => {
+app.post('/api/orders/upload-payment-proof/:orderNumber', upload.array('file', 1), async (req, res) => {
   try {
     const { orderNumber } = req.params;
     const order = await prisma.order.findUnique({ where: { orderNumber } });

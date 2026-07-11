@@ -5,7 +5,7 @@ const multer = require('multer');
 const { createClient } = require('@supabase/supabase-js');
 const rateLimit = require('express-rate-limit');
 const { prisma } = require('../lib/prisma.js');
-const { sendOrderConfirmation, sendAdminNotification, sendStatusNotification, sendReplyToCustomer } = require('../lib/mailer.js');
+const { sendOrderConfirmation, sendAdminNotification, sendStatusNotification, sendReplyToCustomer, sendPaymentProofToAdmin } = require('../lib/mailer.js');
 const { generateOrderNumber } = require('../lib/helpers.js');
 const { Prisma } = require('@prisma/client');
 
@@ -368,6 +368,15 @@ app.post('/api/orders/upload-payment-proof/:orderNumber', upload.array('file', 1
         comment: '📎 Preuve de virement reçue'
       }
     });
+
+    sendPaymentProofToAdmin({
+      orderNumber,
+      customerName: order.customerName,
+      customerEmail: order.customerEmail,
+      fileName: file.originalname,
+      fileBuffer: file.buffer,
+      fileMimetype: file.mimetype,
+    }).catch(err => console.error('Email payment proof error:', err.message));
 
     res.json({ success: true, receiptUrl });
   } catch (e) {

@@ -360,8 +360,8 @@ app.post('/api/orders/upload-payment-proof/:orderNumber', upload.array('file', 1
       orderNumber,
       customerName: order.customerName,
       customerEmail: order.customerEmail,
+      receiptUrl,
       fileName: file.originalname,
-      fileBuffer: file.buffer,
       fileMimetype: file.mimetype,
     }).catch(err => console.error('Email payment proof error:', err.message));
 

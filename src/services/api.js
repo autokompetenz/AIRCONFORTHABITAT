@@ -22,6 +22,7 @@ export const productAPI = {
 export const orderAPI = {
   create:  (d) => api.post('/orders', d),
   track:   (num) => api.get(`/orders/track/${num}`),
+  uploadPaymentProof:  (orderNumber, fd) => api.post(`/orders/upload-payment-proof/${orderNumber}`, fd, { headers: { 'Content-Type': 'multipart/form-data' }, timeout: 60000 }),
 };
 
 export const adminAPI = {

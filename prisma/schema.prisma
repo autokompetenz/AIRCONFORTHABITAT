@@ -106,6 +106,7 @@ model Order {
   totalAmount     Float?
   notes           String?        @db.Text
   status          OrderStatus    @default(pending)
+  paymentProofUrl String?
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
 

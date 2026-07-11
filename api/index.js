@@ -31,10 +31,10 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024, fieldSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    if (file.mimetype && file.mimetype.startsWith('image/')) {
+    if (file.mimetype && (file.mimetype.startsWith('image/') || file.mimetype === 'application/pdf')) {
       cb(null, true);
     } else {
-      cb(new Error('Seuls les fichiers image sont autorisés'), false);
+      cb(new Error('Seuls les fichiers image et PDF sont autorisés'), false);
     }
   }
 });
@@ -323,6 +323,56 @@ app.get('/api/orders/track/:orderNumber', async (req, res) => {
     });
   } catch (e) {
     res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+// ─── Upload payment proof ─────────────────────────────────────────────────
+app.post('/api/orders/upload-payment-proof/:orderNumber', async (req, res) => {
+  try {
+    const { orderNumber } = req.params;
+    const order = await prisma.order.findUnique({ where: { orderNumber } });
+    if (!order) return res.status(404).json({ error: 'Commande non trouvée' });
+
+    const bucketName = 'payment-proofs';
+    const { data: buckets } = await supabase.storage.listBuckets();
+    if (!buckets?.find(b => b.name === bucketName)) {
+      const { error } = await supabase.storage.createBucket(bucketName, { public: true });
+      if (error) return res.status(500).json({ error: error.message });
+    }
+
+    const file = req.files && req.files[0];
+    if (!file) return res.status(400).json({ error: 'Aucun fichier reçu' });
+
+    const ext = file.originalname.split('.').pop();
+    const fileName = `payment_proof_${orderNumber}_${Date.now()}.${ext}`;
+    const { error: uploadError } = await supabase.storage
+      .from(bucketName)
+      .upload(fileName, file.buffer, { contentType: file.mimetype, upsert: false });
+    if (uploadError) return res.status(500).json({ error: uploadError.message });
+
+    const { data: urlData } = supabase.storage
+      .from(bucketName)
+      .getPublicUrl(fileName);
+
+    const receiptUrl = urlData.publicUrl;
+
+    await prisma.order.update({
+      where: { orderNumber },
+      data: { paymentProofUrl: receiptUrl }
+    });
+
+    await prisma.orderTracking.create({
+      data: {
+        orderId: order.id,
+        status: order.status,
+        comment: '📎 Preuve de virement reçue'
+      }
+    });
+
+    res.json({ success: true, receiptUrl });
+  } catch (e) {
+    console.error('Upload payment proof error:', e);
+    res.status(500).json({ error: e.message || 'Erreur lors de l\'upload' });
   }
 });
 

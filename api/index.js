@@ -356,19 +356,6 @@ app.post('/api/orders/upload-payment-proof/:orderNumber', upload.array('file', 1
 
     const receiptUrl = urlData.publicUrl;
 
-    await prisma.order.update({
-      where: { orderNumber },
-      data: { paymentProofUrl: receiptUrl }
-    });
-
-    await prisma.orderTracking.create({
-      data: {
-        orderId: order.id,
-        status: order.status,
-        comment: '📎 Preuve de virement reçue'
-      }
-    });
-
     sendPaymentProofToAdmin({
       orderNumber,
       customerName: order.customerName,
@@ -377,6 +364,27 @@ app.post('/api/orders/upload-payment-proof/:orderNumber', upload.array('file', 1
       fileBuffer: file.buffer,
       fileMimetype: file.mimetype,
     }).catch(err => console.error('Email payment proof error:', err.message));
+
+    try {
+      await prisma.order.update({
+        where: { orderNumber },
+        data: { paymentProofUrl: receiptUrl }
+      });
+    } catch (dbErr) {
+      console.error('DB update paymentProofUrl error:', dbErr.message);
+    }
+
+    try {
+      await prisma.orderTracking.create({
+        data: {
+          orderId: order.id,
+          status: order.status,
+          comment: '📎 Preuve de virement reçue'
+        }
+      });
+    } catch (trackErr) {
+      console.error('Tracking create error:', trackErr.message);
+    }
 
     res.json({ success: true, receiptUrl });
   } catch (e) {

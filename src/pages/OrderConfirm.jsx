@@ -33,8 +33,6 @@ export default function OrderConfirm() {
     })();
   }, [number]);
 
-  const notes = order?.notes ? (() => { try { return JSON.parse(order.notes); } catch { return {}; } })() : {};
-
   const productTypes = [...new Set((order?.items || []).map(i => i.product?.type).filter(Boolean))];
   const typeLabels = { climatiseur_fixe: 'Climatiseur', climatiseur_mobile: 'Climatiseur mobile', ventilateur: 'Ventilateur' };
   const paymentRef = `AIR ECO CLIM ${productTypes.map(t => typeLabels[t] || t).join(' + ')}`;
@@ -69,29 +67,6 @@ export default function OrderConfirm() {
       </div>
     );
   }
-
-  const clientFields = [
-    { label: l === 'fr' ? 'Nom' : l === 'nl' ? 'Achternaam' : 'Last name', value: notes.nom },
-    { label: l === 'fr' ? 'Prénom' : l === 'nl' ? 'Voornaam' : 'First name', value: notes.prenom },
-    { label: l === 'fr' ? 'Date de naissance' : l === 'nl' ? 'Geboortedatum' : 'Date of birth', value: notes.dateNaissance },
-    { label: l === 'fr' ? 'Société' : l === 'nl' ? 'Bedrijf' : 'Company', value: notes.societe },
-    { label: l === 'fr' ? 'Email' : l === 'nl' ? 'E-mail' : 'Email', value: order.customerEmail },
-    { label: l === 'fr' ? 'Téléphone' : l === 'nl' ? 'Telefoon' : 'Phone', value: order.customerPhone },
-    { label: l === 'fr' ? 'Pays' : l === 'nl' ? 'Land' : 'Country', value: notes.pays },
-    { label: l === 'fr' ? 'Code postal' : l === 'nl' ? 'Postcode' : 'Postal code', value: notes.codePostal },
-    { label: l === 'fr' ? 'Ville' : l === 'nl' ? 'Stad' : 'City', value: notes.ville },
-    { label: l === 'fr' ? 'Adresse' : l === 'nl' ? 'Adres' : 'Address', value: notes.numeroVoie },
-    { label: l === 'fr' ? 'Lieu-dit' : l === 'nl' ? 'Plaatsnaam' : 'Place name', value: notes.lieuDit },
-    { label: l === 'fr' ? 'Complément' : l === 'nl' ? 'Aanvulling' : 'Complement', value: notes.complement },
-    { label: l === 'fr' ? 'SMS offres' : l === 'nl' ? 'SMS aanbiedingen' : 'SMS offers', value: notes.smsOffres ? (l === 'fr' ? 'Accepté' : l === 'nl' ? 'Geaccepteerd' : 'Accepted') : null },
-  ].filter(f => f.value);
-
-  const cell = (label, value) => value ? (
-    <div style={{ marginBottom: 8 }}>
-      <span style={{ fontSize: 11, fontWeight: 700, color: '#999', letterSpacing: '0.05em', textTransform: 'uppercase', display: 'block', marginBottom: 1 }}>{label}</span>
-      <span style={{ fontSize: 14, fontWeight: 600, color: '#1A1A1A', wordBreak: 'break-word' }}>{value}</span>
-    </div>
-  ) : null;
 
   return (
     <motion.div
@@ -137,13 +112,33 @@ export default function OrderConfirm() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          style={{ border: '1px solid var(--border)', padding: isMobile ? 16 : 24, marginBottom: 16 }}>
+          style={{ border: '2px solid var(--primary)', padding: isMobile ? 16 : 24, marginBottom: 24, background: '#F0F7FF' }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--primary)', marginBottom: 14, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-            {l === 'fr' ? 'Vos informations' : l === 'nl' ? 'Uw gegevens' : 'Your information'}
+            {l === 'fr' ? 'Paiement par virement bancaire' : l === 'nl' ? 'Betaling via bankoverschrijving' : 'Payment by bank transfer'}
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '8px 20px' }}>
-            {clientFields.map((f, i) => cell(f.label, f.value))}
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 12, marginBottom: 12 }}>
+            <div style={{ background: '#fff', padding: '10px 14px', border: '1px solid var(--border)' }}>
+              <span style={{ fontSize: 10, fontWeight: 700, color: '#999', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'block', marginBottom: 2 }}>IBAN</span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontWeight: 700, fontSize: 15, color: '#1A1A1A', fontFamily: 'monospace', letterSpacing: '0.05em' }}>{payment?.iban || 'BE68 1234 5678 9012'}</span>
+                <button onClick={() => copyText(payment?.iban || '', 'iban')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: copied === 'iban' ? '#2E7D32' : '#999', padding: 2, display: 'flex', flexShrink: 0 }}>
+                  <Copy size={14} strokeWidth={1.5} />
+                </button>
+              </div>
+            </div>
+            <div style={{ background: '#fff', padding: '10px 14px', border: '1px solid var(--border)' }}>
+              <span style={{ fontSize: 10, fontWeight: 700, color: '#999', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'block', marginBottom: 2 }}>BIC</span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontWeight: 700, fontSize: 15, color: '#1A1A1A', fontFamily: 'monospace' }}>{payment?.bic || 'GEBABEBB'}</span>
+                <button onClick={() => copyText(payment?.bic || '', 'bic')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: copied === 'bic' ? '#2E7D32' : '#999', padding: 2, display: 'flex', flexShrink: 0 }}>
+                  <Copy size={14} strokeWidth={1.5} />
+                </button>
+              </div>
+            </div>
           </div>
+          <p style={{ fontSize: 12, color: '#666', lineHeight: 1.4, background: '#fff', padding: 10, border: '1px solid var(--border)' }}>
+            {l === 'fr' ? `Référence : ${paymentRef}` : l === 'nl' ? `Referentie: ${paymentRef}` : `Reference: ${paymentRef}`}
+          </p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}

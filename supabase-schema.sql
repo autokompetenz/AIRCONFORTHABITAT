@@ -168,6 +168,46 @@ ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_productId_fkey" FOREIGN KEY ("
 -- AddForeignKey
 ALTER TABLE "OrderTracking" ADD CONSTRAINT "OrderTracking_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- CreateEnum
+CREATE TYPE "NewsletterStatus" AS ENUM ('draft', 'sent');
+
+-- CreateTable
+CREATE TABLE "Newsletter" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "subject" TEXT NOT NULL,
+    "body" TEXT NOT NULL,
+    "recipientCount" INTEGER NOT NULL DEFAULT 0,
+    "productId" INTEGER,
+    "productName" TEXT,
+    "productBrand" TEXT,
+    "productPrice" DOUBLE PRECISION,
+    "productImage" TEXT,
+    "productSlug" TEXT,
+    "status" "NewsletterStatus" NOT NULL DEFAULT 'draft',
+    "sentAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Newsletter_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "NewsletterRecipient" (
+    "id" SERIAL NOT NULL,
+    "newsletterId" INTEGER NOT NULL,
+    "customerId" INTEGER,
+    "customerName" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'sent',
+    "sentAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "NewsletterRecipient_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "NewsletterRecipient" ADD CONSTRAINT "NewsletterRecipient_newsletterId_fkey" FOREIGN KEY ("newsletterId") REFERENCES "Newsletter"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
 -- Prisma migrations table (required by Prisma)
 CREATE TABLE IF NOT EXISTS "_prisma_migrations" (
     "id"                  VARCHAR(36) PRIMARY KEY,

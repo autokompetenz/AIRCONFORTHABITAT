@@ -27,6 +27,7 @@ import AdminOrders from './pages/admin/AdminOrders';
 import AdminOrderDetail from './pages/admin/AdminOrderDetail';
 import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminStockAlerts from './pages/admin/AdminStockAlerts';
+import AdminNewsletters from './pages/admin/AdminNewsletters';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -93,6 +94,7 @@ function AppContent() {
             <Route path="orders/:id" element={<AdminOrderDetail />} />
             <Route path="customers" element={<AdminCustomers />} />
             <Route path="stock-alerts" element={<AdminStockAlerts />} />
+            <Route path="newsletters" element={<AdminNewsletters />} />
           </Route>
         </Routes>
       </AnimatePresence>

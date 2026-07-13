@@ -41,6 +41,11 @@ export const adminAPI = {
   replyToCustomer: (id,m) => api.post(`/admin/orders/${id}/reply`, m),
   customers:       ()     => api.get('/admin/customers'),
   stockAlerts:     ()     => api.get('/admin/stock-alerts'),
+  newsletters:     ()     => api.get('/admin/newsletters'),
+  newsletterById:  (id)   => api.get(`/admin/newsletters/${id}`),
+  sendNewsletter:  (data) => api.post('/admin/newsletters', data),
+  deleteNewsletter: (id)  => api.delete(`/admin/newsletters/${id}`),
+  randomProduct:   ()     => api.get('/admin/random-product'),
 };
 
 export default api;

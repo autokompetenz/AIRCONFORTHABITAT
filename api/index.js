@@ -5,7 +5,7 @@ const multer = require('multer');
 const { createClient } = require('@supabase/supabase-js');
 const rateLimit = require('express-rate-limit');
 const { prisma } = require('../lib/prisma.js');
-const { sendOrderConfirmation, sendAdminNotification, sendStatusNotification, sendReplyToCustomer, sendPaymentProofToAdmin } = require('../lib/mailer.js');
+const { sendOrderConfirmation, sendAdminNotification, sendStatusNotification, sendReplyToCustomer, sendPaymentProofToAdmin, sendNewsletter } = require('../lib/mailer.js');
 const { generateOrderNumber } = require('../lib/helpers.js');
 const { Prisma } = require('@prisma/client');
 
@@ -790,6 +790,164 @@ app.post('/api/stock-alerts', async (req, res) => {
     res.status(201).json({ success: true, entry });
   } catch (e) {
     res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+// ─── Admin: Newsletters ────────────────────────────────────────────────────
+app.get('/api/admin/newsletters', authenticateAdmin, async (req, res) => {
+  try {
+    const newsletters = await prisma.newsletter.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: { _count: { select: { recipients: true } } },
+    });
+    res.json({ newsletters });
+  } catch (e) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+app.get('/api/admin/newsletters/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ error: 'ID invalide' });
+    const newsletter = await prisma.newsletter.findUnique({
+      where: { id },
+      include: { recipients: { orderBy: { sentAt: 'desc' } } },
+    });
+    if (!newsletter) return res.status(404).json({ error: 'Newsletter non trouvée' });
+    res.json({ newsletter });
+  } catch (e) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+app.get('/api/admin/random-product', authenticateAdmin, async (req, res) => {
+  try {
+    const products = await prisma.product.findMany({
+      where: { isActive: true, status: 'available', stock: { gt: 0 } },
+    });
+    if (products.length === 0) return res.json({ product: null });
+    const product = products[Math.floor(Math.random() * products.length)];
+    const images = [product.imageUrl, product.imageUrl2, product.imageUrl3, product.imageUrl4, product.imageUrl5].filter(Boolean);
+    res.json({
+      product: {
+        id: product.id,
+        name: product.name,
+        slug: product.slug,
+        brand: product.brand,
+        model: product.model,
+        price: product.price,
+        salePrice: product.salePrice,
+        image: images[0] || null,
+      },
+    });
+  } catch (e) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+app.post('/api/admin/newsletters', authenticateAdmin, async (req, res) => {
+  try {
+    const { title, subject, body, recipientIds, sendToAll, product } = req.body;
+    if (!title || !subject || !body) {
+      return res.status(400).json({ error: 'Titre, sujet et message requis' });
+    }
+
+    let customers;
+    if (sendToAll) {
+      customers = await prisma.customer.findMany({
+        where: { orders: { some: {} } },
+        distinct: ['id'],
+      });
+    } else if (recipientIds && recipientIds.length > 0) {
+      customers = await prisma.customer.findMany({
+        where: { id: { in: recipientIds } },
+      });
+    } else {
+      return res.status(400).json({ error: 'Aucun destinataire sélectionné' });
+    }
+
+    if (customers.length === 0) {
+      return res.status(400).json({ error: 'Aucun client ayant commandé trouvé' });
+    }
+
+    const newsletter = await prisma.newsletter.create({
+      data: {
+        title,
+        subject,
+        body,
+        recipientCount: customers.length,
+        productId: product?.id || null,
+        productName: product?.name || null,
+        productBrand: product?.brand || null,
+        productPrice: product?.price || null,
+        productImage: product?.image || null,
+        productSlug: product?.slug || null,
+        status: 'sent',
+        sentAt: new Date(),
+      },
+    });
+
+    const recipients = [];
+    let sentCount = 0;
+    let failCount = 0;
+
+    for (const customer of customers) {
+      try {
+        await sendNewsletter({
+          email: customer.email,
+          name: customer.name,
+          subject,
+          body,
+          product: product || null,
+        });
+        sentCount++;
+        recipients.push({
+          newsletterId: newsletter.id,
+          customerId: customer.id,
+          customerName: customer.name,
+          email: customer.email,
+          status: 'sent',
+        });
+      } catch (err) {
+        failCount++;
+        recipients.push({
+          newsletterId: newsletter.id,
+          customerId: customer.id,
+          customerName: customer.name,
+          email: customer.email,
+          status: 'failed',
+        });
+      }
+    }
+
+    if (recipients.length > 0) {
+      await prisma.newsletterRecipient.createMany({ data: recipients });
+    }
+
+    res.status(201).json({
+      success: true,
+      newsletter,
+      sentCount,
+      failCount,
+      total: customers.length,
+    });
+  } catch (e) {
+    console.error('Send newsletter error:', e);
+    res.status(500).json({ error: 'Erreur lors de l\'envoi de la newsletter' });
+  }
+});
+
+app.delete('/api/admin/newsletters/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ error: 'ID invalide' });
+    const newsletter = await prisma.newsletter.findUnique({ where: { id } });
+    if (!newsletter) return res.status(404).json({ error: 'Newsletter non trouvée' });
+    await prisma.newsletter.delete({ where: { id } });
+    res.json({ success: true, message: 'Newsletter supprimée' });
+  } catch (e) {
+    res.status(500).json({ error: 'Erreur lors de la suppression' });
   }
 });
 

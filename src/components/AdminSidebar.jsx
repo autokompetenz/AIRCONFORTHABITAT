@@ -9,6 +9,7 @@ const links = [
   { to: '/admin/products/new', icon: '＋', label: 'Ajouter un produit' },
   { to: '/admin/customers', icon: '👥', label: 'Clients' },
   { to: '/admin/stock-alerts', icon: '📢', label: 'Alertes stock' },
+  { to: '/admin/newsletters', icon: '📰', label: 'Newsletters' },
 ];
 
 export default function AdminSidebar({ mobileOpen = false, onClose }) {

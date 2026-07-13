@@ -154,3 +154,40 @@ model StockAlert {
   notified  Boolean  @default(false)
   createdAt DateTime @default(now())
 }
+
+enum NewsletterStatus {
+  draft
+  sent
+}
+
+model Newsletter {
+  id              Int              @id @default(autoincrement())
+  title           String
+  subject         String
+  body            String           @db.Text
+  recipientCount  Int              @default(0)
+  productId       Int?
+  productName     String?
+  productBrand    String?
+  productPrice    Float?
+  productImage    String?
+  productSlug     String?
+  status          NewsletterStatus @default(draft)
+  sentAt          DateTime?
+  createdAt       DateTime         @default(now())
+
+  recipients NewsletterRecipient[]
+}
+
+model NewsletterRecipient {
+  id           Int      @id @default(autoincrement())
+  newsletterId Int
+  customerId   Int?
+  customerName String
+  email        String
+  status       String   @default("sent")
+  sentAt       DateTime @default(now())
+  createdAt    DateTime @default(now())
+
+  newsletter Newsletter @relation(fields: [newsletterId], references: [id], onDelete: Cascade)
+}

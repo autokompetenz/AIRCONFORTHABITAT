@@ -1,1 +1,14 @@
-{&quot;nom&quot;:&quot;DJENONTIN&quot;,&quot;prenom&quot;:&quot;Marlet&quot;,&quot;dateNaissance&quot;:&quot;2003-06-17&quot;,&quot;societe&quot;:&quot;&quot;,&quot;pays&quot;:&quot;France&quot;,&quot;codePostal&quot;:&quot;Ok&quot;,&quot;ville&quot;:&quot;Ik&quot;,&quot;numeroVoie&quot;:&quot;Ok&quot;,&quot;lieuDit&quot;:&quot;Ok&quot;,&quot;complement&quot;:&quot;Ok&quot;,&quot;smsOffres&quot;:true}
+Create order error: PrismaClientKnownRequestError: 
+Invalid `prisma.order.findUnique()` invocation:
+
+
+The column `Order.paymentProofUrl` does not exist in the current database.
+    at $n.handleRequestError (/var/task/node_modules/@prisma/client/runtime/library.js:121:7315)
+    at $n.handleAndLogRequestError (/var/task/node_modules/@prisma/client/runtime/library.js:121:6623)
+    at $n.request (/var/task/node_modules/@prisma/client/runtime/library.js:121:6307)
+    at async l (/var/task/node_modules/@prisma/client/runtime/library.js:130:9633)
+    at async /var/task/api/index.js:243:19 {
+  code: 'P2022',
+  clientVersion: '5.22.0',
+  meta: { modelName: 'Order', column: 'Order.paymentProofUrl' }
+}
